@@ -1,1 +1,655 @@
-.bg
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MASOLITES ECOMAS Platform</title>
+    <style>
+        :root {
+            --primary: #0a2463;
+            --secondary: #3e92cc;
+            --accent: #d8315b;
+            --success: #1eae98;
+            --warning: #ffb347;
+            --light: #fffaff;
+            --dark: #1a1a2e;
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark), var(--primary));
+            color: var(--text-primary);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            position: fixed;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Header Section */
+        .header {
+            height: 15%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid var(--secondary);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--success), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+
+        .tagline {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        /* Main Content - 70% */
+        .main-content {
+            height: 70%;
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            overflow: hidden;
+        }
+
+        .welcome-message {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid var(--secondary);
+        }
+
+        .welcome-message p {
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .countdown-section {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 2px solid var(--accent);
+            text-align: center;
+        }
+
+        .countdown-title {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--success);
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 50px;
+        }
+
+        .countdown-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            font-family: 'Courier New', monospace;
+            color: var(--light);
+        }
+
+        .countdown-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+
+        .buy-button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 25px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .buy-button:hover {
+            background: #c22546;
+            transform: translateY(-2px);
+        }
+
+        .mining-section {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 15px;
+            border: 2px solid var(--warning);
+            text-align: center;
+        }
+
+        .mining-title {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--warning);
+        }
+
+        .mining-display {
+            font-size: 1.8rem;
+            font-weight: 800;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            color: var(--light);
+        }
+
+        .mining-button {
+            background: var(--warning);
+            color: var(--dark);
+            border: none;
+            border-radius: 20px;
+            padding: 10px 25px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .mining-button.active {
+            background: var(--success);
+            color: white;
+        }
+
+        /* Bottom Buttons - 30% */
+        .action-buttons {
+            height: 30%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 10px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .action-button {
+            background: var(--card-bg);
+            backdrop-filter: blur(5px);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid var(--secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-button:hover {
+            background: rgba(62, 146, 204, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .action-icon {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .action-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        /* Auth Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--primary);
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid var(--secondary);
+        }
+
+        .modal-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--success);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--secondary);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--secondary);
+            color: var(--text-primary);
+        }
+
+        /* Membership Badges */
+        .badge {
+            font-size: 1.2rem;
+            display: inline-block;
+            margin-left: 5px;
+        }
+
+        .free-badge {
+            color: #cccccc;
+        }
+
+        .bronze-badge {
+            color: #cd7f32;
+        }
+
+        .silver-badge {
+            color: #c0c0c0;
+        }
+
+        .gold-badge {
+            color: #ffd700;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 360px) {
+            .logo {
+                font-size: 1.8rem;
+            }
+            .tagline {
+                font-size: 0.8rem;
+            }
+            .countdown-number {
+                font-size: 1.5rem;
+            }
+            .countdown-label {
+                font-size: 0.6rem;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">MASOLITES ECOMAS</div>
+            <div class="tagline">Building Trust & A Better Society Together</div>
+        </div>
+
+        <!-- Main Content (70%) -->
+        <div class="main-content">
+            <!-- Welcome Message -->
+            <div class="welcome-message">
+                <p>Welcome to MASOLITES Nation platform - ECOMAS. ECOMAS means Economic Community of MASOLITES. Masolite is coined from 'Masses Solidarity'. Making things easier for ourselves (the people) is the concept.</p>
+            </div>
+
+            <!-- Countdown Section -->
+            <div class="countdown-section">
+                <div class="countdown-title">PRIVATE SALE ENDS IN</div>
+                <div class="countdown-timer">
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="days">120</div>
+                        <div class="countdown-label">Days</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="hours">00</div>
+                        <div class="countdown-label">Hours</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="minutes">00</div>
+                        <div class="countdown-label">Minutes</div>
+                    </div>
+                </div>
+                <button class="buy-button" id="buyButton">BUY MAZOL NOW ($0.001)</button>
+            </div>
+
+            <!-- Mining Section -->
+            <div class="mining-section">
+                <div class="mining-title">MAZOL MINING PORTAL</div>
+                <div class="mining-display">
+                    <span id="minedAmount">0.000000</span> MZLx
+                </div>
+                <button class="mining-button" id="miningButton">START MINING</button>
+            </div>
+        </div>
+
+        <!-- Action Buttons (30%) -->
+        <div class="action-buttons">
+            <div class="action-button" id="saveEarnBtn">
+                <div class="action-icon">💰</div>
+                <div class="action-label">Save & Earn</div>
+            </div>
+            <div class="action-button" id="escrowShopBtn">
+                <div class="action-icon">🛒</div>
+                <div class="action-label">Escrow Shop</div>
+            </div>
+            <div class="action-button" id="connectWalletBtn">
+                <div class="action-icon">🔗</div>
+                <div class="action-label">Connect Wallet</div>
+            </div>
+            <div class="action-button" id="sendReceiveBtn">
+                <div class="action-icon">⇄</div>
+                <div class="action-label">Send/Receive</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <h2 class="modal-title" id="modalTitle">SIGN IN TO ECOMAS</h2>
+            <form id="authForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="form-control" required>
+                </div>
+                <div class="form-group" id="passwordGroup" style="display: none;">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control">
+                </div>
+                <div class="form-group" id="nameGroup" style="display: none;">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" class="form-control">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" id="switchAuth">Switch to Sign Up</button>
+                    <button type="submit" class="btn btn-primary" id="submitAuth">Sign In</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const authModal = document.getElementById('authModal');
+        const closeModalBtn = document.getElementById('closeModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const authForm = document.getElementById('authForm');
+        const switchAuthBtn = document.getElementById('switchAuth');
+        const submitAuthBtn = document.getElementById('submitAuth');
+        const passwordGroup = document.getElementById('passwordGroup');
+        const nameGroup = document.getElementById('nameGroup');
+        const miningButton = document.getElementById('miningButton');
+        const minedAmountDisplay = document.getElementById('minedAmount');
+        const daysDisplay = document.getElementById('days');
+        const hoursDisplay = document.getElementById('hours');
+        const minutesDisplay = document.getElementById('minutes');
+
+        // State variables
+        let isLoginMode = true;
+        let isMining = false;
+        let miningInterval;
+        let minedAmount = 0;
+        let miningStartTime;
+        const baseMiningRate = 0.12 / (24 * 60 * 60 * 1000); // 0.12 MZLx per day in ms
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show auth modal immediately
+            setTimeout(() => {
+                authModal.style.display = 'flex';
+            }, 500);
+
+            // Initialize countdown
+            updateCountdown();
+            setInterval(updateCountdown, 60000); // Update every minute
+
+            // Load user session if exists
+            loadUserSession();
+        });
+
+        // Auth Modal Handling
+        closeModalBtn.addEventListener('click', () => {
+            authModal.style.display = 'none';
+        });
+
+        switchAuthBtn.addEventListener('click', () => {
+            isLoginMode = !isLoginMode;
+            if (isLoginMode) {
+                modalTitle.textContent = 'SIGN IN TO ECOMAS';
+                switchAuthBtn.textContent = 'Switch to Sign Up';
+                submitAuthBtn.textContent = 'Sign In';
+                nameGroup.style.display = 'none';
+                passwordGroup.style.display = 'block';
+            } else {
+                modalTitle.textContent = 'CREATE ECOMAS ACCOUNT';
+                switchAuthBtn.textContent = 'Switch to Sign In';
+                submitAuthBtn.textContent = 'Sign Up';
+                nameGroup.style.display = 'block';
+                passwordGroup.style.display = 'block';
+            }
+        });
+
+        authForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            
+            if (isLoginMode) {
+                // Login logic
+                const password = document.getElementById('password').value;
+                authenticateUser(email, password);
+            } else {
+                // Registration logic
+                const name = document.getElementById('name').value;
+                const password = document.getElementById('password').value;
+                registerUser(name, email, password);
+            }
+        });
+
+        // Mining Button
+        miningButton.addEventListener('click', function() {
+            if (!isMining) {
+                startMining();
+            } else {
+                stopMining();
+            }
+        });
+
+        // Action Buttons
+        document.getElementById('saveEarnBtn').addEventListener('click', () => {
+            alert('Save & Earn feature will open in a new page');
+        });
+
+        document.getElementById('escrowShopBtn').addEventListener('click', () => {
+            alert('Escrow Shop feature will open in a new page');
+        });
+
+        document.getElementById('connectWalletBtn').addEventListener('click', () => {
+            alert('Wallet connection will be implemented with Web3');
+        });
+
+        document.getElementById('sendReceiveBtn').addEventListener('click', () => {
+            alert('Send/Receive feature will open in a new page');
+        });
+
+        // Buy Button
+        document.getElementById('buyButton').addEventListener('click', () => {
+            alert('Token purchase flow will open in a new page');
+        });
+
+        // Functions
+        function authenticateUser(email, password) {
+            // In a real app, this would verify against a database
+            console.log(`Authenticating user: ${email}`);
+            
+            // For demo, just close modal and show success
+            authModal.style.display = 'none';
+            alert('Congratulations! MASOLITE. Let\'s Build Trust & a Better Society together. You can Start Mining MAZOL Now');
+        }
+
+        function registerUser(name, email, password) {
+            // Check if email already exists
+            if (localStorage.getItem(`user_${email}`)) {
+                alert('This email is already registered');
+                return;
+            }
+            
+            // Create user object
+            const user = {
+                name,
+                email,
+                password, // Note: In real app, password should be hashed
+                membership: 'free',
+                joined: new Date().toISOString(),
+                mazol: 0
+            };
+            
+            // Store user (simulated)
+            localStorage.setItem(`user_${email}`, JSON.stringify(user));
+            
+            // Close modal and show success
+            authModal.style.display = 'none';
+            alert('Congratulations! MASOLITE. Let\'s Build Trust & a Better Society together. You can Start Mining MAZOL Now');
+        }
+
+        function loadUserSession() {
+            // In a real app, this would check for existing session
+        }
+
+        function startMining() {
+            isMining = true;
+            miningStartTime = new Date();
+            miningButton.textContent = 'MINING (ON)';
+            miningButton.classList.add('active');
+            
+            // Start mining with millisecond precision
+            miningInterval = setInterval(() => {
+                const now = new Date();
+                const elapsed = now - miningStartTime;
+                
+                // Calculate mined amount based on elapsed time
+                minedAmount = elapsed * baseMiningRate;
+                minedAmountDisplay.textContent = minedAmount.toFixed(6);
+                
+                // Auto-stop after 24 hours
+                if (elapsed >= 24 * 60 * 60 * 1000) {
+                    stopMining();
+                }
+            }, 100); // Update every 100ms for smooth animation
+        }
+
+        function stopMining() {
+            isMining = false;
+            clearInterval(miningInterval);
+            miningButton.textContent = 'START MINING';
+            miningButton.classList.remove('active');
+        }
+
+        function updateCountdown() {
+            const endDate = new Date();
+            endDate.setDate(endDate.getDate() + 120); // 120 days from now
+            
+            const now = new Date();
+            const diff = endDate - now;
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            
+            daysDisplay.textContent = days.toString().padStart(2, '0');
+            hoursDisplay.textContent = hours.toString().padStart(2, '0');
+            minutesDisplay.textContent = minutes.toString().padStart(2, '0');
+        }
+    </script>
+</body>
+</html>
