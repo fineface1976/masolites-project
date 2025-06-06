@@ -1,70 +1,69 @@
-// Authentication Module
-function initializeAuth() {
-    const authForm = document.getElementById('authForm');
-    const switchAuthBtn = document.getElementById('switchAuth');
-    
-    let isLoginMode = true;
-    
-    // Switch between login/signup
-    switchAuthBtn.addEventListener('click', () => {
-        isLoginMode = !isLoginMode;
-        updateAuthUI();
-    });
-    
-    // Form submission
-    authForm.addEventListener('submit', function(e) {
+  class AuthSystem {
+  constructor() {
+    this.adminEmails = ['admin@masolites.com', 'owner@masolites.com'];
+    this.initAuth();
+  }
+
+  initAuth() {
+    const loginForm = document.getElementById('login-form');
+    if (loginForm) {
+      loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const email = document.getElementById('email').value;
-        
-        if (isLoginMode) {
-            handleLogin(email, document.getElementById('password').value);
-        } else {
-            handleSignup(
-                document.getElementById('name').value,
-                email,
-                document.getElementById('password').value
-            );
-        }
-    });
-}
-
-function handleLogin(email, password) {
-    // Validate credentials
-    const users = JSON.parse(localStorage.getItem('mazol_users')) || [];
-    const user = users.find(u => u.email === email && u.password === password);
+        const email = document.getElementById('email').value.trim().toLowerCase();
+        this.handleLogin(email);
+      });
+    }
     
-    if (user) {
-        // Successful login
-        localStorage.setItem('mazol_user', JSON.stringify(user));
-        location.reload();
+    this.checkExistingSession();
+  }
+
+  handleLogin(email) {
+    if (this.adminEmails.includes(email)) {
+      window.location.href = '/admin/dashboard.html';
+      localStorage.setItem('user_role', 'admin');
     } else {
-        alert('Invalid credentials');
+      localStorage.setItem('user_email', email);
+      localStorage.setItem('user_role', 'user');
+      this.showUserInterface();
     }
+  }
+
+  checkExistingSession() {
+    const email = localStorage.getItem('user_email');
+    const role = localStorage.getItem('user_role');
+    
+    if (role === 'admin') {
+      window.location.href = '/admin/dashboard.html';
+    } else if (email) {
+      this.showUserInterface();
+    }
+  }
+
+  showUserInterface() {
+    const authModal = document.getElementById('auth-modal');
+    if (authModal) authModal.style.display = 'none';
+    
+    const email = localStorage.getItem('user_email');
+    this.displayWelcomeMessage(email);
+  }
+
+  displayWelcomeMessage(email) {
+    const welcomeDiv = document.createElement('div');
+    welcomeDiv.className = 'card';
+    welcomeDiv.innerHTML = `
+      <h2>Welcome, ${email.split('@')[0]}!</h2>
+      <p>You're now part of the MASOLITES community.</p>
+      <button class="btn" id="start-mining">Start Mining MAZOL</button>
+    `;
+    
+    document.querySelector('main').prepend(welcomeDiv);
+    document.getElementById('start-mining').addEventListener('click', () => {
+      alert('Mining started!');
+    });
+  }
 }
 
-function handleSignup(name, email, password) {
-    // Validate email uniqueness
-    const users = JSON.parse(localStorage.getItem('mazol_users')) || [];
-    
-    if (users.some(u => u.email === email)) {
-        alert('Email already registered');
-        return;
-    }
-    
-    // Create new user
-    const newUser = {
-        id: generateId(),
-        name,
-        email,
-        password,
-        membership: 'free',
-        joined: new Date().toISOString(),
-        mazol: 0
-    };
-    
-    users.push(newUser);
-    localStorage.setItem('mazol_users', JSON.stringify(users));
-    localStorage.setItem('mazol_user', JSON.stringify(newUser));
-    
-    alert('Welcome to MASOLITES!');
-    location.reload();
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  new AuthSystem();
+});
