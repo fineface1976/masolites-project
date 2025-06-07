@@ -1,0 +1,54 @@
+:root {
+    --deep-blue: #0a2463;
+    --navy: #1a1a2e;
+    --light-blue: #3e92cc;
+    --lemon-green: #a4de02;
+    --accent-pink: #d8315b;
+    --card-bg: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    background: linear-gradient(135deg, var(--navy), var(--deep-blue));
+    color: white;
+    font-family: 'Inter', sans-serif;
+}
+
+.app-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.top-section {
+    flex: 0 0 70vh;
+    padding: 2rem;
+}
+
+.action-grid {
+    flex: 0 0 30vh;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.countdown-card, .mining-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--light-blue);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+}
+
+.cta-button {
+    background: var(--lemon-green);
+    color: var(--navy);
+    font-weight: 700;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
