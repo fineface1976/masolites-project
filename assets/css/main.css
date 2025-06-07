@@ -1,4 +1,4 @@
- /* Main Stylesheet - Deep Blue Theme */
+ /* DEEP BLUE THEME - MAIN STYLESHEET */
 :root {
     --deep-blue: #0a2463;
     --navy: #1a1a2e;
@@ -31,6 +31,11 @@ body {
     display: flex;
     flex-direction: column;
     padding: 10px;
+}
+
+.top-section {
+    flex: 0 0 70%;
+    overflow: hidden;
 }
 
 header {
@@ -98,6 +103,13 @@ header {
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.section-title {
+    text-align: center;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    color: var(--lemon-green);
+}
+
 .countdown-timer {
     display: flex;
     justify-content: center;
@@ -139,6 +151,7 @@ header {
 }
 
 .action-grid {
+    flex: 0 0 30%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
@@ -210,11 +223,6 @@ header {
 .mining-button:hover {
     background: #8fbf00;
     transform: translateY(-2px);
-}
-
-.mining-button.active {
-    background: #ff9a03;
-    color: white;
 }
 
 .welcome-message {
