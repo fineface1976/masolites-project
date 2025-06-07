@@ -1,4 +1,4 @@
-// Initialize when page loads
+ // MAIN APPLICATION SCRIPT
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize countdown timer
     const endDate = new Date();
@@ -20,48 +20,10 @@ document.addEventListener('DOMContentLoaded', function() {
     setInterval(updateCountdown, 60000);
     updateCountdown();
     
-    // Mining System
-    let miningInterval;
-    let minedAmount = 0;
-    let isMining = false;
-    const baseRate = 0.12 / (24 * 60 * 60 * 1000); // 0.12 MZLx per day in ms
-    
-    const miningButton = document.getElementById('miningButton');
-    miningButton.addEventListener('click', function() {
-        if (isMining) {
-            stopMining();
-        } else {
-            startMining();
-        }
+    // Initialize mining button
+    document.getElementById('miningButton').addEventListener('click', function() {
+        // This will be handled by mining.js
     });
-    
-    function startMining() {
-        isMining = true;
-        miningButton.textContent = 'MINING (ON)';
-        miningButton.classList.add('active');
-        
-        const startTime = new Date();
-        
-        miningInterval = setInterval(() => {
-            const now = new Date();
-            const elapsed = now - startTime;
-            minedAmount = elapsed * baseRate;
-            
-            document.getElementById('minedAmount').textContent = minedAmount.toFixed(6) + ' MZLx';
-            
-            // Auto-stop after 24 hours
-            if (elapsed >= 24 * 60 * 60 * 1000) {
-                stopMining();
-            }
-        }, 100);
-    }
-    
-    function stopMining() {
-        clearInterval(miningInterval);
-        isMining = false;
-        miningButton.textContent = 'START MINING';
-        miningButton.classList.remove('active');
-    }
     
     // Action Buttons
     document.getElementById('saveEarnBtn').addEventListener('click', function() {
