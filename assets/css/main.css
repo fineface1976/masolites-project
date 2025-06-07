@@ -1,16 +1,27 @@
-:root {
+ :root {
     --deep-blue: #0a2463;
     --navy: #1a1a2e;
     --light-blue: #3e92cc;
     --lemon-green: #a4de02;
-    --accent-pink: #d8315b;
+    --lemon-dark: #6b9900;
+    --accent: #d8315b;
     --card-bg: rgba(255, 255, 255, 0.1);
+    --text-light: #ffffff;
+    --text-dim: #cccccc;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
     background: linear-gradient(135deg, var(--navy), var(--deep-blue));
-    color: white;
+    color: var(--text-light);
     font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
 }
 
 .app-container {
@@ -21,34 +32,104 @@ body {
 
 .top-section {
     flex: 0 0 70vh;
-    padding: 2rem;
+    padding: 20px;
+    overflow-y: auto;
 }
 
-.action-grid {
-    flex: 0 0 30vh;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-    padding: 1rem;
-    background: rgba(0, 0, 0, 0.2);
+header {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-.countdown-card, .mining-card {
+.logo {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(to right, var(--lemon-green), var(--light-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 5px;
+}
+
+.tagline {
+    color: var(--text-dim);
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.auth-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-login, .btn-register {
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-login {
+    background: transparent;
+    border: 1px solid var(--light-blue);
+    color: var(--light-blue);
+}
+
+.btn-register {
+    background: var(--lemon-green);
+    color: var(--navy);
+    border: none;
+}
+
+.welcome-card, .countdown-card, .mining-card {
     background: var(--card-bg);
     backdrop-filter: blur(10px);
-    border: 1px solid var(--light-blue);
     border-radius: 16px;
-    padding: 1.5rem;
-    margin: 1rem 0;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.welcome-card p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.countdown-card h3, .mining-card h3 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: var(--lemon-green);
+    font-size: 1.2rem;
+}
+
+.cta-button, .mining-button {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 12px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
 }
 
 .cta-button {
+    background: var(--accent);
+    color: white;
+}
+
+.mining-button {
     background: var(--lemon-green);
     color: var(--navy);
-    font-weight: 700;
-    border: none;
-    padding: 0.8rem 2rem;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.3s;
+}
+
+.mining-button.active {
+    background: #ff9a03;
+    color: white;
 }
