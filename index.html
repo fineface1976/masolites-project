@@ -4,7 +4,90 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MASOLITES ECOMAS Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/main.css">
+    <style>
+        /* ICO-style countdown */
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .countdown-item {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 10px 15px;
+            min-width: 80px;
+            text-align: center;
+            border: 2px solid var(--accent);
+        }
+        .countdown-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(to bottom, #fff, #ccc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .countdown-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+        
+        /* Mining display */
+        .mining-display {
+            font-size: 2rem;
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(to right, #a4de02, #6b9900);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 15px 0;
+            text-align: center;
+        }
+        
+        /* Action buttons grid */
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding: 15px;
+        }
+        @media (min-width: 768px) {
+            .action-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        .action-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--light-blue);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .action-card:hover {
+            transform: translateY(-5px);
+            background: rgba(62,146,204,0.2);
+        }
+        .action-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        .action-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
@@ -13,39 +96,98 @@
             <header>
                 <h1 class="logo">MASOLITES ECOMAS</h1>
                 <p class="tagline">Building Trust & A Better Society Together</p>
+                <div class="auth-buttons">
+                    <button class="btn-login">Login</button>
+                    <button class="btn-register">Register</button>
+                </div>
             </header>
             
             <div class="welcome-card">
-                <p>Welcome to Economic Community Of Masolites (ECOMAS) Platform...</p>
+                <p>Welcome to Economic Community Of Masolites (ECOMAS) Platform where aside Platform products and services you can also add yours, buy & sell at highest discounts to fellow Masolites for a better society. Membership Upgrade gets higher Discounts, Mine MAZOL (MZLx) Tokens faster, & also vote to determine Token launch price.</p>
             </div>
             
             <div class="countdown-card">
                 <h3>PRIVATE SALE ENDS IN</h3>
                 <div class="countdown-timer">
-                    <div>120 <span>Days</span></div>
-                    <div>00 <span>Hours</span></div>
-                    <div>00 <span>Minutes</span></div>
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="days">120</div>
+                        <div class="countdown-label">Days</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="hours">00</div>
+                        <div class="countdown-label">Hours</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="minutes">00</div>
+                        <div class="countdown-label">Minutes</div>
+                    </div>
                 </div>
-                <button class="cta-button">BUY MAZOL NOW</button>
+                <button class="cta-button buy-button">BUY MAZOL NOW ($0.001)</button>
             </div>
             
             <div class="mining-card">
                 <h3>MAZOL MINING PORTAL</h3>
-                <div class="mining-display">0.000000 MZLx</div>
-                <button class="mining-button">START MINING</button>
+                <div class="mining-display" id="minedAmount">0.000000 MZLx</div>
+                <button class="mining-button" id="miningButton">START MINING</button>
             </div>
         </div>
         
         <!-- Bottom 30% Section -->
         <div class="action-grid">
-            <div class="action-card" onclick="location.href='features/save-earn.html'">
+            <div class="action-card" id="saveEarnBtn">
                 <div class="action-icon">💰</div>
                 <div class="action-label">Save & Earn</div>
             </div>
-            <!-- Additional action cards -->
+            <div class="action-card" id="escrowShopBtn">
+                <div class="action-icon">🛒</div>
+                <div class="action-label">Escrow Shop</div>
+            </div>
+            <div class="action-card" id="connectWalletBtn">
+                <div class="action-icon">🔗</div>
+                <div class="action-label">Connect Wallet</div>
+            </div>
+            <div class="action-card" id="sendReceiveBtn">
+                <div class="action-icon">⇄</div>
+                <div class="action-label">Send/Receive</div>
+            </div>
         </div>
     </div>
 
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/mining.js"></script>
+    <script>
+        // Initialize countdown
+        const endDate = new Date();
+        endDate.setDate(endDate.getDate() + 120);
+        
+        function updateCountdown() {
+            const now = new Date();
+            const diff = endDate - now;
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+        }
+        
+        setInterval(updateCountdown, 60000);
+        updateCountdown();
+        
+        // Button event listeners
+        document.getElementById('miningButton').addEventListener('click', toggleMining);
+        document.getElementById('buyButton').addEventListener('click', () => {
+            alert('Redirecting to token purchase...');
+        });
+        
+        // Action buttons
+        document.querySelectorAll('.action-card').forEach(btn => {
+            btn.addEventListener('click', () => {
+                alert(`Opening ${btn.querySelector('.action-label').textContent} feature...`);
+            });
+        });
+    </script>
 </body>
 </html>
