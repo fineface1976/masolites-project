@@ -1,16 +1,16 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MASOLITES ECOMAS</title>
-    <link href="https:                                                                                         
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
     <div class="app-container">
-        <!-- Top 70% Section -->
-        <div class="top-section">
+        <!-- Top 75% Section -->
+        <div style="flex: 0 0 75%; overflow: hidden;">
             <header>
                 <h1 class="logo">MASOLITES ECOMAS</h1>
                 <p class="tagline">Building Trust & A Better Society Together</p>
@@ -19,11 +19,13 @@
                     <button class="btn btn-register">Register</button>
                 </div>
             </header>
+            
             <div class="card">
                 <p class="welcome-message">Welcome to Economic Community Of Masolites (ECOMAS) Platform where aside Platform products and services you can also add yours, buy & sell at highest discounts to fellow Masolites for a better society.</p>
             </div>
+            
             <div class="card">
-                <h3>PRIVATE SALE ENDS IN</h3>
+                <h3 style="text-align: center; font-size: 0.9rem; margin-bottom: 8px;">PRIVATE SALE ENDS IN</h3>
                 <div class="countdown-timer">
                     <div class="countdown-item">
                         <div class="countdown-value" id="days">120</div>
@@ -40,14 +42,18 @@
                 </div>
                 <button class="cta-button buy-button">BUY MAZOL NOW</button>
             </div>
+            
             <div class="card">
-                <h3>MAZOL MINING PORTAL</h3>
-                <div class="mining-display" id="minedAmount">0.000000 MZLx</div>
+                <h3 style="text-align: center; font-size: 0.9rem; margin-bottom: 8px;">MAZOL MINING PORTAL</h3>
+                <div class="mining-counter">
+                    <div class="mining-display" id="minedAmount">0.000000 MZLx</div>
+                </div>
                 <button class="cta-button mining-button" id="miningButton">START MINING</button>
             </div>
         </div>
-        <!-- Bottom 30% Section -->
-        <div class="action-grid">
+        
+        <!-- Bottom 25% Section -->
+        <div class="action-grid" style="flex: 0 0 25%;">
             <div class="action-card" id="saveEarnBtn">
                 <div class="action-icon">💰</div>
                 <div class="action-label">Save & Earn</div>
