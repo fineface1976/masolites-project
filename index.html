@@ -2,112 +2,224 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MASOLITES ECOMAS Platform</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MASOLITES ECOMAS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ICO-style countdown */
+        :root {
+            --deep-blue: #0a2463;
+            --navy: #1a1a2e;
+            --light-blue: #3e92cc;
+            --lemon-green: #a4de02;
+            --accent: #d8315b;
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --text-light: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--navy), var(--deep-blue));
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            position: fixed;
+        }
+
+        .app-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+        }
+
+        header {
+            text-align: center;
+            padding: 5px 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--lemon-green), var(--light-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 3px;
+        }
+
+        .tagline {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .auth-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 8px 0;
+        }
+
+        .btn {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .btn-login {
+            background: transparent;
+            border: 1px solid var(--light-blue);
+            color: var(--light-blue);
+        }
+
+        .btn-register {
+            background: var(--lemon-green);
+            color: var(--navy);
+            border: none;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(5px);
+            border-radius: 10px;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
         .countdown-timer {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
+            gap: 5px;
+            margin: 10px 0;
         }
+
         .countdown-item {
             background: rgba(0,0,0,0.3);
-            border-radius: 10px;
-            padding: 10px 15px;
-            min-width: 80px;
+            border-radius: 8px;
+            padding: 8px 5px;
+            min-width: 60px;
             text-align: center;
-            border: 2px solid var(--accent);
+            border: 1px solid var(--accent);
         }
+
         .countdown-value {
-            font-size: 2.2rem;
-            font-weight: 800;
+            font-size: 1.2rem;
+            font-weight: 700;
             font-family: 'Courier New', monospace;
             background: linear-gradient(to bottom, #fff, #ccc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
+
         .countdown-label {
-            font-size: 0.8rem;
+            font-size: 0.6rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 5px;
+            margin-top: 3px;
         }
-        
-        /* Mining display */
+
         .mining-display {
-            font-size: 2rem;
+            font-size: 1.2rem;
             font-family: 'Courier New', monospace;
             background: linear-gradient(to right, #a4de02, #6b9900);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin: 15px 0;
+            margin: 8px 0;
             text-align: center;
         }
-        
-        /* Action buttons grid */
+
         .action-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            padding: 15px;
+            gap: 8px;
+            padding: 10px;
         }
-        @media (min-width: 768px) {
-            .action-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
+
         .action-card {
             background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(8px);
-            border-radius: 12px;
-            padding: 20px 10px;
+            border-radius: 8px;
+            padding: 12px 5px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             border: 1px solid var(--light-blue);
-            transition: all 0.3s;
-            cursor: pointer;
         }
-        .action-card:hover {
-            transform: translateY(-5px);
-            background: rgba(62,146,204,0.2);
-        }
+
         .action-icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
         }
+
         .action-label {
+            font-size: 0.7rem;
             font-weight: 600;
-            font-size: 0.9rem;
             text-align: center;
+        }
+
+        .cta-button {
+            padding: 8px;
+            font-size: 0.8rem;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 200px;
+            margin: 5px auto;
+            display: block;
+            font-weight: 600;
+            border: none;
+        }
+
+        .buy-button {
+            background: var(--accent);
+            color: white;
+        }
+
+        .mining-button {
+            background: var(--lemon-green);
+            color: var(--navy);
+        }
+
+        .welcome-message {
+            font-size: 0.75rem;
+            line-height: 1.3;
+        }
+
+        @media (min-width: 768px) {
+            .logo { font-size: 1.8rem; }
+            .tagline { font-size: 0.8rem; }
+            .action-grid { grid-template-columns: repeat(4, 1fr); }
+            .countdown-item { min-width: 70px; }
+            .countdown-value { font-size: 1.5rem; }
+            .mining-display { font-size: 1.5rem; }
+            .action-icon { font-size: 1.5rem; }
+            .action-label { font-size: 0.8rem; }
         }
     </style>
 </head>
 <body>
     <div class="app-container">
         <!-- Top 70% Section -->
-        <div class="top-section">
+        <div style="flex: 0 0 70%; overflow: hidden;">
             <header>
                 <h1 class="logo">MASOLITES ECOMAS</h1>
                 <p class="tagline">Building Trust & A Better Society Together</p>
                 <div class="auth-buttons">
-                    <button class="btn-login">Login</button>
-                    <button class="btn-register">Register</button>
+                    <button class="btn btn-login">Login</button>
+                    <button class="btn btn-register">Register</button>
                 </div>
             </header>
             
-            <div class="welcome-card">
-                <p>Welcome to Economic Community Of Masolites (ECOMAS) Platform where aside Platform products and services you can also add yours, buy & sell at highest discounts to fellow Masolites for a better society. Membership Upgrade gets higher Discounts, Mine MAZOL (MZLx) Tokens faster, & also vote to determine Token launch price.</p>
+            <div class="card">
+                <p class="welcome-message">Welcome to Economic Community Of Masolites (ECOMAS) Platform where aside Platform products and services you can also add yours, buy & sell at highest discounts to fellow Masolites for a better society.</p>
             </div>
             
-            <div class="countdown-card">
-                <h3>PRIVATE SALE ENDS IN</h3>
+            <div class="card">
+                <h3 style="text-align: center; font-size: 0.9rem; margin-bottom: 8px;">PRIVATE SALE ENDS IN</h3>
                 <div class="countdown-timer">
                     <div class="countdown-item">
                         <div class="countdown-value" id="days">120</div>
@@ -122,18 +234,18 @@
                         <div class="countdown-label">Minutes</div>
                     </div>
                 </div>
-                <button class="cta-button buy-button">BUY MAZOL NOW ($0.001)</button>
+                <button class="cta-button buy-button">BUY MAZOL NOW</button>
             </div>
             
-            <div class="mining-card">
-                <h3>MAZOL MINING PORTAL</h3>
+            <div class="card">
+                <h3 style="text-align: center; font-size: 0.9rem; margin-bottom: 8px;">MAZOL MINING PORTAL</h3>
                 <div class="mining-display" id="minedAmount">0.000000 MZLx</div>
-                <button class="mining-button" id="miningButton">START MINING</button>
+                <button class="cta-button mining-button" id="miningButton">START MINING</button>
             </div>
         </div>
         
         <!-- Bottom 30% Section -->
-        <div class="action-grid">
+        <div class="action-grid" style="flex: 0 0 30%;">
             <div class="action-card" id="saveEarnBtn">
                 <div class="action-icon">💰</div>
                 <div class="action-label">Save & Earn</div>
@@ -153,10 +265,8 @@
         </div>
     </div>
 
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/mining.js"></script>
     <script>
-        // Initialize countdown
+        // Countdown Timer
         const endDate = new Date();
         endDate.setDate(endDate.getDate() + 120);
         
@@ -176,16 +286,33 @@
         setInterval(updateCountdown, 60000);
         updateCountdown();
         
-        // Button event listeners
-        document.getElementById('miningButton').addEventListener('click', toggleMining);
-        document.getElementById('buyButton').addEventListener('click', () => {
-            alert('Redirecting to token purchase...');
+        // Mining System
+        let miningInterval;
+        let minedAmount = 0;
+        let isMining = false;
+        const baseRate = 0.12 / (24 * 60 * 60 * 1000);
+        
+        document.getElementById('miningButton').addEventListener('click', function() {
+            if (isMining) {
+                clearInterval(miningInterval);
+                this.textContent = 'START MINING';
+                isMining = false;
+            } else {
+                const startTime = new Date();
+                miningInterval = setInterval(() => {
+                    const now = new Date();
+                    minedAmount = (now - startTime) * baseRate;
+                    document.getElementById('minedAmount').textContent = minedAmount.toFixed(6) + ' MZLx';
+                }, 100);
+                this.textContent = 'MINING (ON)';
+                isMining = true;
+            }
         });
         
-        // Action buttons
+        // Action Buttons
         document.querySelectorAll('.action-card').forEach(btn => {
-            btn.addEventListener('click', () => {
-                alert(`Opening ${btn.querySelector('.action-label').textContent} feature...`);
+            btn.addEventListener('click', function() {
+                alert(this.querySelector('.action-label').textContent + ' feature will open');
             });
         });
     </script>
