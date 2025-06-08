@@ -201,7 +201,7 @@ header {
     align-items: center;
     justify-content: center;
     border: 1px solid var(--light-blue);
-    height: 70px;
+    height: 65px;
 }
 
 .action-icon {
@@ -300,5 +300,5 @@ header {
     .mining-display { font-size: 1.1rem; }
     .action-icon { font-size: 1.5rem; }
     .action-label { font-size: 0.55rem; }
-    .action-card { height: 75px; }
+    .action-card { height: 70px; }
 }
