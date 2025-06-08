@@ -25,11 +25,15 @@ let totalMined = 0;
 let isMining = false;
 const baseRate = 0.12 / (24 * 60 * 60 * 1000); // Tokens per ms
 let lastMinuteUpdate = Date.now();
+const miningButton = document.getElementById('miningButton');
+const minedDisplay = document.getElementById('minedAmount');
+const totalDisplay = document.getElementById('miningTotal');
 
-document.getElementById('miningButton').addEventListener('click', function() {
+miningButton.addEventListener('click', function() {
     if (isMining) {
         clearInterval(miningInterval);
         this.textContent = 'START MINING';
+        this.classList.remove('mining-active');
         isMining = false;
     } else {
         const startTime = Date.now();
@@ -43,18 +47,17 @@ document.getElementById('miningButton').addEventListener('click', function() {
             // Update every minute for total accumulation
             if (now - lastMinuteUpdate >= 60000) {
                 totalMined += minedAmount;
-                document.getElementById('miningTotal').textContent = 
-                    `Total Mined: ${totalMined.toFixed(6)} MZLx`;
+                totalDisplay.textContent = `Total: ${totalMined.toFixed(6)} MZLx`;
                 lastMinuteUpdate = now;
             }
             
             // Update millisecond counter
-            document.getElementById('minedAmount').textContent = 
-                minedAmount.toFixed(6) + ' MZLx';
+            minedDisplay.textContent = minedAmount.toFixed(6) + ' MZLx/s';
                 
         }, 50); // Update every 50ms for smoother animation
         
         this.textContent = 'MINING (ON)';
+        this.classList.add('mining-active');
         isMining = true;
     }
 });
@@ -64,4 +67,32 @@ document.querySelectorAll('.action-card').forEach(btn => {
     btn.addEventListener('click', function() {
         alert(this.querySelector('.action-label').textContent.replace(/\n/g, ' ') + ' feature will open');
     });
+});
+
+// Currency Modal
+const buyButton = document.getElementById('buyButton');
+const currencyModal = document.getElementById('currencyModal');
+const modalClose = document.querySelector('.modal-close');
+
+buyButton.addEventListener('click', () => {
+    currencyModal.style.display = 'flex';
+});
+
+modalClose.addEventListener('click', () => {
+    currencyModal.style.display = 'none';
+});
+
+document.querySelectorAll('.currency-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const currency = this.dataset.currency;
+        alert(`Buy MAZOL with ${currency} selected. This would open the payment gateway.`);
+        currencyModal.style.display = 'none';
+    });
+});
+
+// Close modal when clicking outside content
+window.addEventListener('click', (e) => {
+    if (e.target === currencyModal) {
+        currencyModal.style.display = 'none';
+    }
 });
