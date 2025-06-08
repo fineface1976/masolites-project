@@ -175,6 +175,18 @@ header {
 .mining-speed, .mining-total {
     flex: 1;
     padding: 0 4px;
+}
+
+.mining-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--lemon-green);
+    margin-bottom: 2px;
+    text-transform: uppercase;
+}
+
+.mining-speed > div:last-child, 
+.mining-total > div:last-child {
     background: linear-gradient(to bottom, #fff, #ccc);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -193,20 +205,21 @@ header {
 }
 
 .action-card {
-    background: rgba(255,255,255,0.1);
+    background: var(--lemon-green);
     border-radius: 8px;
     padding: 6px 1px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: 1px solid var(--light-blue);
+    border: 1px solid rgba(0,0,0,0.2);
     height: 65px;
 }
 
 .action-icon {
     font-size: 1.3rem;
     margin-bottom: 3px;
+    color: #000;
 }
 
 .action-label {
@@ -215,6 +228,7 @@ header {
     text-align: center;
     line-height: 1.2;
     text-transform: uppercase;
+    color: #000;
 }
 
 .cta-button {
