@@ -32,7 +32,7 @@ const totalDisplay = document.getElementById('miningTotal');
 // Load mined data from localStorage
 if (localStorage.getItem('totalMined')) {
     totalMined = parseFloat(localStorage.getItem('totalMined'));
-    totalDisplay.textContent = `Total: ${totalMined.toFixed(6)} MZLx`;
+    totalDisplay.textContent = totalMined.toFixed(6) + ' MZLx';
 }
 
 miningButton.addEventListener('click', function() {
@@ -56,7 +56,7 @@ miningButton.addEventListener('click', function() {
             // Update every minute for total accumulation
             if (now - lastMinuteUpdate >= 60000) {
                 totalMined += minedAmount;
-                totalDisplay.textContent = `Total: ${totalMined.toFixed(6)} MZLx`;
+                totalDisplay.textContent = totalMined.toFixed(6) + ' MZLx';
                 lastMinuteUpdate = now;
                 
                 // Save to localStorage
