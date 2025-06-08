@@ -30,12 +30,20 @@ body {
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding: 10px;
+    padding: 10px 10px 15px;
+}
+
+.top-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding-bottom: 10px;
 }
 
 header {
     text-align: center;
-    padding: 5px 0;
+    padding: 5px 0 10px;
 }
 
 .logo {
@@ -58,7 +66,7 @@ header {
     display: flex;
     justify-content: center;
     gap: 8px;
-    margin: 8px 0;
+    margin: 8px 0 15px;
 }
 
 .btn {
@@ -85,22 +93,33 @@ header {
     backdrop-filter: blur(5px);
     border-radius: 10px;
     padding: 12px;
-    margin: 6px 0;
+    margin: 0 0 10px;
     border: 1px solid rgba(255,255,255,0.1);
+}
+
+.card.compact {
+    padding: 10px;
+    margin-bottom: 8px;
+}
+
+.card-title {
+    text-align: center;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
 }
 
 .price-info {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
     margin-bottom: 10px;
 }
 
 .price {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 700;
     background: rgba(0,0,0,0.3);
-    padding: 5px 10px;
+    padding: 4px 8px;
     border-radius: 5px;
     border: 1px solid var(--accent);
 }
@@ -109,20 +128,20 @@ header {
     display: flex;
     justify-content: center;
     gap: 5px;
-    margin: 10px 0;
+    margin: 8px 0;
 }
 
 .countdown-item {
     background: rgba(0,0,0,0.3);
     border-radius: 8px;
-    padding: 8px 5px;
-    min-width: 60px;
+    padding: 6px 4px;
+    min-width: 55px;
     text-align: center;
     border: 1px solid var(--accent);
 }
 
 .countdown-value {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 700;
     font-family: 'Courier New', monospace;
     background: linear-gradient(to bottom, #fff, #ccc);
@@ -131,67 +150,67 @@ header {
 }
 
 .countdown-label {
-    font-size: 0.6rem;
+    font-size: 0.55rem;
     text-transform: uppercase;
-    margin-top: 3px;
+    margin-top: 2px;
 }
 
 .mining-counter {
     background: rgba(0,0,0,0.3);
     border-radius: 8px;
-    padding: 8px 5px;
+    padding: 6px 4px;
     text-align: center;
     border: 1px solid var(--accent);
-    margin: 10px 0;
+    margin: 8px 0;
 }
 
 .mining-display {
     display: flex;
     justify-content: space-between;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 700;
     font-family: 'Courier New', monospace;
 }
 
 .mining-speed, .mining-total {
     flex: 1;
-    padding: 0 5px;
+    padding: 0 4px;
     background: linear-gradient(to bottom, #fff, #ccc);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-.action-grid-container {
-    padding: 5px 0 0;
-    margin-top: auto;
+.action-buttons-card {
+    padding: 8px 10px;
+    margin-top: 10px;
+    margin-bottom: 0;
 }
 
 .action-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 4px;
-    padding: 0 2px;
-    height: 100%;
+    gap: 6px;
 }
 
 .action-card {
     background: rgba(255,255,255,0.1);
     border-radius: 8px;
-    padding: 5px 1px;
+    padding: 6px 1px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     border: 1px solid var(--light-blue);
+    height: 70px;
 }
 
 .action-icon {
-    font-size: 1.5rem;
-    margin-bottom: 2px;
+    font-size: 1.3rem;
+    margin-bottom: 3px;
 }
 
 .action-label {
-    font-size: 0.55rem;
+    font-size: 0.5rem;
     font-weight: 800;
     text-align: center;
     line-height: 1.2;
@@ -204,7 +223,7 @@ header {
     border-radius: 20px;
     width: 100%;
     max-width: 200px;
-    margin: 5px auto;
+    margin: 5px auto 0;
     display: block;
     font-weight: 600;
     border: none;
@@ -276,9 +295,10 @@ header {
 @media (min-width: 768px) {
     .logo { font-size: 1.8rem; }
     .tagline { font-size: 1rem; }
-    .countdown-item { min-width: 70px; }
-    .countdown-value { font-size: 1.5rem; }
-    .mining-display { font-size: 1.2rem; }
-    .action-icon { font-size: 1.8rem; }
-    .action-label { font-size: 0.65rem; }
+    .countdown-item { min-width: 65px; }
+    .countdown-value { font-size: 1.3rem; }
+    .mining-display { font-size: 1.1rem; }
+    .action-icon { font-size: 1.5rem; }
+    .action-label { font-size: 0.55rem; }
+    .action-card { height: 75px; }
 }
