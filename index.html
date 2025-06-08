@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,7 +10,7 @@
 <body>
     <div class="app-container">
         <!-- Top Section -->
-        <div style="flex: 1; overflow-y: auto; padding-bottom: 5px;">
+        <div class="top-section">
             <header>
                 <h1 class="logo">MASOLITES ECOMAS</h1>
                 <p class="tagline">Building Trust & A Better Society Together</p>
@@ -21,11 +21,11 @@
             </header>
             
             <div class="card">
-                <p class="welcome-message">Welcome to Economic Community Of Masolites (ECOMAS)t.</p>
+                <p class="welcome-message">Welcome to Economic Community Of Masolites (ECOMAS) Platform where aside Platform products and services you can also add yours, buy & sell at highest discounts to fellow Masolites for a better society.</p>
             </div>
             
-            <div class="card">
-                <h3 style="text-align: center; font-size: 0.9rem; margin-bottom: 8px;">PRIVATE SALE ENDS IN</h3>
+            <div class="card compact">
+                <h3 class="card-title">PRIVATE SALE ENDS IN</h3>
                 <div class="price-info">
                     <span class="price">$0.001/MZLx</span>
                     <span class="price">₦18/MZLx</span>
@@ -47,8 +47,8 @@
                 <button class="cta-button buy-button" id="buyButton">BUY MAZOL NOW</button>
             </div>
             
-            <div class="card">
-                <h3 style="text-align: center; font-size: 0.9rem; margin-bottom: 8px;">MAZOL MINING PORTAL</h3>
+            <div class="card compact">
+                <h3 class="card-title">MAZOL MINING PORTAL</h3>
                 <div class="mining-counter">
                     <div class="mining-display">
                         <div class="mining-speed" id="minedAmount">0.000000 MZLx/s</div>
@@ -57,26 +57,26 @@
                 </div>
                 <button class="cta-button mining-button" id="miningButton">START MINING</button>
             </div>
-        </div>
-        
-        <!-- Bottom Buttons -->
-        <div class="action-grid-container">
-            <div class="action-grid">
-                <div class="action-card" id="saveEarnBtn">
-                    <div class="action-icon">💰</div>
-                    <div class="action-label">Save<br>& Earn</div>
-                </div>
-                <div class="action-card" id="escrowShopBtn">
-                    <div class="action-icon">🛒</div>
-                    <div class="action-label">Escrow<br>Shop</div>
-                </div>
-                <div class="action-card" id="connectWalletBtn">
-                    <div class="action-icon">🔗</div>
-                    <div class="action-label">Connect<br>Wallet</div>
-                </div>
-                <div class="action-card" id="sendReceiveBtn">
-                    <div class="action-icon">⇄</div>
-                    <div class="action-label">Send<br>/Receive</div>
+            
+            <!-- Action Buttons Card -->
+            <div class="card action-buttons-card">
+                <div class="action-grid">
+                    <div class="action-card" id="saveEarnBtn">
+                        <div class="action-icon">💰</div>
+                        <div class="action-label">Save & Earn</div>
+                    </div>
+                    <div class="action-card" id="escrowShopBtn">
+                        <div class="action-icon">🛒</div>
+                        <div class="action-label">Escrow Shop</div>
+                    </div>
+                    <div class="action-card" id="connectWalletBtn">
+                        <div class="action-icon">🔗</div>
+                        <div class="action-label">Connect Wallet</div>
+                    </div>
+                    <div class="action-card" id="sendReceiveBtn">
+                        <div class="action-icon">⇄</div>
+                        <div class="action-label">Send/Receive</div>
+                    </div>
                 </div>
             </div>
         </div>
