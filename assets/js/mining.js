@@ -1,4 +1,4 @@
- // Countdown Timer
+// Countdown Timer
 const endDate = new Date();
 endDate.setDate(endDate.getDate() + 120);
 
@@ -140,4 +140,4 @@ function adjustLayout() {
 }
 
 window.addEventListener('resize', adjustLayout);
-adjustLayout();
+adjustLayout()
