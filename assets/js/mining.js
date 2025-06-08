@@ -1,4 +1,4 @@
- // Countdown Timer
+// Countdown Timer
 const endDate = new Date();
 endDate.setDate(endDate.getDate() + 120);
 
@@ -65,7 +65,8 @@ miningButton.addEventListener('click', function() {
 // Action Buttons
 document.querySelectorAll('.action-card').forEach(btn => {
     btn.addEventListener('click', function() {
-        alert(this.querySelector('.action-label').textContent.replace(/\n/g, ' ') + ' feature will open');
+        const feature = this.querySelector('.action-label').textContent;
+        alert(`${feature} feature will open`);
     });
 });
 
@@ -96,3 +97,22 @@ window.addEventListener('click', (e) => {
         currencyModal.style.display = 'none';
     }
 });
+
+// Initial layout adjustment for mobile
+function adjustLayout() {
+    const isMobile = window.innerWidth < 768;
+    const actionCards = document.querySelectorAll('.action-card');
+    
+    actionCards.forEach(card => {
+        if (isMobile) {
+            card.style.height = '65px';
+            card.querySelector('.action-icon').style.fontSize = '1.1rem';
+        } else {
+            card.style.height = '75px';
+            card.querySelector('.action-icon').style.fontSize = '1.5rem';
+        }
+    });
+}
+
+window.addEventListener('resize', adjustLayout);
+adjustLayout();
