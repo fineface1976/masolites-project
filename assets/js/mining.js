@@ -1,4 +1,4 @@
-// Countdown Timer
+ // Countdown Timer
 const endDate = new Date();
 endDate.setDate(endDate.getDate() + 120);
 
@@ -29,12 +29,21 @@ const miningButton = document.getElementById('miningButton');
 const minedDisplay = document.getElementById('minedAmount');
 const totalDisplay = document.getElementById('miningTotal');
 
+// Load mined data from localStorage
+if (localStorage.getItem('totalMined')) {
+    totalMined = parseFloat(localStorage.getItem('totalMined'));
+    totalDisplay.textContent = `Total: ${totalMined.toFixed(6)} MZLx`;
+}
+
 miningButton.addEventListener('click', function() {
     if (isMining) {
         clearInterval(miningInterval);
         this.textContent = 'START MINING';
         this.classList.remove('mining-active');
         isMining = false;
+        
+        // Save to localStorage when mining stops
+        localStorage.setItem('totalMined', totalMined.toString());
     } else {
         const startTime = Date.now();
         lastMinuteUpdate = startTime;
@@ -49,6 +58,9 @@ miningButton.addEventListener('click', function() {
                 totalMined += minedAmount;
                 totalDisplay.textContent = `Total: ${totalMined.toFixed(6)} MZLx`;
                 lastMinuteUpdate = now;
+                
+                // Save to localStorage
+                localStorage.setItem('totalMined', totalMined.toString());
             }
             
             // Update millisecond counter
@@ -86,7 +98,20 @@ modalClose.addEventListener('click', () => {
 document.querySelectorAll('.currency-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         const currency = this.dataset.currency;
-        alert(`Buy MAZOL with ${currency} selected. This would open the payment gateway.`);
+        
+        // Define payment options
+        const paymentOptions = {
+            USD: { symbol: "$", rate: 0.001, gateway: "Stripe/PayPal" },
+            NGN: { symbol: "₦", rate: 18, gateway: "Flutterwave" },
+            USDT: { symbol: "USDT", rate: 0.001, gateway: "MetaMask" },
+            BNB: { symbol: "BNB", rate: 0.001, gateway: "MetaMask" }
+        };
+        
+        const option = paymentOptions[currency];
+        const amount = 1000; // Example amount
+        
+        alert(`Buying ${amount} MAZOL for ${option.symbol}${amount * option.rate} via ${option.gateway}`);
+        
         currencyModal.style.display = 'none';
     });
 });
@@ -105,10 +130,10 @@ function adjustLayout() {
     
     actionCards.forEach(card => {
         if (isMobile) {
-            card.style.height = '65px';
+            card.style.height = '60px';
             card.querySelector('.action-icon').style.fontSize = '1.1rem';
         } else {
-            card.style.height = '75px';
+            card.style.height = '70px';
             card.querySelector('.action-icon').style.fontSize = '1.5rem';
         }
     });
