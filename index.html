@@ -9,8 +9,8 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- Top 80% Section -->
-        <div style="flex: 0 0 80%; overflow: hidden;">
+        <!-- Top Section -->
+        <div style="flex: 1; overflow-y: auto; padding-bottom: 5px;">
             <header>
                 <h1 class="logo">MASOLITES ECOMAS</h1>
                 <p class="tagline">Building Trust & A Better Society Together</p>
@@ -26,6 +26,10 @@
             
             <div class="card">
                 <h3 style="text-align: center; font-size: 0.9rem; margin-bottom: 8px;">PRIVATE SALE ENDS IN</h3>
+                <div class="price-info">
+                    <span class="price">$0.001/MZLx</span>
+                    <span class="price">₦18/MZLx</span>
+                </div>
                 <div class="countdown-timer">
                     <div class="countdown-item">
                         <div class="countdown-value" id="days">120</div>
@@ -40,20 +44,22 @@
                         <div class="countdown-label">Minutes</div>
                     </div>
                 </div>
-                <button class="cta-button buy-button">BUY MAZOL NOW</button>
+                <button class="cta-button buy-button" id="buyButton">BUY MAZOL NOW</button>
             </div>
             
             <div class="card">
                 <h3 style="text-align: center; font-size: 0.9rem; margin-bottom: 8px;">MAZOL MINING PORTAL</h3>
                 <div class="mining-counter">
-                    <div class="mining-display" id="minedAmount">0.000000 MZLx</div>
+                    <div class="mining-display">
+                        <div class="mining-speed" id="minedAmount">0.000000 MZLx/s</div>
+                        <div class="mining-total" id="miningTotal">Total: 0.000000 MZLx</div>
+                    </div>
                 </div>
-                <div class="mining-total" id="miningTotal">Total Mined: 0.000000 MZLx</div>
                 <button class="cta-button mining-button" id="miningButton">START MINING</button>
             </div>
         </div>
         
-        <!-- Bottom 20% Section -->
+        <!-- Bottom Buttons -->
         <div class="action-grid-container">
             <div class="action-grid">
                 <div class="action-card" id="saveEarnBtn">
@@ -73,6 +79,20 @@
                     <div class="action-label">Send<br>/Receive</div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Currency Modal -->
+    <div class="modal" id="currencyModal">
+        <div class="modal-content">
+            <h3>Select Payment Method</h3>
+            <div class="currency-options">
+                <button class="currency-btn" data-currency="USD">USD ($)</button>
+                <button class="currency-btn" data-currency="NGN">Naira (₦)</button>
+                <button class="currency-btn" data-currency="USDT">USDT</button>
+                <button class="currency-btn" data-currency="BNB">BNB</button>
+            </div>
+            <button class="modal-close">Close</button>
         </div>
     </div>
 
