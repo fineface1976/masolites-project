@@ -52,7 +52,7 @@ header {
 }
 
 .logo {
-    font-size: 1.4rem; /* Reduced size */
+    font-size: 1.4rem;
     font-weight: 800;
     background: linear-gradient(to right, var(--lemon-green), var(--light-blue));
     -webkit-background-clip: text;
@@ -160,7 +160,7 @@ header {
 }
 
 .welcome-message {
-    font-size: 0.7rem; /* Reduced size */
+    font-size: 0.7rem;
     line-height: 1.4;
     text-align: center;
 }
