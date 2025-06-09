@@ -18,6 +18,9 @@
                     <button class="btn btn-login">Login</button>
                     <button class="btn btn-register">Register</button>
                 </div>
+                <div id="walletInfo" style="display:none; font-size:0.7rem; margin-top:5px; color: var(--lemon-green);">
+                    Connected: <span id="walletAddress"></span>
+                </div>
             </header>
             
             <div class="card">
@@ -62,6 +65,7 @@
                     </div>
                 </div>
                 <button class="cta-button mining-button" id="miningButton">START MINING</button>
+                <button class="cta-button claim-button" id="claimButton" style="display:none; margin-top:8px;">CLAIM MZLx</button>
             </div>
             
             <!-- Action Buttons Card -->
@@ -102,6 +106,51 @@
         </div>
     </div>
 
+    <!-- Purchase Modal -->
+    <div class="modal" id="purchaseModal">
+        <div class="modal-content">
+            <h3 id="purchaseTitle">Buy MAZOL Tokens</h3>
+            <div class="purchase-form">
+                <label for="tokenAmount">Token Amount:</label>
+                <input type="number" id="tokenAmount" placeholder="Enter amount" min="100" step="100" value="1000">
+                
+                <div id="currencyDisplay">
+                    <p>Price: <span id="currencySymbol">$</span><span id="currencyAmount">1.00</span></p>
+                    <p>Equivalent: <span id="tokenEquivalent">1000</span> MZLx</p>
+                </div>
+                
+                <button class="cta-button confirm-purchase" id="confirmPurchase">CONFIRM PURCHASE</button>
+            </div>
+            <button class="modal-close">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Escrow Marketplace -->
+    <div class="modal" id="escrowModal">
+        <div class="modal-content">
+            <h3>Escrow Marketplace</h3>
+            <div class="escrow-actions">
+                <button class="escrow-action-btn" id="viewListingsBtn">View Listings</button>
+                <button class="escrow-action-btn" id="createListingBtn">Create Listing</button>
+            </div>
+            
+            <div class="escrow-listings" id="escrowListings">
+                <!-- Listings will be populated here -->
+            </div>
+            
+            <div class="create-listing" id="createListingForm" style="display:none;">
+                <h4>Create New Listing</h4>
+                <input type="text" id="itemName" placeholder="Item Name">
+                <textarea id="itemDescription" placeholder="Item Description"></textarea>
+                <input type="number" id="itemPrice" placeholder="Price in MZLx">
+                <button class="cta-button" id="submitListing">SUBMIT LISTING</button>
+            </div>
+            
+            <button class="modal-close">Close</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.4/dist/web3.min.js"></script>
     <script src="assets/js/mining.js"></script>
 </body>
 </html>
