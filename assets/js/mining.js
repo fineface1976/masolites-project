@@ -16,11 +16,10 @@ const claimButton = document.getElementById('claimButton');
 const buyButton = document.getElementById('buyButton');
 const connectWalletBtn = document.getElementById('connectWalletBtn');
 const escrowShopBtn = document.getElementById('escrowShopBtn');
-const saveEarnBtn = document.getElementById('saveEarnBtn');
-const sendReceiveBtn = document.getElementById('sendReceiveBtn');
 const currencyModal = document.getElementById('currencyModal');
 const purchaseModal = document.getElementById('purchaseModal');
 const escrowModal = document.getElementById('escrowModal');
+const memberIdElement = document.getElementById('memberId');
 
 // Mining System Variables
 let miningInterval;
@@ -30,9 +29,13 @@ let isMining = false;
 let baseRate = 0.12 / (24 * 60 * 60 * 1000); // Tokens per ms
 let lastMinuteUpdate = Date.now();
 let walletAddress = null;
+let selectedCurrency = 'USD';
 
 // Initialize Application
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize member ID
+    initMemberId();
+    
     // Load mined data from localStorage
     if (localStorage.getItem('totalMined')) {
         totalMined = parseFloat(localStorage.getItem('totalMined'));
@@ -47,6 +50,17 @@ document.addEventListener('DOMContentLoaded', function() {
     initCountdown();
 });
 
+function initMemberId() {
+    // Generate or load member ID
+    let memberId = localStorage.getItem('memberId');
+    if (!memberId) {
+        const randomNum = Math.floor(100000 + Math.random() * 900000);
+        memberId = `MSL-F-${randomNum}`;
+        localStorage.setItem('memberId', memberId);
+    }
+    memberIdElement.textContent = memberId;
+}
+
 function initEventListeners() {
     // Mining System
     miningButton.addEventListener('click', toggleMining);
@@ -56,14 +70,8 @@ function initEventListeners() {
     buyButton.addEventListener('click', () => currencyModal.style.display = 'flex');
     connectWalletBtn.addEventListener('click', connectWallet);
     escrowShopBtn.addEventListener('click', openEscrowMarketplace);
-    saveEarnBtn.addEventListener('click', () => alert('Save & Earn feature coming soon!'));
-    sendReceiveBtn.addEventListener('click', () => {
-        if (!walletAddress) {
-            alert('Please connect your wallet first!');
-            return;
-        }
-        alert(`Send/Receive tokens using your wallet: ${walletAddress.substring(0, 12)}...`);
-    });
+    document.getElementById('saveEarnBtn').addEventListener('click', () => alert('Save & Earn feature coming soon!'));
+    document.getElementById('sendReceiveBtn').addEventListener('click', handleSendReceive);
     
     // Currency Modal
     document.querySelectorAll('.currency-btn').forEach(btn => {
@@ -75,24 +83,20 @@ function initEventListeners() {
     document.getElementById('confirmPurchase').addEventListener('click', processPurchase);
     
     // Escrow Marketplace
-    document.getElementById('viewListingsBtn').addEventListener('click', loadEscrowListings);
+    document.getElementById('viewListingsBtn').addEventListener('click', showEscrowListings);
     document.getElementById('createListingBtn').addEventListener('click', showCreateListingForm);
     document.getElementById('submitListing').addEventListener('click', submitNewListing);
     
     // Modal close buttons
     document.querySelectorAll('.modal-close').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.modal').forEach(modal => {
-                modal.style.display = 'none';
-            });
-        });
+        btn.addEventListener('click', closeAllModals);
     });
     
     // Close modals when clicking outside
     window.addEventListener('click', (e) => {
-        document.querySelectorAll('.modal').forEach(modal => {
-            if (e.target === modal) modal.style.display = 'none';
-        });
+        if (e.target.classList.contains('modal')) {
+            closeAllModals();
+        }
     });
 }
 
@@ -197,31 +201,37 @@ async function connectWallet() {
     }
 }
 
+function handleSendReceive() {
+    if (!walletAddress) {
+        alert('Please connect your wallet first!');
+        return;
+    }
+    alert(`Send/Receive tokens using your wallet: ${walletAddress.substring(0, 12)}...`);
+}
+
 // Purchase System
 function handleCurrencySelection() {
-    const currency = this.dataset.currency;
+    selectedCurrency = this.dataset.currency;
     currencyModal.style.display = 'none';
     
-    let symbol, rate;
-    switch(currency) {
-        case 'USD': symbol = '$'; rate = 0.001; break;
-        case 'NGN': symbol = '₦'; rate = 18; break;
-        case 'USDT': symbol = 'USDT '; rate = 0.001; break;
-        case 'BNB': symbol = 'BNB '; rate = 0.001; break;
+    let symbol;
+    switch(selectedCurrency) {
+        case 'USD': symbol = '$'; break;
+        case 'NGN': symbol = '₦'; break;
+        case 'USDT': symbol = 'USDT '; break;
+        case 'BNB': symbol = 'BNB '; break;
     }
     
     document.getElementById('currencySymbol').textContent = symbol;
-    document.querySelector('#purchaseModal [data-currency]').dataset.currency = currency;
-    updateCurrencyDisplay(rate);
+    updateCurrencyDisplay();
     purchaseModal.style.display = 'flex';
 }
 
 function updateCurrencyDisplay() {
-    const currency = document.querySelector('#purchaseModal [data-currency]').dataset.currency;
     const tokenAmount = parseInt(document.getElementById('tokenAmount').value) || 0;
     
     let rate;
-    switch(currency) {
+    switch(selectedCurrency) {
         case 'USD': rate = 0.001; break;
         case 'NGN': rate = 18; break;
         case 'USDT': rate = 0.001; break;
@@ -240,36 +250,22 @@ function processPurchase() {
         return;
     }
     
-    const currency = document.querySelector('#purchaseModal [data-currency]').dataset.currency;
-    
-    let rate, currencyName;
-    switch(currency) {
-        case 'USD': 
-            rate = 0.001; 
-            currencyName = 'USD';
-            break;
-        case 'NGN': 
-            rate = 18; 
-            currencyName = 'Naira';
-            break;
-        case 'USDT': 
-            rate = 0.001; 
-            currencyName = 'USDT';
-            break;
-        case 'BNB': 
-            rate = 0.001; 
-            currencyName = 'BNB';
-            break;
+    let currencyName;
+    switch(selectedCurrency) {
+        case 'USD': currencyName = 'USD'; break;
+        case 'NGN': currencyName = 'Naira'; break;
+        case 'USDT': currencyName = 'USDT'; break;
+        case 'BNB': currencyName = 'BNB'; break;
     }
     
-    const amount = tokenAmount * rate;
+    const amount = tokenAmount * TOKENOMICS.currentPrice;
     
-    if (currency === 'USDT' || currency === 'BNB') {
+    if (selectedCurrency === 'USDT' || selectedCurrency === 'BNB') {
         if (!walletAddress) {
             alert('Please connect your wallet first!');
             return;
         }
-        alert(`Confirming ${currencyName} transaction for ${amount} ${currency}...`);
+        alert(`Confirming ${currencyName} transaction for ${amount} ${selectedCurrency}...`);
     } else {
         alert(`Redirecting to payment gateway for ${amount} ${currencyName}...`);
     }
@@ -277,7 +273,6 @@ function processPurchase() {
     setTimeout(() => {
         alert(`Success! ${tokenAmount} MZLx purchased. Tokens will be available in your wallet shortly.`);
         purchaseModal.style.display = 'none';
-        // Apply MLM bonus distribution here
     }, 2000);
 }
 
@@ -289,15 +284,10 @@ let escrowListings = JSON.parse(localStorage.getItem('escrowListings')) || [
 
 function openEscrowMarketplace() {
     escrowModal.style.display = 'flex';
-    loadEscrowListings();
+    showEscrowListings();
 }
 
-function showCreateListingForm() {
-    document.getElementById('escrowListings').style.display = 'none';
-    document.getElementById('createListingForm').style.display = 'block';
-}
-
-function loadEscrowListings() {
+function showEscrowListings() {
     const listingsContainer = document.getElementById('escrowListings');
     listingsContainer.innerHTML = '';
     listingsContainer.style.display = 'block';
@@ -332,11 +322,16 @@ function loadEscrowListings() {
                 return;
             }
             
-            // Apply membership discount
-            const discountedPrice = listing.price * 0.95; // 5% discount example
+            // Apply membership discount (5% for all members)
+            const discountedPrice = listing.price * 0.95;
             alert(`Purchasing "${listing.name}" for ${discountedPrice.toFixed(2)} MZLx (5% discount applied!)`);
         });
     });
+}
+
+function showCreateListingForm() {
+    document.getElementById('escrowListings').style.display = 'none';
+    document.getElementById('createListingForm').style.display = 'block';
 }
 
 function submitNewListing() {
@@ -369,7 +364,13 @@ function submitNewListing() {
     document.getElementById('itemName').value = '';
     document.getElementById('itemDescription').value = '';
     document.getElementById('itemPrice').value = '';
-    loadEscrowListings();
+    showEscrowListings();
+}
+
+function closeAllModals() {
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.style.display = 'none';
+    });
 }
 
 // Initialize Web3
