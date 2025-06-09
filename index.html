@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -21,7 +21,7 @@
                 <div id="walletInfo" style="display:none; font-size:0.7rem; margin-top:5px; color: var(--lemon-green);">
                     Connected: <span id="walletAddress"></span>
                 </div>
-                <div id="memberBadge" class="member-badge">🎁 Free Member</div>
+                <div id="memberBadge" class="member-badge">🎁 Free Member | <span id="memberId">MSL-F-000000</span></div>
             </header>
             
             <div class="card">
@@ -97,8 +97,64 @@
         </div>
     </div>
 
-    <!-- Modals (currency, purchase, escrow) remain same as before -->
-    
+    <!-- Currency Modal -->
+    <div class="modal" id="currencyModal">
+        <div class="modal-content">
+            <h3>Select Payment Method</h3>
+            <div class="currency-options">
+                <button class="currency-btn" data-currency="USD">USD ($)</button>
+                <button class="currency-btn" data-currency="NGN">Naira (₦)</button>
+                <button class="currency-btn" data-currency="USDT">USDT</button>
+                <button class="currency-btn" data-currency="BNB">BNB</button>
+            </div>
+            <button class="modal-close">Close</button>
+        </div>
+    </div>
+
+    <!-- Purchase Modal -->
+    <div class="modal" id="purchaseModal">
+        <div class="modal-content">
+            <h3>Buy MAZOL Tokens</h3>
+            <div class="purchase-form">
+                <label for="tokenAmount">Token Amount (min 25 MZLx):</label>
+                <input type="number" id="tokenAmount" placeholder="Enter amount" min="25" step="25" value="100">
+                
+                <div id="currencyDisplay">
+                    <p>Price: <span id="currencySymbol">$</span><span id="currencyAmount">0.10</span></p>
+                    <p>Equivalent: <span id="tokenEquivalent">100</span> MZLx</p>
+                </div>
+                
+                <button class="cta-button confirm-purchase" id="confirmPurchase">CONFIRM PURCHASE</button>
+            </div>
+            <button class="modal-close">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Escrow Marketplace -->
+    <div class="modal" id="escrowModal">
+        <div class="modal-content">
+            <h3>Escrow Marketplace</h3>
+            <div class="escrow-actions">
+                <button class="escrow-action-btn" id="viewListingsBtn">View Listings</button>
+                <button class="escrow-action-btn" id="createListingBtn">Create Listing</button>
+            </div>
+            
+            <div class="escrow-listings" id="escrowListings">
+                <!-- Listings will be populated here -->
+            </div>
+            
+            <div class="create-listing" id="createListingForm" style="display:none;">
+                <h4>Create New Listing</h4>
+                <input type="text" id="itemName" placeholder="Item Name">
+                <textarea id="itemDescription" placeholder="Item Description"></textarea>
+                <input type="number" id="itemPrice" placeholder="Price in MZLx">
+                <button class="cta-button" id="submitListing">SUBMIT LISTING</button>
+            </div>
+            
+            <button class="modal-close">Close</button>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/web3@1.7.4/dist/web3.min.js"></script>
     <script src="assets/js/mining.js"></script>
 </body>
