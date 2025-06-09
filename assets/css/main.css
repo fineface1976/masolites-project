@@ -8,6 +8,10 @@
     --text-light: #ffffff;
     --mining-off: #ff9500;
     --mining-on: #4cd964;
+    --bronze: #cd7f32;
+    --silver: #c0c0c0;
+    --gold: #ffd700;
+    --platinum: #e5e4e2;
 }
 
 * {
@@ -44,10 +48,11 @@ body {
 header {
     text-align: center;
     padding: 5px 0 10px;
+    position: relative;
 }
 
 .logo {
-    font-size: 1.5rem;
+    font-size: 1.4rem; /* Reduced size */
     font-weight: 800;
     background: linear-gradient(to right, var(--lemon-green), var(--light-blue));
     -webkit-background-clip: text;
@@ -66,7 +71,7 @@ header {
     display: flex;
     justify-content: center;
     gap: 8px;
-    margin: 8px 0 15px;
+    margin: 8px 0 10px;
 }
 
 .btn {
@@ -74,6 +79,8 @@ header {
     border-radius: 15px;
     font-size: 0.7rem;
     font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .btn-login {
@@ -82,10 +89,53 @@ header {
     color: var(--light-blue);
 }
 
+.btn-login:hover {
+    background: rgba(62, 146, 204, 0.2);
+}
+
 .btn-register {
     background: var(--lemon-green);
     color: var(--navy);
     border: none;
+}
+
+.btn-register:hover {
+    opacity: 0.9;
+}
+
+.member-badge {
+    background: rgba(164, 222, 2, 0.2);
+    border: 1px solid var(--lemon-green);
+    border-radius: 15px;
+    padding: 3px 8px;
+    font-size: 0.65rem;
+    display: inline-block;
+    margin-top: 5px;
+    font-weight: 600;
+}
+
+.member-badge.bronze {
+    background: rgba(205, 127, 50, 0.2);
+    border-color: var(--bronze);
+    color: var(--bronze);
+}
+
+.member-badge.silver {
+    background: rgba(192, 192, 192, 0.2);
+    border-color: var(--silver);
+    color: var(--silver);
+}
+
+.member-badge.gold {
+    background: rgba(255, 215, 0, 0.2);
+    border-color: var(--gold);
+    color: var(--gold);
+}
+
+.member-badge.platinum {
+    background: rgba(229, 228, 226, 0.2);
+    border-color: var(--platinum);
+    color: var(--platinum);
 }
 
 .card {
@@ -107,6 +157,38 @@ header {
     font-size: 0.9rem;
     margin-bottom: 8px;
     color: var(--text-light);
+}
+
+.welcome-message {
+    font-size: 0.7rem; /* Reduced size */
+    line-height: 1.4;
+    text-align: center;
+}
+
+.private-sale-card {
+    padding: 10px;
+}
+
+.sale-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.sale-header .card-title {
+    margin-bottom: 0;
+    flex: 1;
+    text-align: left;
+    padding-left: 5px;
+}
+
+.sale-header .buy-button {
+    max-width: 100px;
+    padding: 6px 8px;
+    font-size: 0.75rem;
+    margin: 0;
+    white-space: nowrap;
 }
 
 .price-info {
@@ -196,20 +278,23 @@ header {
 
 .mining-actions {
     display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-top: 10px;
-}
-
-.mining-actions .cta-button {
-    flex: 1;
-    max-width: 150px;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px;
 }
 
 .claim-button {
     background: var(--light-blue);
     color: var(--navy);
+    padding: 8px;
+    font-size: 0.8rem;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
     font-weight: 600;
+    border: none;
+    display: none;
 }
 
 .action-buttons-card {
@@ -234,6 +319,13 @@ header {
     justify-content: center;
     border: 1px solid var(--light-blue);
     height: 65px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.action-card:hover {
+    transform: translateY(-2px);
+    background: rgba(255,255,255,0.15);
 }
 
 .action-icon {
@@ -257,10 +349,17 @@ header {
     border-radius: 20px;
     width: 100%;
     max-width: 200px;
-    margin: 5px auto 0;
+    margin: 0 auto;
     display: block;
     font-weight: 600;
     border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 .buy-button {
@@ -299,6 +398,7 @@ header {
     max-width: 300px;
     text-align: center;
     border: 1px solid var(--accent);
+    position: relative;
 }
 
 .currency-options {
@@ -315,6 +415,12 @@ header {
     border-radius: 5px;
     color: white;
     font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.currency-btn:hover {
+    background: #2a7aac;
 }
 
 .modal-close {
@@ -324,16 +430,199 @@ header {
     border: none;
     border-radius: 5px;
     font-weight: 600;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+    background: #c02a50;
+}
+
+.purchase-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 15px 0;
+}
+
+.purchase-form label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: left;
+    margin-bottom: -10px;
+}
+
+.purchase-form input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--light-blue);
+    background: rgba(255,255,255,0.1);
+    color: white;
+    font-size: 1rem;
+}
+
+.confirm-purchase {
+    background: var(--lemon-green);
+    color: var(--navy);
+    margin-top: 10px;
+}
+
+#currencyDisplay {
+    background: rgba(0,0,0,0.2);
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid var(--accent);
+    font-family: 'Courier New', monospace;
+}
+
+.escrow-actions {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+    justify-content: center;
+}
+
+.escrow-action-btn {
+    padding: 10px 15px;
+    background: var(--light-blue);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.escrow-action-btn:hover {
+    background: #2a7aac;
+}
+
+.escrow-listings {
+    max-height: 300px;
+    overflow-y: auto;
+    margin: 15px 0;
+    padding: 5px;
+}
+
+.listing-item {
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid var(--light-blue);
+    text-align: left;
+}
+
+.listing-item h4 {
+    margin-bottom: 5px;
+    color: var(--lemon-green);
+    font-size: 0.9rem;
+}
+
+.listing-details {
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+    color: rgba(255,255,255,0.8);
+}
+
+.listing-seller {
+    font-size: 0.75rem;
+    font-style: italic;
+    color: rgba(255,255,255,0.7);
+}
+
+.listing-price {
+    font-weight: 700;
+    margin-top: 5px;
+    color: var(--lemon-green);
+    font-size: 1rem;
+}
+
+.buy-listing {
+    width: 100%;
+    padding: 8px;
+    margin-top: 8px;
+    background: var(--lemon-green);
+    color: var(--navy);
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.create-listing {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.create-listing h4 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.create-listing input, 
+.create-listing textarea {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid var(--light-blue);
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.create-listing textarea {
+    height: 80px;
+    resize: vertical;
+}
+
+#submitListing {
+    background: var(--lemon-green);
+    color: var(--navy);
+    font-weight: 600;
+}
+
+/* Wallet Info */
+#walletInfo {
+    display: none;
+    font-size: 0.7rem;
+    margin-top: 5px;
+    color: var(--lemon-green);
+    background: rgba(0,0,0,0.3);
+    padding: 4px 8px;
+    border-radius: 15px;
+    display: inline-block;
 }
 
 @media (min-width: 768px) {
-    .logo { font-size: 1.8rem; }
-    .tagline { font-size: 1rem; }
+    .logo { font-size: 1.6rem; }
+    .tagline { font-size: 0.95rem; }
+    .welcome-message { font-size: 0.75rem; }
     .countdown-item { min-width: 65px; }
     .countdown-value { font-size: 1.3rem; }
     .mining-display { font-size: 1.1rem; }
     .action-icon { font-size: 1.5rem; }
     .action-label { font-size: 0.55rem; }
     .action-card { height: 70px; }
-    .mining-actions .cta-button { max-width: 180px; }
+    .sale-header .buy-button { 
+        max-width: 120px; 
+        padding: 8px 10px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-height: 700px) {
+    .logo { font-size: 1.3rem; }
+    .tagline { font-size: 0.8rem; }
+    .welcome-message { font-size: 0.65rem; }
+    .card { padding: 8px; }
+    .countdown-item { min-width: 50px; padding: 4px 2px; }
+    .countdown-value { font-size: 1rem; }
+    .mining-display { font-size: 0.9rem; }
+    .action-card { height: 60px; }
+    .action-icon { font-size: 1.1rem; }
+    .action-label { font-size: 0.45rem; }
+    .cta-button { padding: 6px; font-size: 0.75rem; }
 }
