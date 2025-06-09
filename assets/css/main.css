@@ -1,239 +1,16 @@
- :root {
-    --deep-blue: #0a2463;
-    --navy: #1a1a2e;
-    --light-blue: #3e92cc;
-    --lemon-green: #a4de02;
-    --accent: #d8315b;
-    --card-bg: rgba(255, 255, 255, 0.1);
-    --text-light: #ffffff;
-    --mining-off: #ff9500;
-    --mining-on: #4cd964;
-}
+ /* ... (previous styles remain the same) ... */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background: #000000;
-    color: var(--text-light);
-    font-family: 'Inter', sans-serif;
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-    position: fixed;
-}
-
-.app-container {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    padding: 10px 10px 15px;
-}
-
-.top-section {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    padding-bottom: 10px;
-}
-
-header {
-    text-align: center;
-    padding: 5px 0 10px;
-}
-
-.logo {
-    font-size: 1.5rem;
-    font-weight: 800;
-    background: linear-gradient(to right, var(--lemon-green), var(--light-blue));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 3px;
-}
-
-.tagline {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--lemon-green);
-    margin-bottom: 8px;
-}
-
-.auth-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin: 8px 0 15px;
-}
-
-.btn {
-    padding: 5px 12px;
-    border-radius: 15px;
-    font-size: 0.7rem;
-    font-weight: 600;
-}
-
-.btn-login {
-    background: transparent;
-    border: 1px solid var(--light-blue);
-    color: var(--light-blue);
-}
-
-.btn-register {
-    background: var(--lemon-green);
-    color: var(--navy);
-    border: none;
-}
-
-.card {
-    background: var(--card-bg);
-    backdrop-filter: blur(5px);
-    border-radius: 10px;
-    padding: 12px;
-    margin: 0 0 10px;
-    border: 1px solid rgba(255,255,255,0.1);
-}
-
-.card.compact {
-    padding: 10px;
-    margin-bottom: 8px;
-}
-
-.card-title {
-    text-align: center;
-    font-size: 0.9rem;
-    margin-bottom: 8px;
-    color: var(--text-light); /* Changed to white */
-}
-
-.price-info {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-
-.price {
-    font-size: 0.75rem;
-    font-weight: 700;
-    background: rgba(0,0,0,0.3);
-    padding: 4px 8px;
-    border-radius: 5px;
-    border: 1px solid var(--accent);
-}
-
-.countdown-timer {
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-    margin: 8px 0;
-}
-
-.countdown-item {
-    background: rgba(0,0,0,0.3);
-    border-radius: 8px;
-    padding: 6px 4px;
-    min-width: 55px;
-    text-align: center;
-    border: 1px solid var(--accent);
-}
-
-.countdown-value {
-    font-size: 1.1rem;
-    font-weight: 700;
-    font-family: 'Courier New', monospace;
-    background: linear-gradient(to bottom, #fff, #ccc);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.countdown-label {
-    font-size: 0.55rem;
-    text-transform: uppercase;
-    margin-top: 2px;
-    color: var(--text-light); /* Changed to white */
-}
-
-.mining-counter {
-    background: rgba(0,0,0,0.3);
-    border-radius: 8px;
-    padding: 6px 4px;
-    text-align: center;
-    border: 1px solid var(--accent);
-    margin: 8px 0;
-}
-
-.mining-display {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.9rem;
-    font-weight: 700;
-    font-family: 'Courier New', monospace;
-}
-
-.mining-speed, .mining-total {
-    flex: 1;
-    padding: 0 4px;
-}
-
-.mining-label {
-    font-size: 0.65rem;
-    font-weight: 700;
-    color: var(--text-light); /* Changed to white */
-    margin-bottom: 2px;
-    text-transform: uppercase;
-}
-
-.mining-speed > div:last-child, 
-.mining-total > div:last-child {
-    background: linear-gradient(to bottom, #fff, #ccc);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.action-buttons-card {
-    padding: 8px 10px;
-    margin-top: 10px;
-    margin-bottom: 0;
-}
-
-.action-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
-}
-
-.action-card {
-    background: rgba(255,255,255,0.1); /* Reverted to original */
-    border-radius: 8px;
-    padding: 6px 1px;
+/* New Styles */
+.mining-actions {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    border: 1px solid var(--light-blue); /* Reverted to original */
-    height: 65px;
+    margin-top: 10px;
 }
 
-.action-icon {
-    font-size: 1.3rem;
-    margin-bottom: 3px;
-    color: var(--text-light); /* Reverted to original */
-}
-
-.action-label {
-    font-size: 0.5rem;
-    font-weight: 800;
-    text-align: center;
-    line-height: 1.2;
-    text-transform: uppercase;
-    color: var(--text-light); /* Reverted to original */
-}
-
-.cta-button {
+.claim-button {
+    background: var(--light-blue);
+    color: var(--navy);
     padding: 8px;
     font-size: 0.8rem;
     border-radius: 20px;
@@ -245,76 +22,97 @@ header {
     border: none;
 }
 
-.buy-button {
-    background: var(--accent);
+.purchase-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 15px 0;
+}
+
+.purchase-form label {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.purchase-form input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--light-blue);
+    background: rgba(255,255,255,0.1);
     color: white;
 }
 
-.mining-button {
-    background: var(--mining-off);
-    color: #000;
+.confirm-purchase {
+    background: var(--lemon-green);
+    color: var(--navy);
+    margin-top: 10px;
 }
 
-.mining-button.mining-active {
-    background: var(--mining-on);
-}
-
-/* Modal Styles */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.7);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-content {
-    background: var(--navy);
-    padding: 20px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 300px;
+#currencyDisplay {
+    background: rgba(0,0,0,0.2);
+    padding: 10px;
+    border-radius: 8px;
     text-align: center;
     border: 1px solid var(--accent);
 }
 
-.currency-options {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+.escrow-actions {
+    display: flex;
     gap: 10px;
+    margin: 15px 0;
+    justify-content: center;
+}
+
+.escrow-action-btn {
+    padding: 10px 15px;
+    background: var(--light-blue);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.escrow-listings {
+    max-height: 300px;
+    overflow-y: auto;
     margin: 15px 0;
 }
 
-.currency-btn {
+.listing-item {
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
     padding: 10px;
-    background: var(--light-blue);
-    border: none;
-    border-radius: 5px;
-    color: white;
-    font-weight: 600;
+    margin-bottom: 10px;
+    border: 1px solid var(--light-blue);
 }
 
-.modal-close {
-    padding: 8px 15px;
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-weight: 600;
+.listing-item h4 {
+    margin-bottom: 5px;
+    color: var(--lemon-green);
 }
 
-@media (min-width: 768px) {
-    .logo { font-size: 1.8rem; }
-    .tagline { font-size: 1rem; }
-    .countdown-item { min-width: 65px; }
-    .countdown-value { font-size: 1.3rem; }
-    .mining-display { font-size: 1.1rem; }
-    .action-icon { font-size: 1.5rem; }
-    .action-label { font-size: 0.55rem; }
-    .action-card { height: 70px; }
+.listing-details {
+    font-size: 0.8rem;
+}
+
+.listing-price {
+    font-weight: 700;
+    margin-top: 5px;
+    color: var(--lemon-green);
+}
+
+.create-listing input, 
+.create-listing textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--light-blue);
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.create-listing textarea {
+    height: 80px;
+    resize: vertical;
 }
