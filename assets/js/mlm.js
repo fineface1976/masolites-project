@@ -80,3 +80,15 @@ export function initMLM() {
 setInterval(() => {
     localStorage.setItem('referralMap', JSON.stringify(Array.from(referralMap.entries())));
 }, 30000);
+
+// MLM Configuration
+const MLM_CONFIG = {
+  levels: 6,
+  commissionRate: 0.025 // 2.5%
+};
+
+// Process referral
+function processReferral(referrerId, userId, amount, isTokenPurchase) {
+  console.log(`Processing referral: ${referrerId} -> ${userId}`);
+  // Implementation would connect to backend
+}
