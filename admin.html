@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Masolites Admin Panel</title>
+    <style>
+        body { font-family: 'Inter', sans-serif; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .approve-btn { background: #4CAF50; color: white; border: none; padding: 5px 10px; cursor: pointer; }
+        .section { margin-bottom: 40px; }
+    </style>
+</head>
+<body>
+    <h1>Masolites Admin Panel</h1>
+    
+    <div class="section">
+        <h2>Pending Manual Deposits</h2>
+        <table id="pendingDeposits">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Amount (₦)</th>
+                    <th>Submitted</th>
+                    <th>Proof</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Filled by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="section">
+        <h2>System Configuration</h2>
+        <div>
+            <h3>Bank Accounts</h3>
+            <table id="bankAccounts">
+                <thead>
+                    <tr>
+                        <th>Bank</th>
+                        <th>Account Name</th>
+                        <th>Account Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Filled by JavaScript -->
+                </tbody>
+            </table>
+            <button id="addBankAccount">Add Bank Account</button>
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <h3>Reward Settings</h3>
+            <label>Immediate Reward (%): <input type="number" id="immediateReward" value="5" min="0" max="100"></label><br>
+            <label>Long-term Reward (%): <input type="number" id="longTermReward" value="10" min="0" max="100"></label><br>
+            <label>Long-term Duration (months): <input type="number" id="rewardDuration" value="9" min="1" max="24"></label><br>
+            <button id="saveRewardSettings">Save Settings</button>
+        </div>
+    </div>
+
+    <script src="assets/js/saveEarn.js"></script>
+    <script>
+        // Load pending deposits
+        function loadPendingDeposits() {
+            const deposits = JSON.parse(localStorage.getItem('pendingDeposits')) || [];
+            const tbody = document.querySelector('#pendingDeposits tbody');
+            tbody.innerHTML = '';
+            
+            deposits.forEach(deposit => {
+                if (deposit.status === 'pending') {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${deposit.id}</td>
+                        <td>${deposit.userId}</td>
+                        <td>${deposit.amount}</td>
+                        <td>${new Date(deposit.submittedAt).toLocaleString()}</td>
+                        <td><a href="${deposit.proof}" target="_blank">View</a></td>
+                        <td><button class="approve-btn" data-id="${deposit.id}">Approve</button></td>
+                    `;
+                    tbody.appendChild(row);
+                }
+            });
+            
+            // Add event listeners
+            document.querySelectorAll('.approve-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const depositId = parseInt(this.dataset.id);
+                    SaveEarn.approveDeposit(depositId);
+                    loadPendingDeposits(); // Refresh
+                });
+            });
+        }
+        
+        // Load bank accounts
+        function loadBankAccounts() {
+            const accounts = JSON.parse(localStorage.getItem('companyAccounts')) || [];
+            const tbody = document.querySelector('#bankAccounts tbody');
+            tbody.innerHTML = '';
+            
+            accounts.forEach(account => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${account.bank}</td>
+                    <td>${account.name}</td>
+                    <td>${account.number}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        // Add bank account
+        document.getElementById('addBankAccount').addEventListener('click', function() {
+            const bank = prompt('Bank Name:');
+            const name = prompt('Account Name:');
+            const number = prompt('Account Number:');
+            
+            if (bank && name && number) {
+                const accounts = JSON.parse(localStorage.getItem('companyAccounts')) || [];
+                accounts.push({ bank, name, number });
+                localStorage.setItem('companyAccounts', JSON.stringify(accounts));
+                loadBankAccounts();
+            }
+        });
+        
+        // Initialize
+        SaveEarn.init();
+        loadPendingDeposits();
+        loadBankAccounts();
+    </script>
+</body>
+</html>
