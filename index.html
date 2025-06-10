@@ -270,3 +270,31 @@
         <button class="modal-close">Close</button>
     </div>
 </div>
+
+<!-- Add to index.html before </body> -->
+
+<!-- User Dashboard Modal -->
+<div class="modal" id="dashboardModal">
+    <div class="modal-content">
+        <h3>Your Dashboard</h3>
+        
+        <div class="wallet-info">
+            <h4>Crypto Wallet</h4>
+            <p>Address: <span id="cryptoAddress"></span></p>
+            <p>Balance: <span id="cryptoBalance">0</span> MZLx</p>
+            
+            <h4>Fiat Wallet</h4>
+            <p>Account: <span id="fiatAccount"></span></p>
+            <p>Balance: ₦<span id="fiatBalance">0</span></p>
+        </div>
+        
+        <div class="notifications">
+            <h4>Notifications</h4>
+            <div id="notificationList">
+                <!-- Notifications will appear here -->
+            </div>
+        </div>
+        
+        <button class="modal-close">Close</button>
+    </div>
+</div>
