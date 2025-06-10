@@ -452,3 +452,24 @@ if (typeof window.ethereum !== 'undefined') {
 
 // Initialize AI projection
 document.getElementById('aiPriceProjection').textContent = (TOKENOMICS.currentPrice * 1.5).toFixed(4);
+
+// Add to mining.js
+
+// Protect features - show login if not authenticated
+function protectFeature(featureName) {
+    const user = AuthSystem.getCurrentUser();
+    if (!user) {
+        alert(`Please register or login to use ${featureName}`);
+        document.getElementById('loginModal').style.display = 'flex';
+        return false;
+    }
+    return true;
+}
+
+// Update all feature buttons
+document.querySelectorAll('#miningButton, #buyButton, #escrowShopBtn, #voteBtn, #saveEarnBtn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const featureName = this.querySelector('.action-label')?.textContent || this.textContent;
+        protectFeature(featureName);
+    });
+});
