@@ -54,3 +54,43 @@ submitVote.addEventListener('click', async () => {
 // Check every minute
 setInterval(updateVotingVisibility, 60000);
 updateVotingVisibility();
+
+// DOM Elements
+const tokenCounter = document.getElementById('token-counter');
+const buyButton = document.getElementById('buy-button');
+const miningButton = document.getElementById('mining-button');
+
+// Initialize app
+document.addEventListener('DOMContentLoaded', () => {
+  // Check authentication status
+  const token = localStorage.getItem('token');
+  if (!token) showLoginForm();
+  
+  // Update UI
+  updateTokenCounter();
+});
+
+// Update token counter display
+function updateTokenCounter() {
+  // Fetch data from backend in real implementation
+  tokenCounter.textContent = '25,000,000 MZLx remaining';
+}
+
+// Handle token purchase
+buyButton.addEventListener('click', () => {
+  // Minimum purchase amount
+  const minAmount = 25; // MZLx
+  const amount = prompt(`Enter amount (minimum ${minAmount} MZLx):`);
+  
+  if (amount && amount >= minAmount) {
+    processPurchase(amount);
+  } else {
+    alert(`Minimum purchase is ${minAmount} MZLx`);
+  }
+});
+
+// Handle mining start
+miningButton.addEventListener('click', () => {
+  // Start mining process
+  startMining();
+});
