@@ -684,3 +684,44 @@ header {
     .action-label { font-size: 0.45rem; }
     .cta-button { padding: 6px; font-size: 0.75rem; }
 }
+
+/* Add to the end of your existing main.css */
+
+/* Admin link */
+.admin-link {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: var(--lemon-green);
+    font-size: 0.7rem;
+    text-decoration: none;
+    z-index: 100;
+}
+
+/* Logout button */
+.logout-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+/* Date time inputs */
+.receipt-datetime {
+    display: flex;
+    gap: 10px;
+}
+
+.receipt-datetime input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--light-blue);
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+           
