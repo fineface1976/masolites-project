@@ -14,11 +14,13 @@ const TOKENOMICS = {
 const miningButton = document.getElementById('miningButton');
 const claimButton = document.getElementById('claimButton');
 const buyButton = document.getElementById('buyButton');
-const connectWalletBtn = document.getElementById('connectWalletBtn');
+const platformWalletBtn = document.getElementById('platformWalletBtn');
 const escrowShopBtn = document.getElementById('escrowShopBtn');
+const voteBtn = document.getElementById('voteBtn');
 const currencyModal = document.getElementById('currencyModal');
 const purchaseModal = document.getElementById('purchaseModal');
 const escrowModal = document.getElementById('escrowModal');
+const votingModal = document.getElementById('votingModal');
 const memberIdElement = document.getElementById('memberId');
 
 // Mining System Variables
@@ -30,6 +32,7 @@ let baseRate = 0.12 / (24 * 60 * 60 * 1000); // Tokens per ms
 let lastMinuteUpdate = Date.now();
 let walletAddress = null;
 let selectedCurrency = 'USD';
+let miningMultiplier = 1.0; // Default multiplier
 
 // Initialize Application
 document.addEventListener('DOMContentLoaded', function() {
@@ -48,6 +51,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize countdown timer
     initCountdown();
+    
+    // Initialize voting slider
+    initVoting();
 });
 
 function initMemberId() {
@@ -68,10 +74,10 @@ function initEventListeners() {
     
     // Action Buttons
     buyButton.addEventListener('click', () => currencyModal.style.display = 'flex');
-    connectWalletBtn.addEventListener('click', connectWallet);
+    platformWalletBtn.addEventListener('click', connectWallet);
     escrowShopBtn.addEventListener('click', openEscrowMarketplace);
+    voteBtn.addEventListener('click', () => votingModal.style.display = 'flex');
     document.getElementById('saveEarnBtn').addEventListener('click', () => alert('Save & Earn feature coming soon!'));
-    document.getElementById('sendReceiveBtn').addEventListener('click', handleSendReceive);
     
     // Currency Modal
     document.querySelectorAll('.currency-btn').forEach(btn => {
@@ -86,6 +92,9 @@ function initEventListeners() {
     document.getElementById('viewListingsBtn').addEventListener('click', showEscrowListings);
     document.getElementById('createListingBtn').addEventListener('click', showCreateListingForm);
     document.getElementById('submitListing').addEventListener('click', submitNewListing);
+    
+    // Voting Modal
+    document.getElementById('submitVote').addEventListener('click', submitVote);
     
     // Modal close buttons
     document.querySelectorAll('.modal-close').forEach(btn => {
@@ -121,6 +130,15 @@ function initCountdown() {
     updateCountdown();
 }
 
+function initVoting() {
+    const priceSlider = document.getElementById('priceSlider');
+    const proposedPriceDisplay = document.getElementById('proposedPriceDisplay');
+    
+    priceSlider.addEventListener('input', function() {
+        proposedPriceDisplay.textContent = parseFloat(priceSlider.value).toFixed(4);
+    });
+}
+
 // Mining Functions
 function toggleMining() {
     if (isMining) {
@@ -136,7 +154,7 @@ function toggleMining() {
         miningInterval = setInterval(() => {
             const now = Date.now();
             const elapsed = now - startTime;
-            minedAmount = elapsed * baseRate;
+            minedAmount = elapsed * baseRate * miningMultiplier;
             
             // Update every minute for total accumulation
             if (now - lastMinuteUpdate >= 60000) {
@@ -148,7 +166,7 @@ function toggleMining() {
             }
             
             // Update millisecond counter
-            document.getElementById('minedAmount').textContent = minedAmount.toFixed(6) + ' MZLx/s';
+            document.getElementById('minedAmount').textContent = (minedAmount * 1000).toFixed(6) + ' MZLx/s';
         }, 50);
         
         miningButton.textContent = 'MINING (ON)';
@@ -199,14 +217,6 @@ async function connectWallet() {
         console.error("Wallet connection failed:", error);
         alert('Wallet connection failed. Please try again.');
     }
-}
-
-function handleSendReceive() {
-    if (!walletAddress) {
-        alert('Please connect your wallet first!');
-        return;
-    }
-    alert(`Send/Receive tokens using your wallet: ${walletAddress.substring(0, 12)}...`);
 }
 
 // Purchase System
@@ -273,6 +283,9 @@ function processPurchase() {
     setTimeout(() => {
         alert(`Success! ${tokenAmount} MZLx purchased. Tokens will be available in your wallet shortly.`);
         purchaseModal.style.display = 'none';
+        
+        // Update membership status based on purchase
+        updateMembership(tokenAmount);
     }, 2000);
 }
 
@@ -322,9 +335,11 @@ function showEscrowListings() {
                 return;
             }
             
-            // Apply membership discount (5% for all members)
-            const discountedPrice = listing.price * 0.95;
-            alert(`Purchasing "${listing.name}" for ${discountedPrice.toFixed(2)} MZLx (5% discount applied!)`);
+            // Check if discount should be applied
+            const applyDiscount = document.getElementById('applyTokenDiscount').checked;
+            const finalPrice = applyDiscount ? listing.price * 0.95 : listing.price;
+            
+            alert(`Purchasing "${listing.name}" for ${finalPrice.toFixed(2)} MZLx${applyDiscount ? ' (5% discount applied!)' : ''}`);
         });
     });
 }
@@ -367,10 +382,65 @@ function submitNewListing() {
     showEscrowListings();
 }
 
+// Voting System
+function submitVote() {
+    const proposedPrice = parseFloat(document.getElementById('priceSlider').value);
+    
+    // Get current time in WAT (UTC+1)
+    const now = new Date();
+    const watHours = (now.getUTCHours() + 1) % 24;
+    const watMinutes = now.getUTCMinutes();
+    const totalMinutes = watHours * 60 + watMinutes;
+    
+    // Check if within voting window (6pm-11:30pm WAT)
+    if (totalMinutes < 1080 || totalMinutes > 1410) {
+        alert('Voting is only allowed between 6pm and 11:30pm WAT');
+        return;
+    }
+    
+    // Get AI projection
+    const aiProjection = parseFloat(document.getElementById('aiPriceProjection').textContent);
+    
+    // Check if proposed price is reasonable
+    if (proposedPrice > aiProjection * 1.5) {
+        alert('Your proposed price exceeds market projections. Please adjust your vote.');
+        return;
+    }
+    
+    alert(`Vote submitted for $${proposedPrice.toFixed(4)} per MZLx!`);
+    votingModal.style.display = 'none';
+    
+    // In a real implementation, this would be sent to the backend
+    console.log(`Vote recorded: $${proposedPrice.toFixed(4)}`);
+}
+
 function closeAllModals() {
     document.querySelectorAll('.modal').forEach(modal => {
         modal.style.display = 'none';
     });
+}
+
+// Membership System
+function updateMembership(tokensPurchased) {
+    // This would be expanded with actual membership logic
+    if (tokensPurchased >= 2000) {
+        document.getElementById('memberBadge').innerHTML = '🥇 Gold Member | <span id="memberId">MSL-G-123456</span>';
+    } else if (tokensPurchased >= 1000) {
+        document.getElementById('memberBadge').innerHTML = '🥈 Silver Member | <span id="memberId">MSL-S-123456</span>';
+    } else if (tokensPurchased >= 25) {
+        document.getElementById('memberBadge').innerHTML = '🥉 Bronze Member | <span id="memberId">MSL-B-123456</span>';
+    }
+    
+    // Update mining multiplier based on membership
+    if (tokensPurchased >= 2000) {
+        miningMultiplier = 2.0;
+    } else if (tokensPurchased >= 1000) {
+        miningMultiplier = 1.5;
+    } else if (tokensPurchased >= 25) {
+        miningMultiplier = 1.2;
+    }
+    
+    alert(`Membership upgraded! Mining multiplier now at ${miningMultiplier}x`);
 }
 
 // Initialize Web3
@@ -379,30 +449,6 @@ if (typeof window.ethereum !== 'undefined') {
 } else {
     console.warn("MetaMask not detected. Crypto payments will be simulated");
 }
-// Mining configuration
-const BASE_RATE = 0.1; // MZLx per hour
-let miningInterval;
 
-// Start mining process
-function startMining() {
-  if (miningInterval) {
-    alert('Mining already in progress');
-    return;
-  }
-  
-  let minedAmount = 0;
-  miningInterval = setInterval(() => {
-    // Calculate based on user's multiplier (simplified)
-    const multiplier = 1.0; // Would come from user data
-    minedAmount += (BASE_RATE / 60) * multiplier;
-    updateMiningDisplay(minedAmount);
-  }, 60000); // Update every minute
-  
-  alert('Mining started!');
-}
-
-// Update mining display
-function updateMiningDisplay(amount) {
-  console.log(`Mined: ${amount.toFixed(6)} MZLx`);
-  // Would update UI in real implementation
-}
+// Initialize AI projection
+document.getElementById('aiPriceProjection').textContent = (TOKENOMICS.currentPrice * 1.5).toFixed(4);
