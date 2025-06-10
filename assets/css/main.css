@@ -626,3 +626,26 @@ header {
     .action-label { font-size: 0.45rem; }
     .cta-button { padding: 6px; font-size: 0.75rem; }
 }
+
+/* Button positioning */
+#buy-button {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Token counter styling */
+.token-counter {
+  text-align: center;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
+
+/* Button container */
+.button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
