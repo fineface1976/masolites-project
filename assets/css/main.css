@@ -596,6 +596,64 @@ header {
     display: inline-block;
 }
 
+/* Voting Modal Styles */
+#votingModal .modal-content {
+    max-width: 500px;
+}
+
+.vote-controls {
+    margin: 20px 0;
+}
+
+#priceSlider {
+    width: 100%;
+    margin: 15px 0;
+}
+
+.slider-values {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
+
+#proposedPriceDisplay {
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+.voting-time {
+    text-align: center;
+    font-style: italic;
+    color: #7f8c8d;
+    margin-top: 15px;
+}
+
+.membership-info {
+    font-size: 0.8rem;
+    color: #e74c3c;
+    margin-top: 10px;
+}
+
+.ai-projection {
+    margin: 10px 0;
+    padding: 8px;
+    background: rgba(164, 222, 2, 0.1);
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+/* Platform Wallet Indicator */
+.platform-wallet-indicator {
+    display: inline-block;
+    margin-left: 10px;
+    background: #27ae60;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+}
+
 @media (min-width: 768px) {
     .logo { font-size: 1.6rem; }
     .tagline { font-size: 0.95rem; }
@@ -625,27 +683,4 @@ header {
     .action-icon { font-size: 1.1rem; }
     .action-label { font-size: 0.45rem; }
     .cta-button { padding: 6px; font-size: 0.75rem; }
-}
-
-/* Button positioning */
-#buy-button {
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-/* Token counter styling */
-.token-counter {
-  text-align: center;
-  font-size: 1.1rem;
-  margin-bottom: 15px;
-}
-
-/* Button container */
-.button-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 20px;
 }
