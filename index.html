@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,6 +6,60 @@
     <title>MASOLITES ECOMAS</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/main.css">
+    <style>
+        /* ADDED: Voting modal styles */
+        #votingModal .modal-content {
+            max-width: 500px;
+        }
+        
+        .vote-controls {
+            margin: 20px 0;
+        }
+        
+        #priceSlider {
+            width: 100%;
+            margin: 15px 0;
+        }
+        
+        .slider-values {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        #selectedPrice {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        
+        .voting-time {
+            text-align: center;
+            font-style: italic;
+            color: #7f8c8d;
+            margin-top: 15px;
+        }
+        
+        /* ADDED: Slightly reduced font sizes */
+        .logo {
+            font-size: 1.6rem; /* Reduced from likely 1.8-2rem */
+        }
+        
+        .welcome-message {
+            font-size: 0.9rem; /* Reduced from likely 1rem */
+        }
+        
+        /* ADDED: Platform wallet indicator */
+        .platform-wallet-indicator {
+            display: inline-block;
+            margin-left: 10px;
+            background: #27ae60;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
@@ -20,6 +74,7 @@
                 </div>
                 <div id="walletInfo" style="display:none; font-size:0.7rem; margin-top:5px; color: var(--lemon-green);">
                     Connected: <span id="walletAddress"></span>
+                    <span class="platform-wallet-indicator">Platform Wallet</span> <!-- ADDED -->
                 </div>
                 <div id="memberBadge" class="member-badge">🎁 Free Member | <span id="memberId">MSL-F-000000</span></div>
             </header>
@@ -84,13 +139,13 @@
                         <div class="action-icon">🛒</div>
                         <div class="action-label">Escrow Shop</div>
                     </div>
-                    <div class="action-card" id="connectWalletBtn">
-                        <div class="action-icon">🔗</div>
-                        <div class="action-label">Connect Wallet</div>
+                    <div class="action-card" id="platformWalletBtn"> <!-- CHANGED: From connectWalletBtn -->
+                        <div class="action-icon">👛</div> <!-- CHANGED: From 🔗 -->
+                        <div class="action-label">Platform Wallet</div> <!-- CHANGED: From Connect Wallet -->
                     </div>
-                    <div class="action-card" id="sendReceiveBtn">
-                        <div class="action-icon">⇄</div>
-                        <div class="action-label">Send/Receive</div>
+                    <div class="action-card" id="voteBtn"> <!-- ADDED: Voting button -->
+                        <div class="action-icon">🗳️</div>
+                        <div class="action-label">Vote</div>
                     </div>
                 </div>
             </div>
@@ -116,12 +171,12 @@
         <div class="modal-content">
             <h3>Buy MAZOL Tokens</h3>
             <div class="purchase-form">
-                <label for="tokenAmount">Token Amount (min 25 MZLx):</label>
-                <input type="number" id="tokenAmount" placeholder="Enter amount" min="25" step="25" value="100">
+                <label for="tokenAmount">Token Amount (min 25 MZLx):</label> <!-- CHANGED: Min 100 to 25 -->
+                <input type="number" id="tokenAmount" placeholder="Enter amount" min="25" step="25" value="25"> <!-- CHANGED: Min 100 to 25 -->
                 
                 <div id="currencyDisplay">
-                    <p>Price: <span id="currencySymbol">$</span><span id="currencyAmount">0.10</span></p>
-                    <p>Equivalent: <span id="tokenEquivalent">100</span> MZLx</p>
+                    <p>Price: <span id="currencySymbol">$</span><span id="currencyAmount">0.025</span></p> <!-- CHANGED: Value -->
+                    <p>Equivalent: <span id="tokenEquivalent">25</span> MZLx</p> <!-- CHANGED: Value -->
                 </div>
                 
                 <button class="cta-button confirm-purchase" id="confirmPurchase">CONFIRM PURCHASE</button>
@@ -148,6 +203,12 @@
                 <input type="text" id="itemName" placeholder="Item Name">
                 <textarea id="itemDescription" placeholder="Item Description"></textarea>
                 <input type="number" id="itemPrice" placeholder="Price in MZLx">
+                <!-- ADDED: Discount option for token purchases -->
+                <div class="discount-option">
+                    <label>
+                        <input type="checkbox" id="applyTokenDiscount"> Apply 5% token discount
+                    </label>
+                </div>
                 <button class="cta-button" id="submitListing">SUBMIT LISTING</button>
             </div>
             
@@ -155,7 +216,83 @@
         </div>
     </div>
 
+    <!-- ADDED: Voting Modal -->
+    <div class="modal" id="votingModal">
+        <div class="modal-content">
+            <h3>Vote for New Token Price</h3>
+            <p>Current Price: $<span id="currentPriceDisplay">0.001</span></p>
+            
+            <div class="vote-controls">
+                <label for="priceSlider">Proposed Price: $<span id="proposedPriceDisplay">0.001</span></label>
+                <input type="range" id="priceSlider" min="0.001" max="0.01" step="0.0001" value="0.001">
+                <div class="slider-values">
+                    <span>$0.001</span>
+                    <span>$0.01</span>
+                </div>
+            </div>
+            
+            <div class="ai-projection"> <!-- ADDED: AI projection -->
+                <p>AI Projection: $<span id="aiPriceProjection">0.0015</span></p>
+            </div>
+            
+            <button class="cta-button" id="submitVote">SUBMIT VOTE</button>
+            <button class="modal-close">Cancel</button>
+            
+            <p class="voting-time">Voting is open from 6pm to 11:30pm WAT</p>
+            <p class="membership-info">Only token holders can vote</p>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/web3@1.7.4/dist/web3.min.js"></script>
     <script src="assets/js/mining.js"></script>
+    <script src="assets/js/voting.js"></script> <!-- ADDED: Voting JS -->
+    <script>
+        // ADDED: Voting functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Voting modal elements
+            const voteBtn = document.getElementById('voteBtn');
+            const votingModal = document.getElementById('votingModal');
+            const priceSlider = document.getElementById('priceSlider');
+            const proposedPriceDisplay = document.getElementById('proposedPriceDisplay');
+            const submitVote = document.getElementById('submitVote');
+            const modalCloseButtons = document.querySelectorAll('.modal-close');
+            
+            // Open voting modal
+            voteBtn.addEventListener('click', function() {
+                votingModal.style.display = 'block';
+            });
+            
+            // Update proposed price display
+            priceSlider.addEventListener('input', function() {
+                proposedPriceDisplay.textContent = parseFloat(priceSlider.value).toFixed(4);
+            });
+            
+            // Handle vote submission
+            submitVote.addEventListener('click', function() {
+                const proposedPrice = parseFloat(priceSlider.value);
+                alert(`Vote submitted for $${proposedPrice.toFixed(4)} per MZLx!`);
+                votingModal.style.display = 'none';
+                // In real implementation: Send to backend
+            });
+            
+            // Close modals
+            modalCloseButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    votingModal.style.display = 'none';
+                });
+            });
+            
+            // ADDED: Update token amount field
+            const tokenAmount = document.getElementById('tokenAmount');
+            tokenAmount.addEventListener('input', function() {
+                const amount = parseInt(this.value) || 0;
+                if (amount < 25) {
+                    this.value = 25;
+                }
+                document.getElementById('tokenEquivalent').textContent = this.value;
+                document.getElementById('currencyAmount').textContent = (this.value * 0.001).toFixed(3);
+            });
+        });
+    </script>
 </body>
 </html>
