@@ -192,3 +192,33 @@
     <script src="assets/js/mining.js"></script>
 </body>
 </html>
+
+<!-- Add to index.html before </body> -->
+
+<!-- Registration Modal -->
+<div class="modal" id="registerModal">
+    <div class="modal-content">
+        <h3>Create Account</h3>
+        <div class="auth-form">
+            <input type="email" id="registerEmail" placeholder="Email" required>
+            <input type="password" id="registerPassword" placeholder="Password" required>
+            <button class="cta-button" id="confirmRegister">Register</button>
+            <p class="auth-note">By registering, you agree to our Terms of Service</p>
+        </div>
+        <button class="modal-close">Cancel</button>
+    </div>
+</div>
+
+<!-- Login Modal -->
+<div class="modal" id="loginModal">
+    <div class="modal-content">
+        <h3>Login to Account</h3>
+        <div class="auth-form">
+            <input type="email" id="loginEmail" placeholder="Email" required>
+            <input type="password" id="loginPassword" placeholder="Password" required>
+            <button class="cta-button" id="confirmLogin">Login</button>
+            <p class="auth-note">New user? <a href="#" id="showRegister">Register instead</a></p>
+        </div>
+        <button class="modal-close">Cancel</button>
+    </div>
+</div>
