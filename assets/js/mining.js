@@ -379,3 +379,30 @@ if (typeof window.ethereum !== 'undefined') {
 } else {
     console.warn("MetaMask not detected. Crypto payments will be simulated");
 }
+// Mining configuration
+const BASE_RATE = 0.1; // MZLx per hour
+let miningInterval;
+
+// Start mining process
+function startMining() {
+  if (miningInterval) {
+    alert('Mining already in progress');
+    return;
+  }
+  
+  let minedAmount = 0;
+  miningInterval = setInterval(() => {
+    // Calculate based on user's multiplier (simplified)
+    const multiplier = 1.0; // Would come from user data
+    minedAmount += (BASE_RATE / 60) * multiplier;
+    updateMiningDisplay(minedAmount);
+  }, 60000); // Update every minute
+  
+  alert('Mining started!');
+}
+
+// Update mining display
+function updateMiningDisplay(amount) {
+  console.log(`Mined: ${amount.toFixed(6)} MZLx`);
+  // Would update UI in real implementation
+}
