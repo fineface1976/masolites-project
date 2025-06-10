@@ -1,135 +1,378 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Masolites Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; padding: 20px; }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .approve-btn { background: #4CAF50; color: white; border: none; padding: 5px 10px; cursor: pointer; }
-        .section { margin-bottom: 40px; }
+        :root {
+            --navy: #1a1a2e;
+            --lemon-green: #a4de02;
+            --accent: #d8315b;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 2px solid var(--navy);
+            margin-bottom: 20px;
+        }
+        
+        .admin-header h1 {
+            color: var(--navy);
+        }
+        
+        .logout-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: var(--navy);
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .approve-btn {
+            background: var(--lemon-green);
+            color: #333;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .approve-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .login-container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .login-form input {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .login-form button {
+            background: var(--navy);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .config-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .config-box {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid var(--lemon-green);
+        }
+        
+        .config-box h3 {
+            margin-bottom: 10px;
+            color: var(--navy);
+        }
+        
+        .config-input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .save-config {
+            background: var(--lemon-green);
+            color: #333;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
-    <h1>Masolites Admin Panel</h1>
-    
-    <div class="section">
-        <h2>Pending Manual Deposits</h2>
-        <table id="pendingDeposits">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>User</th>
-                    <th>Amount (₦)</th>
-                    <th>Submitted</th>
-                    <th>Proof</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Filled by JavaScript -->
-            </tbody>
-        </table>
+    <div id="loginPanel" class="login-container">
+        <h2>Admin Login</h2>
+        <form class="login-form" id="adminLoginForm">
+            <input type="text" id="adminUsername" placeholder="Username" required>
+            <input type="password" id="adminPassword" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
     </div>
-    
-    <div class="section">
-        <h2>System Configuration</h2>
-        <div>
-            <h3>Bank Accounts</h3>
-            <table id="bankAccounts">
+
+    <div id="adminPanel" style="display:none;">
+        <header class="admin-header">
+            <h1>Masolites Admin Dashboard</h1>
+            <button class="logout-btn" id="adminLogout">Logout</button>
+        </header>
+
+        <div class="section">
+            <h2>Pending Deposits</h2>
+            <table id="pendingDepositsTable">
                 <thead>
                     <tr>
-                        <th>Bank</th>
-                        <th>Account Name</th>
-                        <th>Account Number</th>
+                        <th>User ID</th>
+                        <th>Amount (₦)</th>
+                        <th>Date & Time</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Filled by JavaScript -->
+                    <!-- Deposits will be populated here -->
                 </tbody>
             </table>
-            <button id="addBankAccount">Add Bank Account</button>
         </div>
-        
-        <div style="margin-top: 20px;">
-            <h3>Reward Settings</h3>
-            <label>Immediate Reward (%): <input type="number" id="immediateReward" value="5" min="0" max="100"></label><br>
-            <label>Long-term Reward (%): <input type="number" id="longTermReward" value="10" min="0" max="100"></label><br>
-            <label>Long-term Duration (months): <input type="number" id="rewardDuration" value="9" min="1" max="24"></label><br>
-            <button id="saveRewardSettings">Save Settings</button>
+
+        <div class="section">
+            <h2>System Configuration</h2>
+            <div class="config-section">
+                <div class="config-box">
+                    <h3>Bank Accounts</h3>
+                    <input type="text" class="config-input" id="bankName" placeholder="Bank Name">
+                    <input type="text" class="config-input" id="accountNumber" placeholder="Account Number">
+                    <input type="text" class="config-input" id="accountName" placeholder="Account Name">
+                    <button class="save-config" id="saveBank">Save Bank Account</button>
+                </div>
+                
+                <div class="config-box">
+                    <h3>Reward Settings</h3>
+                    <label>Immediate Reward (%):</label>
+                    <input type="number" class="config-input" id="immediateReward" min="0" max="100" value="5">
+                    
+                    <label>Long-term Reward (%):</label>
+                    <input type="number" class="config-input" id="longTermReward" min="0" max="100" value="10">
+                    
+                    <label>Long-term Duration (months):</label>
+                    <input type="number" class="config-input" id="rewardDuration" min="1" max="24" value="9">
+                    <button class="save-config" id="saveRewards">Save Reward Settings</button>
+                </div>
+                
+                <div class="config-box">
+                    <h3>Flutterwave Configuration</h3>
+                    <label>API Key:</label>
+                    <input type="text" class="config-input" id="flutterwaveKey" placeholder="Enter API Key">
+                    <button class="save-config" id="saveFlutterwave">Save Key</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>User Management</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Member ID</th>
+                        <th>Email</th>
+                        <th>Tokens</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="userManagement">
+                    <!-- Users will be populated here -->
+                </tbody>
+            </table>
         </div>
     </div>
 
-    <script src="assets/js/saveEarn.js"></script>
     <script>
-        // Load pending deposits
-        function loadPendingDeposits() {
-            const deposits = JSON.parse(localStorage.getItem('pendingDeposits')) || [];
-            const tbody = document.querySelector('#pendingDeposits tbody');
+        // Admin credentials
+        const ADMIN_CREDENTIALS = {
+            username: "admin",
+            password: "masolites2023" // In production, use hashed passwords
+        };
+        
+        // DOM Elements
+        const loginPanel = document.getElementById('loginPanel');
+        const adminPanel = document.getElementById('adminPanel');
+        const loginForm = document.getElementById('adminLoginForm');
+        const logoutBtn = document.getElementById('adminLogout');
+        
+        // Login functionality
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                loginPanel.style.display = 'none';
+                adminPanel.style.display = 'block';
+                loadAdminData();
+            } else {
+                alert('Invalid admin credentials');
+            }
+        });
+        
+        // Logout functionality
+        logoutBtn.addEventListener('click', function() {
+            loginPanel.style.display = 'block';
+            adminPanel.style.display = 'none';
+        });
+        
+        // Load data for admin panel
+        function loadAdminData() {
+            // Load pending deposits
+            const deposits = JSON.parse(localStorage.getItem('deposits') || [];
+            const tbody = document.querySelector('#pendingDepositsTable tbody');
             tbody.innerHTML = '';
             
             deposits.forEach(deposit => {
                 if (deposit.status === 'pending') {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${deposit.id}</td>
                         <td>${deposit.userId}</td>
-                        <td>${deposit.amount}</td>
-                        <td>${new Date(deposit.submittedAt).toLocaleString()}</td>
-                        <td><a href="${deposit.proof}" target="_blank">View</a></td>
-                        <td><button class="approve-btn" data-id="${deposit.id}">Approve</button></td>
+                        <td>₦${deposit.amount.toFixed(2)}</td>
+                        <td>${deposit.date} ${deposit.time}</td>
+                        <td>
+                            <button class="approve-btn" data-id="${deposit.id}">
+                                Approve & Pay Reward
+                            </button>
+                        </td>
                     `;
                     tbody.appendChild(row);
                 }
             });
             
-            // Add event listeners
+            // Add event listeners to approve buttons
             document.querySelectorAll('.approve-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    const depositId = parseInt(this.dataset.id);
-                    SaveEarn.approveDeposit(depositId);
-                    loadPendingDeposits(); // Refresh
+                    const depositId = this.dataset.id;
+                    approveDeposit(depositId);
                 });
             });
-        }
-        
-        // Load bank accounts
-        function loadBankAccounts() {
-            const accounts = JSON.parse(localStorage.getItem('companyAccounts')) || [];
-            const tbody = document.querySelector('#bankAccounts tbody');
-            tbody.innerHTML = '';
             
-            accounts.forEach(account => {
+            // Load users
+            const users = JSON.parse(localStorage.getItem('users') || [];
+            const userTbody = document.getElementById('userManagement');
+            userTbody.innerHTML = '';
+            
+            users.forEach(user => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${account.bank}</td>
-                    <td>${account.name}</td>
-                    <td>${account.number}</td>
+                    <td>${user.memberId}</td>
+                    <td>${user.email}</td>
+                    <td>${user.cryptoWallet.balance.toFixed(2)} MZLx</td>
+                    <td>${user.isActive ? 'Active' : 'Inactive'}</td>
                 `;
-                tbody.appendChild(row);
+                userTbody.appendChild(row);
             });
         }
         
-        // Add bank account
-        document.getElementById('addBankAccount').addEventListener('click', function() {
-            const bank = prompt('Bank Name:');
-            const name = prompt('Account Name:');
-            const number = prompt('Account Number:');
+        // Approve deposit and pay reward
+        function approveDeposit(depositId) {
+            const deposits = JSON.parse(localStorage.getItem('deposits') || [];
+            const deposit = deposits.find(d => d.id == depositId);
             
-            if (bank && name && number) {
-                const accounts = JSON.parse(localStorage.getItem('companyAccounts')) || [];
-                accounts.push({ bank, name, number });
-                localStorage.setItem('companyAccounts', JSON.stringify(accounts));
-                loadBankAccounts();
+            if (deposit) {
+                // Update deposit status
+                deposit.status = 'approved';
+                deposit.approvedAt = new Date().toISOString();
+                
+                // Find user
+                const users = JSON.parse(localStorage.getItem('users') || [];
+                const user = users.find(u => u.email === deposit.userId);
+                
+                if (user) {
+                    // Pay immediate reward (5%)
+                    const reward = deposit.amount * 0.05;
+                    user.cryptoWallet.balance += reward;
+                    
+                    // Save updates
+                    localStorage.setItem('users', JSON.stringify(users));
+                    localStorage.setItem('deposits', JSON.stringify(deposits));
+                    
+                    alert(`Deposit approved! User received ${reward.toFixed(2)} MZLx reward.`);
+                    loadAdminData();
+                }
+            }
+        }
+        
+        // Save configuration
+        document.getElementById('saveBank').addEventListener('click', function() {
+            const bank = document.getElementById('bankName').value;
+            const number = document.getElementById('accountNumber').value;
+            const name = document.getElementById('accountName').value;
+            
+            if (bank && number && name) {
+                localStorage.setItem('companyBank', JSON.stringify({ bank, number, name }));
+                alert('Bank account saved!');
             }
         });
         
         // Initialize
-        SaveEarn.init();
-        loadPendingDeposits();
-        loadBankAccounts();
+        const savedBank = JSON.parse(localStorage.getItem('companyBank') || '{}');
+        if (savedBank.bank) {
+            document.getElementById('bankName').value = savedBank.bank;
+            document.getElementById('accountNumber').value = savedBank.number;
+            document.getElementById('accountName').value = savedBank.name;
+        }
     </script>
 </body>
 </html>
