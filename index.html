@@ -7,44 +7,78 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/main.css">
     <style>
-        /* Additional styles */
-        .bank-details p {
-            margin: 5px 0;
-            font-size: 0.8rem;
-        }
-        
-        .receipt-datetime {
+        /* Additional styles for new features */
+        .auth-form {
             display: flex;
-            gap: 10px;
+            flex-direction: column;
+            gap: 12px;
+            margin: 20px 0;
         }
         
-        .receipt-datetime input {
-            flex: 1;
-        }
-        
-        .admin-link {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 0.7rem;
-            color: var(--lemon-green);
-        }
-        
-        .logout-btn {
-            background: var(--accent);
+        .auth-form input {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--light-blue);
+            background: rgba(255, 255, 255, 0.1);
             color: white;
-            border: none;
-            padding: 3px 8px;
-            border-radius: 10px;
+            font-size: 1rem;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 5px;
+            margin: 15px 0;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            background: var(--navy);
+            border: 1px solid var(--light-blue);
+            color: var(--text-light);
+            cursor: pointer;
+        }
+        
+        .tab-btn.active {
+            background: var(--light-blue);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .bank-details {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .wallet-info {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .notification-item {
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .notification-time {
             font-size: 0.7rem;
-            margin-left: 10px;
+            color: rgba(255, 255, 255, 0.6);
         }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <a href="admin.html" class="admin-link">Admin Login</a>
-        
+        <!-- Top Section -->
         <div class="top-section">
             <header>
                 <h1 class="logo">MASOLITES ECOMAS</h1>
@@ -52,7 +86,6 @@
                 <div class="auth-buttons">
                     <button class="btn btn-login" id="loginBtn">Login</button>
                     <button class="btn btn-register" id="registerBtn">Register</button>
-                    <button class="logout-btn" id="logoutBtn" style="display:none;">Logout</button>
                 </div>
                 <div id="walletInfo" style="display:none; font-size:0.7rem; margin-top:5px; color: var(--lemon-green);">
                     Connected: <span id="walletAddress"></span>
@@ -61,13 +94,193 @@
                 <div id="memberBadge" class="member-badge">🎁 Free Member | <span id="memberId">MSL-F-000000</span></div>
             </header>
             
-            <!-- ... (rest of your HTML remains the same) ... -->
+            <div class="card">
+                <p class="welcome-message">ECOMAS is Economic Community Of Masolites. A Trusted Products & Services Hub using MAZOL Token. MAZOL Daily New Price is decided by your vote. Enjoy Free Mining, Discounts & Sell Stuff too.</p>
+            </div>
+            
+            <div class="card compact private-sale-card">
+                <div class="sale-header">
+                    <h3 class="card-title">PRIVATE SALE ENDS IN</h3>
+                    <button class="cta-button buy-button" id="buyButton">BUY MAZOL</button>
+                </div>
+                <div class="price-info">
+                    <span class="price">$0.001/MZLx</span>
+                    <span class="price">₦18/MZLx</span>
+                </div>
+                <div class="countdown-timer">
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="days">120</div>
+                        <div class="countdown-label">Days</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="hours">00</div>
+                        <div class="countdown-label">Hours</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="minutes">00</div>
+                        <div class="countdown-label">Minutes</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card compact">
+                <h3 class="card-title">MAZOL MINING PORTAL</h3>
+                <div class="mining-counter">
+                    <div class="mining-display">
+                        <div class="mining-speed">
+                            <div class="mining-label">Speed</div>
+                            <div id="minedAmount">0.000000 MZLx/s</div>
+                        </div>
+                        <div class="mining-total">
+                            <div class="mining-label">Total</div>
+                            <div id="miningTotal">0.000000 MZLx</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mining-actions">
+                    <button class="cta-button mining-button" id="miningButton">START MINING</button>
+                    <button class="cta-button claim-button" id="claimButton" style="display:none;">CLAIM MZLx</button>
+                </div>
+            </div>
+            
+            <!-- Action Buttons Card -->
+            <div class="card action-buttons-card">
+                <div class="action-grid">
+                    <div class="action-card" id="saveEarnBtn">
+                        <div class="action-icon">💰</div>
+                        <div class="action-label">Save & Earn</div>
+                    </div>
+                    <div class="action-card" id="escrowShopBtn">
+                        <div class="action-icon">🛒</div>
+                        <div class="action-label">Escrow Shop</div>
+                    </div>
+                    <div class="action-card" id="platformWalletBtn">
+                        <div class="action-icon">👛</div>
+                        <div class="action-label">Platform Wallet</div>
+                    </div>
+                    <div class="action-card" id="voteBtn">
+                        <div class="action-icon">🗳️</div>
+                        <div class="action-label">Vote</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- ... (modals remain mostly the same) ... -->
+    <!-- Auth Modals -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <h3>Create Account</h3>
+            <div class="auth-form">
+                <input type="email" id="registerEmail" placeholder="Email" required>
+                <input type="password" id="registerPassword" placeholder="Password" required>
+                <button class="cta-button" id="confirmRegister">Register</button>
+                <p class="auth-note">By registering, you agree to our Terms of Service</p>
+            </div>
+            <button class="modal-close">Cancel</button>
+        </div>
+    </div>
 
-    <!-- Updated Save & Earn Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <h3>Login to Account</h3>
+            <div class="auth-form">
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <button class="cta-button" id="confirmLogin">Login</button>
+                <p class="auth-note">New user? <a href="#" id="showRegister">Register instead</a></p>
+            </div>
+            <button class="modal-close">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Feature Modals -->
+    <div class="modal" id="currencyModal">
+        <div class="modal-content">
+            <h3>Select Payment Method</h3>
+            <div class="currency-options">
+                <button class="currency-btn" data-currency="USD">USD ($)</button>
+                <button class="currency-btn" data-currency="NGN">Naira (₦)</button>
+                <button class="currency-btn" data-currency="USDT">USDT</button>
+                <button class="currency-btn" data-currency="BNB">BNB</button>
+            </div>
+            <button class="modal-close">Close</button>
+        </div>
+    </div>
+
+    <div class="modal" id="purchaseModal">
+        <div class="modal-content">
+            <h3>Buy MAZOL Tokens</h3>
+            <div class="purchase-form">
+                <label for="tokenAmount">Token Amount (min 25 MZLx):</label>
+                <input type="number" id="tokenAmount" placeholder="Enter amount" min="25" step="25" value="25">
+                
+                <div id="currencyDisplay">
+                    <p>Price: <span id="currencySymbol">$</span><span id="currencyAmount">0.025</span></p>
+                    <p>Equivalent: <span id="tokenEquivalent">25</span> MZLx</p>
+                </div>
+                
+                <button class="cta-button confirm-purchase" id="confirmPurchase">CONFIRM PURCHASE</button>
+            </div>
+            <button class="modal-close">Cancel</button>
+        </div>
+    </div>
+
+    <div class="modal" id="escrowModal">
+        <div class="modal-content">
+            <h3>Escrow Marketplace</h3>
+            <div class="escrow-actions">
+                <button class="escrow-action-btn" id="viewListingsBtn">View Listings</button>
+                <button class="escrow-action-btn" id="createListingBtn">Create Listing</button>
+            </div>
+            
+            <div class="escrow-listings" id="escrowListings">
+                <!-- Listings will be populated here -->
+            </div>
+            
+            <div class="create-listing" id="createListingForm" style="display:none;">
+                <h4>Create New Listing</h4>
+                <input type="text" id="itemName" placeholder="Item Name">
+                <textarea id="itemDescription" placeholder="Item Description"></textarea>
+                <input type="number" id="itemPrice" placeholder="Price in MZLx">
+                <div class="discount-option">
+                    <label>
+                        <input type="checkbox" id="applyTokenDiscount"> Apply 5% token discount
+                    </label>
+                </div>
+                <button class="cta-button" id="submitListing">SUBMIT LISTING</button>
+            </div>
+            
+            <button class="modal-close">Close</button>
+        </div>
+    </div>
+
+    <div class="modal" id="votingModal">
+        <div class="modal-content">
+            <h3>Vote for New Token Price</h3>
+            <p>Current Price: $<span id="currentPriceDisplay">0.001</span></p>
+            
+            <div class="vote-controls">
+                <label for="priceSlider">Proposed Price: $<span id="proposedPriceDisplay">0.001</span></label>
+                <input type="range" id="priceSlider" min="0.001" max="0.01" step="0.0001" value="0.001">
+                <div class="slider-values">
+                    <span>$0.001</span>
+                    <span>$0.01</span>
+                </div>
+            </div>
+            
+            <div class="ai-projection">
+                <p>AI Projection: $<span id="aiPriceProjection">0.0015</span></p>
+            </div>
+            
+            <button class="cta-button" id="submitVote">SUBMIT VOTE</button>
+            <button class="modal-close">Cancel</button>
+            
+            <p class="voting-time">Voting is open from 6pm to 11:30pm WAT</p>
+            <p class="membership-info">Only token holders can vote</p>
+        </div>
+    </div>
+
     <div class="modal" id="saveEarnModal">
         <div class="modal-content">
             <h3>Save & Earn</h3>
@@ -81,20 +294,18 @@
             <!-- Manual Transfer Tab -->
             <div class="tab-content active" id="manualTab">
                 <div class="bank-details">
-                    <h4>Pay To Bank:</h4>
-                    <p><strong>UBA</strong>: 1026664654</p>
-                    <p><strong>Account Name</strong>: Masses Freedom</p>
+                    <h4>Company Bank Accounts</h4>
+                    <div id="companyAccounts">
+                        <p><strong>First Bank</strong>: Masolites Ltd - 3100000000</p>
+                    </div>
                 </div>
                 
                 <div class="deposit-form">
                     <label>Amount (₦):</label>
                     <input type="number" id="depositAmount" min="500" max="2000000" value="1000">
                     
-                    <label>Receipt Date & Time:</label>
-                    <div class="receipt-datetime">
-                        <input type="text" id="receiptDate" placeholder="dd.mm.yy">
-                        <input type="text" id="receiptTime" placeholder="hh.mm am/pm">
-                    </div>
+                    <label>Payment Proof (Screenshot URL):</label>
+                    <input type="text" id="depositProof" placeholder="https://example.com/proof.jpg">
                     
                     <button class="cta-button" id="submitDeposit">Submit Deposit</button>
                     <p class="note">Minimum: ₦500, Maximum: ₦2,000,000</p>
@@ -103,146 +314,440 @@
             
             <!-- Flutterwave Tab -->
             <div class="tab-content" id="flutterwaveTab">
-                <div class="flutterwave-form">
-                    <label>Flutterwave API Key:</label>
-                    <input type="text" id="flutterwaveKey" placeholder="Enter your API Key">
-                    
-                    <label>Amount (₦):</label>
-                    <input type="number" id="fwAmount" min="500" value="1000">
-                    
-                    <button class="cta-button" id="processFlutterwave">Pay with Flutterwave</button>
-                </div>
+                <p>Coming soon! Flutterwave integration in progress.</p>
             </div>
             
-            <!-- ... (rest of modals) ... -->
+            <!-- Crypto Vesting Tab -->
+            <div class="tab-content" id="cryptoTab">
+                <p>Coming soon! Crypto vesting options under development.</p>
+            </div>
+            
+            <button class="modal-close">Close</button>
         </div>
     </div>
 
+    <div class="modal" id="dashboardModal">
+        <div class="modal-content">
+            <h3>Your Dashboard</h3>
+            
+            <div class="wallet-info">
+                <h4>Crypto Wallet</h4>
+                <p>Address: <span id="cryptoAddress">MZLx_00000000</span></p>
+                <p>Balance: <span id="cryptoBalance">0</span> MZLx</p>
+                
+                <h4>Fiat Wallet</h4>
+                <p>Account: <span id="fiatAccount">MAS_0000000000</span></p>
+                <p>Balance: ₦<span id="fiatBalance">0</span></p>
+            </div>
+            
+            <div class="notifications">
+                <h4>Notifications</h4>
+                <div id="notificationList">
+                    <div class="notification-item">
+                        <p>Welcome to Masolites! Start by exploring the platform.</p>
+                        <p class="notification-time">Just now</p>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="modal-close">Close</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.4/dist/web3.min.js"></script>
     <script>
-        // ... (inside the DOMContentLoaded event listener) ...
+        // Tokenomics Configuration
+        const TOKENOMICS = {
+            totalSupply: 50000000,
+            privateSale: 25000000,
+            lockedReserve: 20000000,
+            miningReserve: 3000000,
+            affiliateReserve: 1000000,
+            bountyReserve: 1000000,
+            currentPrice: 0.001,
+            ngnPrice: 18
+        };
 
-        // 3. Fix Buy MAZOL button
-        document.getElementById('buyButton').addEventListener('click', function() {
-            document.getElementById('currencyModal').style.display = 'flex';
-        });
-
-        // 5. Generate proper crypto address (42 characters)
-        function generateCryptoAddress() {
-            const chars = '0123456789ABCDEF';
-            let address = '0x';
-            for (let i = 0; i < 40; i++) {
-                address += chars[Math.floor(Math.random() * 16)];
-            }
-            return address;
-        }
-
-        // 8. MetaMask wallet connection
-        async function connectMetaMask() {
-            if (typeof window.ethereum === 'undefined') {
-                alert('Please install MetaMask!');
-                return;
-            }
-            
-            try {
-                const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-                const walletAddress = accounts[0];
+        // User Management
+        class UserSystem {
+            static register(email, password) {
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
                 
-                // Display connected address
-                document.getElementById('walletAddress').textContent = 
-                    walletAddress.substring(0, 6) + '...' + walletAddress.substring(walletAddress.length - 4);
-                document.getElementById('walletInfo').style.display = 'block';
-                
-                return walletAddress;
-            } catch (error) {
-                console.error("MetaMask connection failed:", error);
-                alert('Wallet connection failed: ' + error.message);
-            }
-        }
-
-        // 9. MLM System
-        class MLMSystem {
-            static processReferral(referrerId, newUserId, amount) {
-                const users = JSON.parse(localStorage.getItem('users') || []);
-                const referrer = users.find(u => u.memberId === referrerId);
-                
-                if (referrer) {
-                    // 2.5% referral commission
-                    const commission = amount * 0.025;
-                    referrer.cryptoWallet.balance += commission;
-                    
-                    // Update user
-                    localStorage.setItem('users', JSON.stringify(users));
-                    
-                    // Add notification
-                    const message = `You earned ${commission.toFixed(6)} MZLx from referral!`;
-                    UserSystem.addNotification(referrer, message);
+                if (users.find(u => u.email === email)) {
+                    return { error: 'Email already registered' };
                 }
-            }
-        }
-
-        // 10. Fix Voting System
-        document.getElementById('submitVote').addEventListener('click', function() {
-            const user = UserSystem.getCurrentUser();
-            if (!user) {
-                alert('Please login to vote');
-                return;
-            }
-            
-            // Check if user has tokens
-            if (user.cryptoWallet.balance < 25) {
-                alert('You need at least 25 MZLx to vote');
-                return;
-            }
-            
-            const proposedPrice = parseFloat(document.getElementById('priceSlider').value);
-            
-            // Save vote
-            const votes = JSON.parse(localStorage.getItem('votes') || []);
-            votes.push({
-                userId: user.email,
-                price: proposedPrice,
-                timestamp: new Date().toISOString()
-            });
-            localStorage.setItem('votes', JSON.stringify(votes));
-            
-            alert(`Vote submitted for $${proposedPrice.toFixed(4)} per MZLx!`);
-            document.getElementById('votingModal').style.display = 'none';
-        });
-
-        // 6. Logout functionality
-        document.getElementById('logoutBtn').addEventListener('click', function() {
-            UserSystem.logout();
-            location.reload();
-        });
-
-        // 4. Admin Panel (admin.html) will be created separately
-        // 7. Flutterwave integration
-        document.getElementById('processFlutterwave').addEventListener('click', function() {
-            const apiKey = document.getElementById('flutterwaveKey').value;
-            const amount = document.getElementById('fwAmount').value;
-            
-            if (!apiKey) {
-                alert('Please enter your Flutterwave API Key');
-                return;
+                
+                const user = {
+                    email,
+                    password: btoa(password),
+                    memberId: `MSL-F-${Math.floor(100000 + Math.random() * 900000)}`,
+                    cryptoWallet: {
+                        address: `MZLx_${Math.random().toString(36).substring(2, 10)}`,
+                        balance: 0
+                    },
+                    fiatWallet: {
+                        account: `MAS_${Math.floor(1000000000 + Math.random() * 9000000000)}`,
+                        balance: 0
+                    },
+                    notifications: [
+                        {
+                            message: 'Welcome to Masolites! Start by exploring the platform.',
+                            timestamp: new Date().toISOString(),
+                            read: false
+                        }
+                    ],
+                    createdAt: new Date().toISOString()
+                };
+                
+                users.push(user);
+                localStorage.setItem('users', JSON.stringify(users));
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                
+                return user;
             }
             
-            // In a real implementation, this would call Flutterwave API
-            alert(`Processing ₦${amount} payment via Flutterwave...`);
-        });
-
-        // Initialize MetaMask connection button
-        document.getElementById('platformWalletBtn').addEventListener('click', async function() {
-            const address = await connectMetaMask();
-            if (address) {
-                const user = UserSystem.getCurrentUser();
+            static login(email, password) {
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const user = users.find(u => u.email === email && u.password === btoa(password));
+                
                 if (user) {
-                    user.metaMaskAddress = address;
                     localStorage.setItem('currentUser', JSON.stringify(user));
+                    return user;
+                }
+                return null;
+            }
+            
+            static getCurrentUser() {
+                return JSON.parse(localStorage.getItem('currentUser'));
+            }
+            
+            static logout() {
+                localStorage.removeItem('currentUser');
+            }
+            
+            static addNotification(user, message) {
+                if (!user) return;
+                
+                user.notifications.unshift({
+                    message,
+                    timestamp: new Date().toISOString(),
+                    read: false
+                });
+                
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const updatedUsers = users.map(u => u.email === user.email ? user : u);
+                localStorage.setItem('users', JSON.stringify(updatedUsers));
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                
+                return user;
+            }
+        }
+
+        // Save & Earn System
+        class SaveEarn {
+            static submitDeposit(amount, proof) {
+                const user = UserSystem.getCurrentUser();
+                if (!user) return { error: 'Not authenticated' };
+                
+                const deposit = {
+                    id: Date.now(),
+                    userId: user.email,
+                    amount,
+                    proof,
+                    status: 'pending',
+                    timestamp: new Date().toISOString()
+                };
+                
+                const deposits = JSON.parse(localStorage.getItem('deposits') || '[]');
+                deposits.push(deposit);
+                localStorage.setItem('deposits', JSON.stringify(deposits));
+                
+                // Add notification
+                UserSystem.addNotification(user, `Manual deposit of ₦${amount} submitted. Waiting for admin approval.`);
+                
+                return deposit;
+            }
+        }
+
+        // Mining System
+        class MiningSystem {
+            constructor() {
+                this.miningInterval = null;
+                this.minedAmount = 0;
+                this.totalMined = 0;
+                this.isMining = false;
+                this.baseRate = 0.12 / (24 * 60 * 60 * 1000); // Tokens per ms
+                this.lastMinuteUpdate = Date.now();
+                this.walletAddress = null;
+            }
+            
+            startMining() {
+                if (this.isMining) return;
+                
+                const startTime = Date.now();
+                this.lastMinuteUpdate = startTime;
+                
+                this.miningInterval = setInterval(() => {
+                    const now = Date.now();
+                    const elapsed = now - startTime;
+                    this.minedAmount = elapsed * this.baseRate;
+                    
+                    if (now - this.lastMinuteUpdate >= 60000) {
+                        this.totalMined += this.minedAmount;
+                        document.getElementById('miningTotal').textContent = this.totalMined.toFixed(6) + ' MZLx';
+                        this.lastMinuteUpdate = now;
+                        localStorage.setItem('totalMined', this.totalMined.toString());
+                        if (this.totalMined > 0) {
+                            document.getElementById('claimButton').style.display = 'block';
+                        }
+                    }
+                    
+                    document.getElementById('minedAmount').textContent = (this.minedAmount * 1000).toFixed(6) + ' MZLx/s';
+                }, 50);
+                
+                this.isMining = true;
+                document.getElementById('miningButton').textContent = 'MINING (ON)';
+                document.getElementById('miningButton').classList.add('mining-active');
+            }
+            
+            stopMining() {
+                if (!this.isMining) return;
+                
+                clearInterval(this.miningInterval);
+                this.isMining = false;
+                document.getElementById('miningButton').textContent = 'START MINING';
+                document.getElementById('miningButton').classList.remove('mining-active');
+                localStorage.setItem('totalMined', this.totalMined.toString());
+            }
+            
+            claimTokens() {
+                if (!this.walletAddress) {
+                    alert('Please connect your wallet first!');
+                    return;
+                }
+                
+                alert(`Claimed ${this.totalMined.toFixed(6)} MZLx to your wallet!`);
+                this.totalMined = 0;
+                document.getElementById('miningTotal').textContent = '0.000000 MZLx';
+                document.getElementById('minedAmount').textContent = '0.000000 MZLx/s';
+                document.getElementById('claimButton').style.display = 'none';
+                this.stopMining();
+            }
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize systems
+            const miningSystem = new MiningSystem();
+            
+            // Load mined data if exists
+            if (localStorage.getItem('totalMined')) {
+                miningSystem.totalMined = parseFloat(localStorage.getItem('totalMined'));
+                document.getElementById('miningTotal').textContent = miningSystem.totalMined.toFixed(6) + ' MZLx';
+                if (miningSystem.totalMined > 0) {
+                    document.getElementById('claimButton').style.display = 'block';
                 }
             }
+            
+            // Initialize countdown timer
+            function initCountdown() {
+                const endDate = new Date();
+                endDate.setDate(endDate.getDate() + 120);
+            
+                function updateCountdown() {
+                    const now = new Date();
+                    const diff = endDate - now;
+                    
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    
+                    document.getElementById('days').textContent = days;
+                    document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                    document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                }
+            
+                setInterval(updateCountdown, 60000);
+                updateCountdown();
+            }
+            initCountdown();
+            
+            // Initialize voting slider
+            const priceSlider = document.getElementById('priceSlider');
+            const proposedPriceDisplay = document.getElementById('proposedPriceDisplay');
+            priceSlider.addEventListener('input', function() {
+                proposedPriceDisplay.textContent = parseFloat(this.value).toFixed(4);
+            });
+            
+            // Initialize tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tab = this.dataset.tab;
+                    
+                    // Update active tab
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show correct content
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(`${tab}Tab`).classList.add('active');
+                });
+            });
+            
+            // Auth Event Listeners
+            document.getElementById('loginBtn').addEventListener('click', function() {
+                document.getElementById('loginModal').style.display = 'flex';
+            });
+            
+            document.getElementById('registerBtn').addEventListener('click', function() {
+                document.getElementById('registerModal').style.display = 'flex';
+            });
+            
+            document.getElementById('showRegister').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('registerModal').style.display = 'flex';
+            });
+            
+            document.getElementById('confirmRegister').addEventListener('click', function() {
+                const email = document.getElementById('registerEmail').value;
+                const password = document.getElementById('registerPassword').value;
+                
+                const result = UserSystem.register(email, password);
+                if (result.error) {
+                    alert(result.error);
+                } else {
+                    alert('Registration successful!');
+                    document.getElementById('registerModal').style.display = 'none';
+                    location.reload();
+                }
+            });
+            
+            document.getElementById('confirmLogin').addEventListener('click', function() {
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                
+                const user = UserSystem.login(email, password);
+                if (user) {
+                    alert('Login successful!');
+                    document.getElementById('loginModal').style.display = 'none';
+                    location.reload();
+                } else {
+                    alert('Invalid email or password');
+                }
+            });
+            
+            // Mining Event Listeners
+            document.getElementById('miningButton').addEventListener('click', function() {
+                if (!UserSystem.getCurrentUser()) {
+                    alert('Please login to start mining');
+                    document.getElementById('loginModal').style.display = 'flex';
+                    return;
+                }
+                
+                if (miningSystem.isMining) {
+                    miningSystem.stopMining();
+                } else {
+                    miningSystem.startMining();
+                }
+            });
+            
+            document.getElementById('claimButton').addEventListener('click', function() {
+                miningSystem.claimTokens();
+            });
+            
+            // Save & Earn
+            document.getElementById('saveEarnBtn').addEventListener('click', function() {
+                if (!UserSystem.getCurrentUser()) {
+                    alert('Please login to use Save & Earn');
+                    document.getElementById('loginModal').style.display = 'flex';
+                    return;
+                }
+                document.getElementById('saveEarnModal').style.display = 'flex';
+            });
+            
+            document.getElementById('submitDeposit').addEventListener('click', function() {
+                const amount = parseFloat(document.getElementById('depositAmount').value);
+                const proof = document.getElementById('depositProof').value;
+                
+                if (amount < 500 || amount > 2000000) {
+                    alert('Amount must be between ₦500 and ₦2,000,000');
+                    return;
+                }
+                
+                if (!proof) {
+                    alert('Please provide proof URL');
+                    return;
+                }
+                
+                const deposit = SaveEarn.submitDeposit(amount, proof);
+                if (deposit.error) {
+                    alert(deposit.error);
+                } else {
+                    alert('Deposit submitted for approval!');
+                    document.getElementById('saveEarnModal').style.display = 'none';
+                }
+            });
+            
+            // Dashboard
+            document.getElementById('platformWalletBtn').addEventListener('click', function() {
+                const user = UserSystem.getCurrentUser();
+                if (!user) {
+                    alert('Please login to view wallet');
+                    document.getElementById('loginModal').style.display = 'flex';
+                    return;
+                }
+                
+                document.getElementById('cryptoAddress').textContent = user.cryptoWallet.address;
+                document.getElementById('cryptoBalance').textContent = user.cryptoWallet.balance.toFixed(2);
+                document.getElementById('fiatAccount').textContent = user.fiatWallet.account;
+                document.getElementById('fiatBalance').textContent = user.fiatWallet.balance.toFixed(2);
+                
+                // Load notifications
+                const notificationList = document.getElementById('notificationList');
+                notificationList.innerHTML = '';
+                user.notifications.forEach(notif => {
+                    const item = document.createElement('div');
+                    item.className = 'notification-item';
+                    item.innerHTML = `
+                        <p>${notif.message}</p>
+                        <p class="notification-time">${new Date(notif.timestamp).toLocaleString()}</p>
+                    `;
+                    notificationList.appendChild(item);
+                });
+                
+                document.getElementById('dashboardModal').style.display = 'flex';
+            });
+            
+            // Modal close buttons
+            document.querySelectorAll('.modal-close').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.modal').forEach(modal => {
+                        modal.style.display = 'none';
+                    });
+                });
+            });
+            
+            // Close modals when clicking outside
+            window.addEventListener('click', function(e) {
+                if (e.target.classList.contains('modal')) {
+                    document.querySelectorAll('.modal').forEach(modal => {
+                        modal.style.display = 'none';
+                    });
+                }
+            });
+            
+            // Check if user is logged in
+            const user = UserSystem.getCurrentUser();
+            if (user) {
+                document.getElementById('loginBtn').style.display = 'none';
+                document.getElementById('registerBtn').style.display = 'none';
+                document.getElementById('memberId').textContent = user.memberId;
+                document.getElementById('memberBadge').textContent = '🎁 ' + user.memberId;
+            }
         });
-
-        // ... (rest of your script) ...
     </script>
 </body>
 </html>
