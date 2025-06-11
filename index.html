@@ -7,78 +7,62 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/main.css">
     <style>
-        /* Additional styles for new features */
-        .auth-form {
+        /* Additional styles */
+        .bank-details p {
+            margin: 5px 0;
+            font-size: 0.8rem;
+        }
+        
+        .receipt-datetime {
             display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin: 20px 0;
+            gap: 10px;
         }
         
-        .auth-form input {
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid var(--light-blue);
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 1rem;
-        }
-        
-        .tabs {
-            display: flex;
-            gap: 5px;
-            margin: 15px 0;
-        }
-        
-        .tab-btn {
+        .receipt-datetime input {
             flex: 1;
             padding: 10px;
-            background: var(--navy);
+            border-radius: 8px;
             border: 1px solid var(--light-blue);
-            color: var(--text-light);
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .admin-link {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 0.7rem;
+            color: var(--lemon-green);
+            text-decoration: none;
+            z-index: 100;
+        }
+        
+        .logout-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            margin-left: 10px;
             cursor: pointer;
-        }
-        
-        .tab-btn.active {
-            background: var(--light-blue);
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .bank-details {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-        
-        .wallet-info {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
         }
         
         .notification-item {
             padding: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         
         .notification-time {
             font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255,255,255,0.6);
         }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <!-- Top Section -->
+        <a href="admin.html" class="admin-link">Admin Login</a>
+        
         <div class="top-section">
             <header>
                 <h1 class="logo">MASOLITES ECOMAS</h1>
@@ -86,6 +70,7 @@
                 <div class="auth-buttons">
                     <button class="btn btn-login" id="loginBtn">Login</button>
                     <button class="btn btn-register" id="registerBtn">Register</button>
+                    <button class="logout-btn" id="logoutBtn" style="display:none;">Logout</button>
                 </div>
                 <div id="walletInfo" style="display:none; font-size:0.7rem; margin-top:5px; color: var(--lemon-green);">
                     Connected: <span id="walletAddress"></span>
@@ -143,7 +128,6 @@
                 </div>
             </div>
             
-            <!-- Action Buttons Card -->
             <div class="card action-buttons-card">
                 <div class="action-grid">
                     <div class="action-card" id="saveEarnBtn">
@@ -174,6 +158,7 @@
             <div class="auth-form">
                 <input type="email" id="registerEmail" placeholder="Email" required>
                 <input type="password" id="registerPassword" placeholder="Password" required>
+                <input type="text" id="referralCode" placeholder="Referral Code (optional)">
                 <button class="cta-button" id="confirmRegister">Register</button>
                 <p class="auth-note">By registering, you agree to our Terms of Service</p>
             </div>
@@ -294,18 +279,20 @@
             <!-- Manual Transfer Tab -->
             <div class="tab-content active" id="manualTab">
                 <div class="bank-details">
-                    <h4>Company Bank Accounts</h4>
-                    <div id="companyAccounts">
-                        <p><strong>First Bank</strong>: Masolites Ltd - 3100000000</p>
-                    </div>
+                    <h4>Pay To Bank:</h4>
+                    <p><strong>UBA</strong>: 1026664654</p>
+                    <p><strong>Account Name</strong>: Masses Freedom</p>
                 </div>
                 
                 <div class="deposit-form">
                     <label>Amount (₦):</label>
                     <input type="number" id="depositAmount" min="500" max="2000000" value="1000">
                     
-                    <label>Payment Proof (Screenshot URL):</label>
-                    <input type="text" id="depositProof" placeholder="https://example.com/proof.jpg">
+                    <label>Receipt Date & Time:</label>
+                    <div class="receipt-datetime">
+                        <input type="text" id="receiptDate" placeholder="dd.mm.yy">
+                        <input type="text" id="receiptTime" placeholder="hh.mm am/pm">
+                    </div>
                     
                     <button class="cta-button" id="submitDeposit">Submit Deposit</button>
                     <p class="note">Minimum: ₦500, Maximum: ₦2,000,000</p>
@@ -314,7 +301,15 @@
             
             <!-- Flutterwave Tab -->
             <div class="tab-content" id="flutterwaveTab">
-                <p>Coming soon! Flutterwave integration in progress.</p>
+                <div class="flutterwave-form">
+                    <label>Flutterwave API Key:</label>
+                    <input type="text" id="flutterwaveKey" placeholder="Enter your API Key">
+                    
+                    <label>Amount (₦):</label>
+                    <input type="number" id="fwAmount" min="500" value="1000">
+                    
+                    <button class="cta-button" id="processFlutterwave">Pay with Flutterwave</button>
+                </div>
             </div>
             
             <!-- Crypto Vesting Tab -->
@@ -354,7 +349,6 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.4/dist/web3.min.js"></script>
     <script>
         // Tokenomics Configuration
         const TOKENOMICS = {
@@ -370,19 +364,22 @@
 
         // User Management
         class UserSystem {
-            static register(email, password) {
+            static register(email, password, referralCode = null) {
                 const users = JSON.parse(localStorage.getItem('users') || '[]');
                 
                 if (users.find(u => u.email === email)) {
                     return { error: 'Email already registered' };
                 }
                 
+                // Generate secure crypto address (42 characters)
+                const cryptoAddress = this.generateCryptoAddress();
+                
                 const user = {
                     email,
                     password: btoa(password),
                     memberId: `MSL-F-${Math.floor(100000 + Math.random() * 900000)}`,
                     cryptoWallet: {
-                        address: `MZLx_${Math.random().toString(36).substring(2, 10)}`,
+                        address: cryptoAddress,
                         balance: 0
                     },
                     fiatWallet: {
@@ -396,12 +393,19 @@
                             read: false
                         }
                     ],
-                    createdAt: new Date().toISOString()
+                    createdAt: new Date().toISOString(),
+                    referralCode: Math.random().toString(36).substring(2, 10).toUpperCase(),
+                    referredBy: referralCode
                 };
                 
                 users.push(user);
                 localStorage.setItem('users', JSON.stringify(users));
                 localStorage.setItem('currentUser', JSON.stringify(user));
+                
+                // Process referral
+                if (referralCode) {
+                    MLMSystem.processReferral(referralCode, user.email, 0);
+                }
                 
                 return user;
             }
@@ -441,11 +445,20 @@
                 
                 return user;
             }
+            
+            static generateCryptoAddress() {
+                const chars = '0123456789ABCDEF';
+                let address = '0x';
+                for (let i = 0; i < 40; i++) {
+                    address += chars[Math.floor(Math.random() * 16)];
+                }
+                return address;
+            }
         }
 
         // Save & Earn System
         class SaveEarn {
-            static submitDeposit(amount, proof) {
+            static submitDeposit(amount, date, time) {
                 const user = UserSystem.getCurrentUser();
                 if (!user) return { error: 'Not authenticated' };
                 
@@ -453,7 +466,8 @@
                     id: Date.now(),
                     userId: user.email,
                     amount,
-                    proof,
+                    date,
+                    time,
                     status: 'pending',
                     timestamp: new Date().toISOString()
                 };
@@ -532,6 +546,27 @@
                 document.getElementById('minedAmount').textContent = '0.000000 MZLx/s';
                 document.getElementById('claimButton').style.display = 'none';
                 this.stopMining();
+            }
+        }
+
+        // MLM System
+        class MLMSystem {
+            static processReferral(referralCode, newUserId, amount) {
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const referrer = users.find(u => u.referralCode === referralCode);
+                
+                if (referrer) {
+                    // 2.5% referral commission
+                    const commission = amount * 0.025;
+                    referrer.cryptoWallet.balance += commission;
+                    
+                    // Update user
+                    localStorage.setItem('users', JSON.stringify(users));
+                    
+                    // Add notification
+                    const message = `You earned ${commission.toFixed(6)} MZLx from referral!`;
+                    UserSystem.addNotification(referrer, message);
+                }
             }
         }
 
@@ -614,8 +649,9 @@
             document.getElementById('confirmRegister').addEventListener('click', function() {
                 const email = document.getElementById('registerEmail').value;
                 const password = document.getElementById('registerPassword').value;
+                const referralCode = document.getElementById('referralCode').value || null;
                 
-                const result = UserSystem.register(email, password);
+                const result = UserSystem.register(email, password, referralCode);
                 if (result.error) {
                     alert(result.error);
                 } else {
@@ -670,19 +706,20 @@
             
             document.getElementById('submitDeposit').addEventListener('click', function() {
                 const amount = parseFloat(document.getElementById('depositAmount').value);
-                const proof = document.getElementById('depositProof').value;
+                const date = document.getElementById('receiptDate').value;
+                const time = document.getElementById('receiptTime').value;
                 
                 if (amount < 500 || amount > 2000000) {
                     alert('Amount must be between ₦500 and ₦2,000,000');
                     return;
                 }
                 
-                if (!proof) {
-                    alert('Please provide proof URL');
+                if (!date || !time) {
+                    alert('Please provide receipt date and time');
                     return;
                 }
                 
-                const deposit = SaveEarn.submitDeposit(amount, proof);
+                const deposit = SaveEarn.submitDeposit(amount, date, time);
                 if (deposit.error) {
                     alert(deposit.error);
                 } else {
@@ -692,7 +729,7 @@
             });
             
             // Dashboard
-            document.getElementById('platformWalletBtn').addEventListener('click', function() {
+            document.getElementById('platformWalletBtn').addEventListener('click', async function() {
                 const user = UserSystem.getCurrentUser();
                 if (!user) {
                     alert('Please login to view wallet');
@@ -721,6 +758,100 @@
                 document.getElementById('dashboardModal').style.display = 'flex';
             });
             
+            // Voting System
+            document.getElementById('voteBtn').addEventListener('click', function() {
+                const user = UserSystem.getCurrentUser();
+                if (!user) {
+                    alert('Please login to vote');
+                    document.getElementById('loginModal').style.display = 'flex';
+                    return;
+                }
+                document.getElementById('votingModal').style.display = 'flex';
+            });
+            
+            document.getElementById('submitVote').addEventListener('click', function() {
+                const user = UserSystem.getCurrentUser();
+                if (!user) {
+                    alert('Please login to vote');
+                    return;
+                }
+                
+                // Check if user has tokens
+                if (user.cryptoWallet.balance < 25) {
+                    alert('You need at least 25 MZLx to vote');
+                    return;
+                }
+                
+                const proposedPrice = parseFloat(document.getElementById('priceSlider').value);
+                
+                // Save vote
+                const votes = JSON.parse(localStorage.getItem('votes') || '[]');
+                votes.push({
+                    userId: user.email,
+                    price: proposedPrice,
+                    timestamp: new Date().toISOString()
+                });
+                localStorage.setItem('votes', JSON.stringify(votes));
+                
+                alert(`Vote submitted for $${proposedPrice.toFixed(4)} per MZLx!`);
+                document.getElementById('votingModal').style.display = 'none';
+            });
+            
+            // Buy MAZOL button
+            document.getElementById('buyButton').addEventListener('click', function() {
+                document.getElementById('currencyModal').style.display = 'flex';
+            });
+            
+            // Logout functionality
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                UserSystem.logout();
+                location.reload();
+            });
+            
+            // Flutterwave payment
+            document.getElementById('processFlutterwave').addEventListener('click', function() {
+                const apiKey = document.getElementById('flutterwaveKey').value;
+                const amount = document.getElementById('fwAmount').value;
+                
+                if (!apiKey) {
+                    alert('Please enter your Flutterwave API Key');
+                    return;
+                }
+                
+                // In a real implementation, this would call Flutterwave API
+                alert(`Processing ₦${amount} payment via Flutterwave...`);
+            });
+            
+            // MetaMask connection
+            document.getElementById('platformWalletBtn').addEventListener('click', async function() {
+                if (typeof window.ethereum === 'undefined') {
+                    alert('Please install MetaMask!');
+                    return;
+                }
+                
+                try {
+                    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                    const walletAddress = accounts[0];
+                    
+                    // Display connected address
+                    document.getElementById('walletAddress').textContent = 
+                        walletAddress.substring(0, 6) + '...' + walletAddress.substring(walletAddress.length - 4);
+                    document.getElementById('walletInfo').style.display = 'block';
+                    
+                    // Store in user profile
+                    const user = UserSystem.getCurrentUser();
+                    if (user) {
+                        user.metaMaskAddress = walletAddress;
+                        localStorage.setItem('currentUser', JSON.stringify(user));
+                    }
+                    
+                    return walletAddress;
+                } catch (error) {
+                    console.error("MetaMask connection failed:", error);
+                    alert('Wallet connection failed: ' + error.message);
+                }
+            });
+            
             // Modal close buttons
             document.querySelectorAll('.modal-close').forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -744,6 +875,7 @@
             if (user) {
                 document.getElementById('loginBtn').style.display = 'none';
                 document.getElementById('registerBtn').style.display = 'none';
+                document.getElementById('logoutBtn').style.display = 'inline-block';
                 document.getElementById('memberId').textContent = user.memberId;
                 document.getElementById('memberBadge').textContent = '🎁 ' + user.memberId;
             }
