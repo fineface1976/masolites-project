@@ -5,400 +5,65 @@
     <title>Masolites Admin Panel</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --navy: #1a1a2e;
-            --lemon-green: #a4de02;
-            --accent: #d8315b;
-        }
+        /* ... (admin panel styles) ... */
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f5f5f5;
-            padding: 20px;
-        }
-        
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 2px solid var(--navy);
-            margin-bottom: 20px;
-        }
-        
-        .admin-header h1 {
-            color: var(--navy);
-        }
-        
-        .logout-btn {
-            background: var(--accent);
+        .metamask-connect {
+            padding: 10px;
+            background: #f6851b;
             color: white;
-            border: none;
-            padding: 8px 15px;
             border-radius: 5px;
             cursor: pointer;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
-        
-        th {
-            background-color: var(--navy);
-            color: white;
-        }
-        
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        
-        .approve-btn {
-            background: var(--lemon-green);
-            color: #333;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
-        .approve-btn:hover {
-            opacity: 0.9;
-        }
-        
-        .section {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
-        
-        .login-container {
-            max-width: 400px;
-            margin: 50px auto;
-            padding: 30px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-        }
-        
-        .login-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .login-form input {
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-        
-        .login-form button {
-            background: var(--navy);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-        
-        .config-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        
-        .config-box {
-            background: #f9f9f9;
-            padding: 15px;
-            border-radius: 6px;
-            border-left: 4px solid var(--lemon-green);
-        }
-        
-        .config-box h3 {
-            margin-bottom: 10px;
-            color: var(--navy);
-        }
-        
-        .config-input {
-            width: 100%;
-            padding: 8px;
-            margin: 5px 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        
-        .save-config {
-            background: var(--lemon-green);
-            color: #333;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 10px;
+            margin-top: 15px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <div id="loginPanel" class="login-container">
-        <h2>Admin Login</h2>
-        <form class="login-form" id="adminLoginForm">
-            <input type="text" id="adminUsername" placeholder="Username" required>
-            <input type="password" id="adminPassword" placeholder="Password" required>
-            <button type="submit">Login</button>
-        </form>
-    </div>
-
-    <div id="adminPanel" style="display:none;">
-        <header class="admin-header">
-            <h1>Masolites Admin Dashboard</h1>
-            <button class="logout-btn" id="adminLogout">Logout</button>
-        </header>
-
-        <div class="section">
-            <h2>Pending Deposits</h2>
-            <table id="pendingDepositsTable">
-                <thead>
-                    <tr>
-                        <th>User ID</th>
-                        <th>Amount (₦)</th>
-                        <th>Date & Time</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Deposits will be populated here -->
-                </tbody>
-            </table>
-        </div>
-
-        <div class="section">
-            <h2>System Configuration</h2>
-            <div class="config-section">
-                <div class="config-box">
-                    <h3>Bank Accounts</h3>
-                    <input type="text" class="config-input" id="bankName" placeholder="Bank Name">
-                    <input type="text" class="config-input" id="accountNumber" placeholder="Account Number">
-                    <input type="text" class="config-input" id="accountName" placeholder="Account Name">
-                    <button class="save-config" id="saveBank">Save Bank Account</button>
-                </div>
+    <!-- ... (admin panel content) ... -->
+    
+    <div class="section">
+        <h2>Payment Configuration</h2>
+        <div class="config-section">
+            <div class="config-box">
+                <h3>Flutterwave Settings</h3>
+                <label>API Key:</label>
+                <input type="text" class="config-input" id="flutterwaveKey">
+                <button class="save-config" id="saveFlutterwave">Save Key</button>
                 
-                <div class="config-box">
-                    <h3>Reward Settings</h3>
-                    <label>Immediate Reward (%):</label>
-                    <input type="number" class="config-input" id="immediateReward" min="0" max="100" value="5">
-                    
-                    <label>Long-term Reward (%):</label>
-                    <input type="number" class="config-input" id="longTermReward" min="0" max="100" value="10">
-                    
-                    <label>Long-term Duration (months):</label>
-                    <input type="number" class="config-input" id="rewardDuration" min="1" max="24" value="9">
-                    <button class="save-config" id="saveRewards">Save Reward Settings</button>
+                <h3>MetaMask Connection</h3>
+                <div class="metamask-connect" id="connectMetaMask">
+                    Connect MetaMask Wallet
                 </div>
-                
-                <div class="config-box">
-                    <h3>Flutterwave Configuration</h3>
-                    <label>API Key:</label>
-                    <input type="text" class="config-input" id="flutterwaveKey" placeholder="Enter API Key">
-                    <button class="save-config" id="saveFlutterwave">Save Key</button>
-                </div>
+                <div id="walletStatus" style="margin-top:10px;"></div>
             </div>
         </div>
-
-        <div class="section">
-            <h2>User Management</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Member ID</th>
-                        <th>Email</th>
-                        <th>Tokens</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="userManagement">
-                    <!-- Users will be populated here -->
-                </tbody>
-            </table>
-        </div>
     </div>
-
+    
     <script>
-        // Admin credentials
-        const ADMIN_CREDENTIALS = {
-            username: "admin",
-            password: "masolites2023" // In production, use hashed passwords
-        };
+        // ... (admin JavaScript) ...
         
-        // DOM Elements
-        const loginPanel = document.getElementById('loginPanel');
-        const adminPanel = document.getElementById('adminPanel');
-        const loginForm = document.getElementById('adminLoginForm');
-        const logoutBtn = document.getElementById('adminLogout');
-        
-        // Login functionality
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('adminUsername').value;
-            const password = document.getElementById('adminPassword').value;
-            
-            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
-                loginPanel.style.display = 'none';
-                adminPanel.style.display = 'block';
-                loadAdminData();
-            } else {
-                alert('Invalid admin credentials');
+        // Connect MetaMask
+        document.getElementById('connectMetaMask').addEventListener('click', async function() {
+            if (typeof window.ethereum === 'undefined') {
+                alert('Please install MetaMask!');
+                return;
             }
-        });
-        
-        // Logout functionality
-        logoutBtn.addEventListener('click', function() {
-            loginPanel.style.display = 'block';
-            adminPanel.style.display = 'none';
-        });
-        
-        // Load data for admin panel
-        function loadAdminData() {
-            // Load pending deposits
-            const deposits = JSON.parse(localStorage.getItem('deposits') || []);
-            const tbody = document.querySelector('#pendingDepositsTable tbody');
-            tbody.innerHTML = '';
             
-            deposits.forEach(deposit => {
-                if (deposit.status === 'pending') {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${deposit.userId}</td>
-                        <td>₦${deposit.amount.toFixed(2)}</td>
-                        <td>${deposit.date} ${deposit.time}</td>
-                        <td>
-                            <button class="approve-btn" data-id="${deposit.id}">
-                                Approve & Pay Reward
-                            </button>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                }
-            });
-            
-            // Add event listeners to approve buttons
-            document.querySelectorAll('.approve-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const depositId = this.dataset.id;
-                    approveDeposit(depositId);
-                });
-            });
-            
-            // Load users
-            const users = JSON.parse(localStorage.getItem('users') || []);
-            const userTbody = document.getElementById('userManagement');
-            userTbody.innerHTML = '';
-            
-            users.forEach(user => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${user.memberId}</td>
-                    <td>${user.email}</td>
-                    <td>${user.cryptoWallet.balance.toFixed(2)} MZLx</td>
-                    <td>Active</td>
+            try {
+                const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                const walletAddress = accounts[0];
+                document.getElementById('walletStatus').innerHTML = `
+                    <p>Connected: ${walletAddress.substring(0,6)}...${walletAddress.substring(walletAddress.length-4)}</p>
+                    <p>Network: ${ethereum.networkVersion}</p>
                 `;
-                userTbody.appendChild(row);
-            });
-        }
-        
-        // Approve deposit and pay reward
-        function approveDeposit(depositId) {
-            const deposits = JSON.parse(localStorage.getItem('deposits') || []);
-            const deposit = deposits.find(d => d.id == depositId);
-            
-            if (deposit) {
-                // Update deposit status
-                deposit.status = 'approved';
-                deposit.approvedAt = new Date().toISOString();
                 
-                // Find user
-                const users = JSON.parse(localStorage.getItem('users') || []);
-                const user = users.find(u => u.email === deposit.userId);
-                
-                if (user) {
-                    // Pay immediate reward (5%)
-                    const reward = deposit.amount * 0.05;
-                    user.cryptoWallet.balance += reward;
-                    
-                    // Process MLM referral
-                    if (user.referredBy) {
-                        MLMSystem.processReferral(user.referredBy, user.email, deposit.amount);
-                    }
-                    
-                    // Save updates
-                    localStorage.setItem('users', JSON.stringify(users));
-                    localStorage.setItem('deposits', JSON.stringify(deposits));
-                    
-                    alert(`Deposit approved! User received ${reward.toFixed(2)} MZLx reward.`);
-                    loadAdminData();
-                }
-            }
-        }
-        
-        // MLM System
-        class MLMSystem {
-            static processReferral(referralCode, userId, amount) {
-                const users = JSON.parse(localStorage.getItem('users') || []);
-                const referrer = users.find(u => u.referralCode === referralCode);
-                
-                if (referrer) {
-                    // 2.5% referral commission
-                    const commission = amount * 0.025;
-                    referrer.cryptoWallet.balance += commission;
-                    
-                    // Update user
-                    localStorage.setItem('users', JSON.stringify(users));
-                    
-                    // Add notification
-                    const message = `You earned ${commission.toFixed(2)} MZLx from referral!`;
-                    UserSystem.addNotification(referrer, message);
-                }
-            }
-        }
-        
-        // Save configuration
-        document.getElementById('saveBank').addEventListener('click', function() {
-            const bank = document.getElementById('bankName').value;
-            const number = document.getElementById('accountNumber').value;
-            const name = document.getElementById('accountName').value;
-            
-            if (bank && number && name) {
-                localStorage.setItem('companyBank', JSON.stringify({ bank, number, name }));
-                alert('Bank account saved!');
+                // Save wallet address
+                localStorage.setItem('metamaskWallet', walletAddress);
+            } catch (error) {
+                console.error("MetaMask connection failed:", error);
+                alert('Wallet connection failed: ' + error.message);
             }
         });
-        
-        // Initialize
-        const savedBank = JSON.parse(localStorage.getItem('companyBank') || '{}');
-        if (savedBank.bank) {
-            document.getElementById('bankName').value = savedBank.bank;
-            document.getElementById('accountNumber').value = savedBank.number;
-            document.getElementById('accountName').value = savedBank.name;
-        }
     </script>
 </body>
 </html>
