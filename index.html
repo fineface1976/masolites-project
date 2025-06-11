@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
     <style>
         :root {
             --deep-blue: #0a2463;
@@ -32,11 +33,19 @@
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
             padding: 15px;
+            overflow: hidden;
         }
         
         .app-container {
             max-width: 500px;
             margin: 0 auto;
+            height: 100vh;
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+        
+        .top-section {
+            min-height: 100vh;
         }
         
         header {
@@ -512,6 +521,52 @@
             font-size: 1rem;
         }
         
+        .buy-options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .buy-option {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--light-blue);
+        }
+        
+        .buy-option:hover {
+            background: rgba(0, 0, 0, 0.5);
+            transform: translateY(-5px);
+        }
+        
+        .vote-form {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+        
+        .auth-form input {
+            padding: 16px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        
+        .auth-form button {
+            padding: 16px;
+            font-size: 16px;
+        }
+        
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
         @media (max-width: 480px) {
             .form-row {
                 flex-direction: column;
@@ -826,6 +881,59 @@
         </div>
     </div>
 
+    <!-- Buy Options Modal -->
+    <div class="modal" id="buyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-shopping-cart"></i> Buy MAZOL Tokens</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="buy-options-grid">
+                    <div class="buy-option" id="bankOption">
+                        <div class="action-icon"><i class="fas fa-building"></i></div>
+                        <h4>Bank Transfer</h4>
+                        <p>₦18 per MZLx</p>
+                    </div>
+                    <div class="buy-option" id="usdtOption">
+                        <div class="action-icon"><i class="fab fa-ethereum"></i></div>
+                        <h4>USDT Payment</h4>
+                        <p>$0.001 per MZLx</p>
+                    </div>
+                    <div class="buy-option" id="flutterOption">
+                        <div class="action-icon"><i class="fas fa-bolt"></i></div>
+                        <h4>Flutterwave</h4>
+                        <p>Instant Payment</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Voting Modal -->
+    <div class="modal" id="voteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-vote-yea"></i> Token Price Voting</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="votingForm">
+                    <div class="vote-form">
+                        <div class="form-group">
+                            <label>New Token Price ($)</label>
+                            <input type="number" id="newPrice" min="0.001" step="0.001" value="0.001">
+                        </div>
+                        <button class="cta-button" id="submitVote">
+                            <i class="fas fa-vote-yea"></i> Submit Vote
+                        </button>
+                        <p class="note">Voting available daily from 6pm - 11:30pm WAT</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Tokenomics Configuration
         const TOKENOMICS = {
@@ -946,10 +1054,66 @@
                 deposits.push(deposit);
                 localStorage.setItem('deposits', JSON.stringify(deposits));
                 
+                // Record activity for admin
+                const activity = JSON.parse(localStorage.getItem('activity') || '[]');
+                activity.unshift({
+                    userId: user.email,
+                    action: 'Deposit Submitted',
+                    details: `Manual deposit: ₦${amount}`,
+                    timestamp: new Date().toISOString()
+                });
+                localStorage.setItem('activity', JSON.stringify(activity));
+                
                 // Add notification
                 UserSystem.addNotification(user, `Manual deposit of ₦${amount} submitted. Waiting for admin approval.`);
                 
                 return deposit;
+            }
+            
+            static processFlutterwave(amount) {
+                const user = UserSystem.getCurrentUser();
+                if (!user) return { error: 'Not authenticated' };
+                
+                // Replace with your Flutterwave public key
+                const FLW_PUBLIC_KEY = "YOUR_FLUTTERWAVE_PUBLIC_KEY";
+                
+                FlutterwaveCheckout({
+                    public_key: FLW_PUBLIC_KEY,
+                    tx_ref: "DEPOSIT-" + Date.now(),
+                    amount: amount,
+                    currency: "NGN",
+                    payment_options: "card, banktransfer, ussd",
+                    customer: {
+                        email: user.email,
+                        name: "Masolites User"
+                    },
+                    callback: function(response) {
+                        if (response.status === "successful") {
+                            // Add to user balance
+                            user.fiatWallet.balance += amount;
+                            UserSystem.addNotification(user, `Flutterwave deposit of ₦${amount} successful!`);
+                            
+                            // Record activity
+                            const activity = JSON.parse(localStorage.getItem('activity') || '[]');
+                            activity.unshift({
+                                userId: user.email,
+                                action: 'Flutterwave Deposit',
+                                details: `Amount: ₦${amount}`,
+                                timestamp: new Date().toISOString()
+                            });
+                            localStorage.setItem('activity', JSON.stringify(activity));
+                            
+                            alert(`Successfully deposited ₦${amount}!`);
+                        } else {
+                            alert("Payment failed. Please try again.");
+                        }
+                    },
+                    customizations: {
+                        title: "Masolites Deposit",
+                        description: "Fund your account",
+                        logo: "https://masolites.com/logo.png"
+                    }
+                });
             }
         }
 
@@ -1182,6 +1346,16 @@
                 }
             });
             
+            // Flutterwave payment
+            document.getElementById('processFlutterwave').addEventListener('click', function() {
+                const amount = parseFloat(document.getElementById('fwAmount').value);
+                if (amount < 500) {
+                    alert('Minimum deposit is ₦500');
+                    return;
+                }
+                SaveEarn.processFlutterwave(amount);
+            });
+            
             // Dashboard
             document.getElementById('platformWalletBtn').addEventListener('click', function() {
                 const user = UserSystem.getCurrentUser();
@@ -1214,22 +1388,76 @@
             
             // Voting
             document.getElementById('voteBtn').addEventListener('click', function() {
-                if (!UserSystem.getCurrentUser()) {
+                const user = UserSystem.getCurrentUser();
+                if (!user) {
                     alert('Please login to vote');
                     document.getElementById('loginModal').style.display = 'flex';
                     return;
                 }
-                alert('Voting system will be available during voting hours (6pm - 11:30pm WAT)');
+                
+                // Check voting hours (6pm - 11:30pm WAT)
+                const now = new Date();
+                const hours = now.getHours();
+                const canVote = hours >= 18 && hours < 23.5;
+                
+                if (!canVote) {
+                    document.getElementById('votingForm').innerHTML = `
+                        <p class="welcome-message">Voting is only available between 6pm - 11:30pm WAT</p>
+                    `;
+                } else {
+                    document.getElementById('votingForm').innerHTML = `
+                        <div class="vote-form">
+                            <div class="form-group">
+                                <label>New Token Price ($)</label>
+                                <input type="number" id="newPrice" min="0.001" step="0.001" value="0.001">
+                            </div>
+                            <button class="cta-button" id="submitVote">
+                                <i class="fas fa-vote-yea"></i> Submit Vote
+                            </button>
+                        </div>
+                    `;
+                    
+                    // Add event listener to the new button
+                    document.getElementById('submitVote').addEventListener('click', function() {
+                        const newPrice = parseFloat(document.getElementById('newPrice').value);
+                        if (newPrice < 0.001) {
+                            alert('Minimum price is $0.001');
+                            return;
+                        }
+                        
+                        // Update token price
+                        TOKENOMICS.currentPrice = newPrice;
+                        alert(`Vote submitted! New price: $${newPrice.toFixed(3)}`);
+                        document.getElementById('voteModal').style.display = 'none';
+                    });
+                }
+                
+                document.getElementById('voteModal').style.display = 'flex';
             });
             
             // Buy MAZOL
             document.getElementById('buyButton').addEventListener('click', function() {
-                if (!UserSystem.getCurrentUser()) {
+                const user = UserSystem.getCurrentUser();
+                if (!user) {
                     alert('Please login to buy tokens');
                     document.getElementById('loginModal').style.display = 'flex';
                     return;
                 }
-                alert('Token purchase options will be displayed');
+                
+                document.getElementById('buyModal').style.display = 'flex';
+            });
+            
+            // Buy options
+            document.getElementById('bankOption').addEventListener('click', function() {
+                alert('Bank transfer details will be displayed');
+            });
+            
+            document.getElementById('usdtOption').addEventListener('click', function() {
+                alert('USDT wallet address will be displayed');
+            });
+            
+            document.getElementById('flutterOption').addEventListener('click', function() {
+                alert('Flutterwave payment will be processed');
             });
             
             // Admin button
