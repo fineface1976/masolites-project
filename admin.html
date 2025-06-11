@@ -27,11 +27,14 @@
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
             padding: 20px;
+            overflow: hidden;
         }
         
         .admin-container {
             max-width: 1200px;
             margin: 0 auto;
+            height: 95vh;
+            overflow-y: auto;
         }
         
         .admin-header {
@@ -155,6 +158,8 @@
             margin-bottom: 30px;
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
             border: 1px solid var(--admin-border);
+            max-height: 400px;
+            overflow-y: auto;
         }
         
         .config-header {
@@ -370,6 +375,13 @@
         .login-form button:hover {
             background: #2563eb;
         }
+        
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -426,6 +438,9 @@
                 </div>
                 <div class="admin-tab" data-tab="settings">
                     <i class="fas fa-cog"></i> Settings
+                </div>
+                <div class="admin-tab" data-tab="actions">
+                    <i class="fas fa-bolt"></i> Quick Actions
                 </div>
             </div>
             
@@ -579,6 +594,26 @@
                     <button class="save-config" id="saveAdminCredentials">
                         <i class="fas fa-save"></i> Update Credentials
                     </button>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="actionsTab">
+                <div class="config-section">
+                    <div class="config-header">
+                        <div class="config-icon"><i class="fas fa-bolt"></i></div>
+                        <h2 class="config-title">Admin Actions</h2>
+                    </div>
+                    <div class="action-grid">
+                        <button class="action-btn btn-approve" id="fundUsers">
+                            <i class="fas fa-coins"></i> Fund All Users
+                        </button>
+                        <button class="action-btn btn-approve" id="resetMining">
+                            <i class="fas fa-sync-alt"></i> Reset Mining
+                        </button>
+                        <button class="action-btn btn-reject" id="clearData">
+                            <i class="fas fa-trash"></i> Clear Test Data
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -803,12 +838,32 @@
                     <p><strong>Connected:</strong> ${walletAddress.substring(0,6)}...${walletAddress.substring(walletAddress.length-4)}</p>
                     <p><strong>Network ID:</strong> ${ethereum.networkVersion}</p>
                 `;
-                
-                // Save wallet address
-                localStorage.setItem('metamaskWallet', walletAddress);
             } catch (error) {
                 console.error("MetaMask connection failed:", error);
                 alert('Wallet connection failed: ' + error.message);
+            }
+        });
+        
+        // Admin actions
+        document.getElementById('fundUsers').addEventListener('click', function() {
+            const users = JSON.parse(localStorage.getItem('users') || []);
+            users.forEach(user => {
+                user.cryptoWallet.balance += 100;
+            });
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('All users funded with 100 MZLx!');
+        });
+        
+        document.getElementById('resetMining').addEventListener('click', function() {
+            localStorage.removeItem('totalMined');
+            alert('Mining data reset!');
+        });
+        
+        document.getElementById('clearData').addEventListener('click', function() {
+            if (confirm('Clear all test data? This cannot be undone!')) {
+                localStorage.clear();
+                alert('All test data cleared!');
+                location.reload();
             }
         });
         
