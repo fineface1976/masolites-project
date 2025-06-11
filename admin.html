@@ -279,7 +279,7 @@
         // Load data for admin panel
         function loadAdminData() {
             // Load pending deposits
-            const deposits = JSON.parse(localStorage.getItem('deposits') || [];
+            const deposits = JSON.parse(localStorage.getItem('deposits') || []);
             const tbody = document.querySelector('#pendingDepositsTable tbody');
             tbody.innerHTML = '';
             
@@ -309,7 +309,7 @@
             });
             
             // Load users
-            const users = JSON.parse(localStorage.getItem('users') || [];
+            const users = JSON.parse(localStorage.getItem('users') || []);
             const userTbody = document.getElementById('userManagement');
             userTbody.innerHTML = '';
             
@@ -319,7 +319,7 @@
                     <td>${user.memberId}</td>
                     <td>${user.email}</td>
                     <td>${user.cryptoWallet.balance.toFixed(2)} MZLx</td>
-                    <td>${user.isActive ? 'Active' : 'Inactive'}</td>
+                    <td>Active</td>
                 `;
                 userTbody.appendChild(row);
             });
@@ -327,7 +327,7 @@
         
         // Approve deposit and pay reward
         function approveDeposit(depositId) {
-            const deposits = JSON.parse(localStorage.getItem('deposits') || [];
+            const deposits = JSON.parse(localStorage.getItem('deposits') || []);
             const deposit = deposits.find(d => d.id == depositId);
             
             if (deposit) {
@@ -336,7 +336,7 @@
                 deposit.approvedAt = new Date().toISOString();
                 
                 // Find user
-                const users = JSON.parse(localStorage.getItem('users') || [];
+                const users = JSON.parse(localStorage.getItem('users') || []);
                 const user = users.find(u => u.email === deposit.userId);
                 
                 if (user) {
@@ -344,12 +344,38 @@
                     const reward = deposit.amount * 0.05;
                     user.cryptoWallet.balance += reward;
                     
+                    // Process MLM referral
+                    if (user.referredBy) {
+                        MLMSystem.processReferral(user.referredBy, user.email, deposit.amount);
+                    }
+                    
                     // Save updates
                     localStorage.setItem('users', JSON.stringify(users));
                     localStorage.setItem('deposits', JSON.stringify(deposits));
                     
                     alert(`Deposit approved! User received ${reward.toFixed(2)} MZLx reward.`);
                     loadAdminData();
+                }
+            }
+        }
+        
+        // MLM System
+        class MLMSystem {
+            static processReferral(referralCode, userId, amount) {
+                const users = JSON.parse(localStorage.getItem('users') || []);
+                const referrer = users.find(u => u.referralCode === referralCode);
+                
+                if (referrer) {
+                    // 2.5% referral commission
+                    const commission = amount * 0.025;
+                    referrer.cryptoWallet.balance += commission;
+                    
+                    // Update user
+                    localStorage.setItem('users', JSON.stringify(users));
+                    
+                    // Add notification
+                    const message = `You earned ${commission.toFixed(2)} MZLx from referral!`;
+                    UserSystem.addNotification(referrer, message);
                 }
             }
         }
