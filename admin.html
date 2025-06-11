@@ -4,23 +4,28 @@
     <meta charset="UTF-8">
     <title>Masolites Admin Panel</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --admin-bg: #f5f8fa;
-            --admin-card: #ffffff;
-            --admin-primary: #2c3e50;
-            --admin-secondary: #3498db;
-            --admin-success: #27ae60;
-            --admin-warning: #f39c12;
-            --admin-danger: #e74c3c;
+            --admin-bg: #0f172a;
+            --admin-card: #1e293b;
+            --admin-primary: #3b82f6;
+            --admin-secondary: #8b5cf6;
+            --admin-text: #e2e8f0;
+            --admin-border: #334155;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
         body {
             background: var(--admin-bg);
-            color: #333;
+            color: var(--admin-text);
             font-family: 'Inter', sans-serif;
+            min-height: 100vh;
             padding: 20px;
         }
         
@@ -34,13 +39,36 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 0;
-            border-bottom: 2px solid var(--admin-primary);
             margin-bottom: 30px;
+            border-bottom: 2px solid var(--admin-border);
         }
         
         .admin-title {
-            color: var(--admin-primary);
             font-size: 1.8rem;
+            color: var(--admin-text);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logout-btn {
+            background: #ef4444;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            background: #dc2626;
+            transform: translateY(-3px);
         }
         
         .admin-stats {
@@ -52,45 +80,64 @@
         
         .stat-card {
             background: var(--admin-card);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
             text-align: center;
-            transition: transform 0.3s;
+            border: 1px solid var(--admin-border);
+            transition: all 0.3s ease;
         }
         
         .stat-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            color: var(--admin-primary);
+            margin-bottom: 15px;
         }
         
         .stat-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--admin-secondary);
+            font-size: 2.2rem;
+            font-weight: 800;
             margin: 10px 0;
+            background: linear-gradient(to right, var(--admin-primary), var(--admin-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .stat-label {
-            color: #7f8c8d;
             font-size: 1rem;
+            color: var(--admin-text);
+            opacity: 0.8;
         }
         
         .admin-tabs {
             display: flex;
-            border-bottom: 1px solid #ddd;
-            margin-bottom: 20px;
+            gap: 5px;
+            background: var(--admin-card);
+            border-radius: 50px;
+            padding: 5px;
+            margin-bottom: 30px;
+            border: 1px solid var(--admin-border);
         }
         
         .admin-tab {
-            padding: 12px 20px;
+            padding: 15px 25px;
             cursor: pointer;
-            border-bottom: 3px solid transparent;
+            border-radius: 50px;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
         }
         
         .admin-tab.active {
-            border-bottom: 3px solid var(--admin-secondary);
-            color: var(--admin-secondary);
+            background: var(--admin-primary);
+            color: white;
         }
         
         .tab-content {
@@ -103,86 +150,92 @@
         
         .config-section {
             background: var(--admin-card);
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            padding: 30px;
             margin-bottom: 30px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--admin-border);
         }
         
         .config-header {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--admin-border);
         }
         
         .config-icon {
-            background: var(--admin-secondary);
-            color: white;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
+            background: linear-gradient(to right, var(--admin-primary), var(--admin-secondary));
+            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1.5rem;
             margin-right: 15px;
         }
         
         .config-title {
-            font-size: 1.4rem;
-            color: var(--admin-primary);
+            font-size: 1.5rem;
+            font-weight: 700;
         }
         
         .config-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            gap: 25px;
         }
         
         .config-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         
         .config-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: 600;
-            color: var(--admin-primary);
+            font-size: 1rem;
         }
         
         .config-input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid var(--admin-border);
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--admin-text);
             font-size: 1rem;
-            transition: border 0.3s;
         }
         
         .config-input:focus {
-            border-color: var(--admin-secondary);
             outline: none;
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+            border-color: var(--admin-primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
         }
         
         .save-config {
-            background: var(--admin-success);
+            background: var(--admin-primary);
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
+            padding: 15px 30px;
+            border-radius: 50px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
-            display: flex;
+            margin-top: 10px;
+            display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            transition: all 0.3s ease;
         }
         
         .save-config:hover {
-            background: #219653;
+            background: #2563eb;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
         }
         
         .data-table {
@@ -195,247 +248,577 @@
             background: var(--admin-primary);
             color: white;
             text-align: left;
-            padding: 12px 15px;
+            padding: 15px;
+            font-weight: 600;
         }
         
         .data-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #eee;
+            padding: 15px;
+            border-bottom: 1px solid var(--admin-border);
         }
         
         .data-table tr:nth-child(even) {
-            background: #f8f9fa;
+            background: rgba(0, 0, 0, 0.2);
         }
         
         .action-btn {
-            padding: 6px 12px;
-            border-radius: 4px;
+            padding: 8px 15px;
+            border-radius: 50px;
             font-size: 0.9rem;
             cursor: pointer;
             border: none;
             display: inline-flex;
             align-items: center;
             gap: 5px;
+            transition: all 0.3s ease;
         }
         
         .btn-approve {
-            background: var(--admin-success);
+            background: #10b981;
             color: white;
         }
         
+        .btn-approve:hover {
+            background: #059669;
+        }
+        
         .btn-reject {
-            background: var(--admin-danger);
+            background: #ef4444;
             color: white;
+        }
+        
+        .btn-reject:hover {
+            background: #dc2626;
+        }
+        
+        .metamask-connect {
+            background: #f97316;
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            transition: all 0.3s ease;
+            border: none;
+            width: 100%;
+            font-size: 1rem;
+        }
+        
+        .metamask-connect:hover {
+            background: #ea580c;
+            transform: translateY(-3px);
+        }
+        
+        .wallet-status {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+        
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 40px;
+            background: var(--admin-card);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            border: 1px solid var(--admin-border);
+        }
+        
+        .login-title {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: var(--admin-text);
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .login-form input {
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid var(--admin-border);
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--admin-text);
+            font-size: 1rem;
+        }
+        
+        .login-form button {
+            background: var(--admin-primary);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .login-form button:hover {
+            background: #2563eb;
         }
     </style>
 </head>
 <body>
-    <div class="admin-container">
-        <div class="admin-header">
-            <h1 class="admin-title">Masolites Admin Dashboard</h1>
-            <button class="logout-btn" id="adminLogout">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </button>
-        </div>
-        
-        <div class="admin-stats">
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-users fa-2x"></i>
-                </div>
-                <div class="stat-value" id="totalUsers">0</div>
-                <div class="stat-label">Total Users</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-coins fa-2x"></i>
-                </div>
-                <div class="stat-value" id="totalDeposits">₦0</div>
-                <div class="stat-label">Total Deposits</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-vote-yea fa-2x"></i>
-                </div>
-                <div class="stat-value" id="totalVotes">0</div>
-                <div class="stat-label">Total Votes</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-shopping-cart fa-2x"></i>
-                </div>
-                <div class="stat-value" id="totalSales">0</div>
-                <div class="stat-label">Total Sales</div>
-            </div>
-        </div>
-        
-        <div class="admin-tabs">
-            <div class="admin-tab active" data-tab="dashboard">Dashboard</div>
-            <div class="admin-tab" data-tab="settings">System Settings</div>
-            <div class="admin-tab" data-tab="users">User Management</div>
-            <div class="admin-tab" data-tab="transactions">Transactions</div>
-        </div>
-        
-        <!-- Dashboard Tab -->
-        <div class="tab-content active" id="dashboardTab">
-            <!-- Pending Deposits -->
-            <div class="config-section">
-                <div class="config-header">
-                    <div class="config-icon">
-                        <i class="fas fa-money-check-alt"></i>
-                    </div>
-                    <h2 class="config-title">Pending Deposits</h2>
-                </div>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>User</th>
-                            <th>Amount (₦)</th>
-                            <th>Date/Time</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="pendingDepositsTable">
-                        <!-- Deposits will be populated here -->
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- Recent Activity -->
-            <div class="config-section">
-                <div class="config-header">
-                    <div class="config-icon">
-                        <i class="fas fa-history"></i>
-                    </div>
-                    <h2 class="config-title">Recent Activity</h2>
-                </div>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>User</th>
-                            <th>Action</th>
-                            <th>Time</th>
-                            <th>Details</th>
-                        </tr>
-                    </thead>
-                    <tbody id="recentActivity">
-                        <!-- Activity will be populated here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <!-- Settings Tab -->
-        <div class="tab-content" id="settingsTab">
-            <!-- Payment Settings -->
-            <div class="config-section">
-                <div class="config-header">
-                    <div class="config-icon">
-                        <i class="fas fa-credit-card"></i>
-                    </div>
-                    <h2 class="config-title">Payment Settings</h2>
-                </div>
-                <div class="config-grid">
-                    <div class="config-group">
-                        <label>Flutterwave API Key</label>
-                        <input type="text" class="config-input" id="flutterwaveKey" placeholder="Enter API Key">
-                    </div>
-                    <div class="config-group">
-                        <label>Bank Account Details</label>
-                        <textarea class="config-input" id="bankDetails" placeholder="Bank name, account number, etc." rows="3"></textarea>
-                    </div>
-                    <div class="config-group">
-                        <label>Manual Deposit Reward (%)</label>
-                        <input type="number" class="config-input" id="depositReward" min="0" max="100" value="5">
-                    </div>
-                    <div class="config-group">
-                        <label>Referral Commission (%)</label>
-                        <input type="number" class="config-input" id="referralCommission" min="0" max="100" value="5">
-                    </div>
-                </div>
-                <button class="save-config" id="savePaymentSettings">
-                    <i class="fas fa-save"></i> Save Payment Settings
+    <div id="loginPanel" class="login-container">
+        <h1 class="login-title">Admin Login</h1>
+        <form class="login-form" id="adminLoginForm">
+            <input type="text" id="adminUsername" placeholder="Username" required>
+            <input type="password" id="adminPassword" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <div id="adminPanel" style="display:none;">
+        <div class="admin-container">
+            <div class="admin-header">
+                <h1 class="admin-title"><i class="fas fa-cogs"></i> Masolites Admin Dashboard</h1>
+                <button class="logout-btn" id="adminLogout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
                 </button>
             </div>
             
-            <!-- Mining Settings -->
-            <div class="config-section">
-                <div class="config-header">
-                    <div class="config-icon">
-                        <i class="fas fa-digging"></i>
-                    </div>
-                    <h2 class="config-title">Mining Settings</h2>
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-value" id="totalUsers">0</div>
+                    <div class="stat-label">Total Users</div>
                 </div>
-                <div class="config-grid">
-                    <div class="config-group">
-                        <label>Mining Rate (MZLx/hour)</label>
-                        <input type="number" class="config-input" id="miningRate" min="0" step="0.001" value="0.0001">
-                    </div>
-                    <div class="config-group">
-                        <label>Minimum Claim Amount</label>
-                        <input type="number" class="config-input" id="minClaimAmount" min="0" step="0.001" value="0.1">
-                    </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div>
+                    <div class="stat-value" id="totalDeposits">₦0</div>
+                    <div class="stat-label">Total Deposits</div>
                 </div>
-                <button class="save-config" id="saveMiningSettings">
-                    <i class="fas fa-save"></i> Save Mining Settings
-                </button>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                    <div class="stat-value" id="totalMined">0 MZLx</div>
+                    <div class="stat-label">Total Mined</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-shopping-cart"></i></div>
+                    <div class="stat-value" id="totalSales">0</div>
+                    <div class="stat-label">Total Sales</div>
+                </div>
             </div>
             
-            <!-- Voting Settings -->
-            <div class="config-section">
-                <div class="config-header">
-                    <div class="config-icon">
-                        <i class="fas fa-vote-yea"></i>
-                    </div>
-                    <h2 class="config-title">Voting Settings</h2>
+            <div class="admin-tabs">
+                <div class="admin-tab active" data-tab="dashboard">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
                 </div>
-                <div class="config-grid">
-                    <div class="config-group">
-                        <label>Minimum Tokens to Vote</label>
-                        <input type="number" class="config-input" id="minVoteTokens" min="0" value="25">
-                    </div>
-                    <div class="config-group">
-                        <label>Voting Hours (Start - End)</label>
-                        <input type="text" class="config-input" id="votingHours" value="18:00 - 23:30">
-                    </div>
+                <div class="admin-tab" data-tab="payments">
+                    <i class="fas fa-money-check"></i> Payments
                 </div>
-                <button class="save-config" id="saveVotingSettings">
-                    <i class="fas fa-save"></i> Save Voting Settings
-                </button>
+                <div class="admin-tab" data-tab="mining">
+                    <i class="fas fa-hard-hat"></i> Mining
+                </div>
+                <div class="admin-tab" data-tab="settings">
+                    <i class="fas fa-cog"></i> Settings
+                </div>
             </div>
             
-            <!-- Wallet Connection -->
-            <div class="config-section">
-                <div class="config-header">
-                    <div class="config-icon">
-                        <i class="fas fa-wallet"></i>
+            <div class="tab-content active" id="dashboardTab">
+                <div class="config-section">
+                    <div class="config-header">
+                        <div class="config-icon"><i class="fas fa-list"></i></div>
+                        <h2 class="config-title">Pending Deposits</h2>
                     </div>
-                    <h2 class="config-title">Wallet Connection</h2>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Amount (₦)</th>
+                                <th>Date/Time</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pendingDepositsTable">
+                            <!-- Deposits will be populated here -->
+                        </tbody>
+                    </table>
                 </div>
-                <div class="config-grid">
-                    <div class="config-group">
-                        <label>MetaMask Wallet</label>
-                        <div class="metamask-connect" id="connectMetaMask">
-                            <i class="fab fa-ethereum"></i> Connect MetaMask
+                
+                <div class="config-section">
+                    <div class="config-header">
+                        <div class="config-icon"><i class="fas fa-history"></i></div>
+                        <h2 class="config-title">Recent Activity</h2>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Action</th>
+                                <th>Time</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentActivity">
+                            <!-- Activity will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="paymentsTab">
+                <div class="config-section">
+                    <div class="config-header">
+                        <div class="config-icon"><i class="fas fa-credit-card"></i></div>
+                        <h2 class="config-title">Payment Settings</h2>
+                    </div>
+                    <div class="config-grid">
+                        <div class="config-group">
+                            <label>Flutterwave API Key</label>
+                            <input type="text" class="config-input" id="flutterwaveKey" placeholder="Enter API Key">
                         </div>
-                        <div id="walletStatus" class="wallet-status">
-                            Not connected
+                        <div class="config-group">
+                            <label>Manual Deposit Reward (%)</label>
+                            <input type="number" class="config-input" id="depositReward" min="0" max="100" value="5">
+                        </div>
+                        <div class="config-group">
+                            <label>Referral Commission (%)</label>
+                            <input type="number" class="config-input" id="referralCommission" min="0" max="100" value="5">
+                        </div>
+                        <div class="config-group">
+                            <label>Bank Account Details</label>
+                            <textarea class="config-input" id="bankDetails" rows="3" placeholder="Bank name, account number, etc."></textarea>
                         </div>
                     </div>
+                    <button class="save-config" id="savePaymentSettings">
+                        <i class="fas fa-save"></i> Save Payment Settings
+                    </button>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="miningTab">
+                <div class="config-section">
+                    <div class="config-header">
+                        <div class="config-icon"><i class="fas fa-digging"></i></div>
+                        <h2 class="config-title">Mining Settings</h2>
+                    </div>
+                    <div class="config-grid">
+                        <div class="config-group">
+                            <label>Mining Rate (MZLx/hour)</label>
+                            <input type="number" class="config-input" id="miningRate" min="0" step="0.001" value="0.0001">
+                        </div>
+                        <div class="config-group">
+                            <label>Minimum Claim Amount</label>
+                            <input type="number" class="config-input" id="minClaimAmount" min="0" step="0.001" value="0.1">
+                        </div>
+                        <div class="config-group">
+                            <label>Mining Reserve (MZLx)</label>
+                            <input type="number" class="config-input" id="miningReserve" min="0" value="3000000">
+                        </div>
+                    </div>
+                    <button class="save-config" id="saveMiningSettings">
+                        <i class="fas fa-save"></i> Save Mining Settings
+                    </button>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="settingsTab">
+                <div class="config-section">
+                    <div class="config-header">
+                        <div class="config-icon"><i class="fas fa-vote-yea"></i></div>
+                        <h2 class="config-title">Voting Settings</h2>
+                    </div>
+                    <div class="config-grid">
+                        <div class="config-group">
+                            <label>Minimum Tokens to Vote</label>
+                            <input type="number" class="config-input" id="minVoteTokens" min="0" value="25">
+                        </div>
+                        <div class="config-group">
+                            <label>Voting Hours (Start - End)</label>
+                            <input type="text" class="config-input" id="votingHours" value="18:00 - 23:30">
+                        </div>
+                    </div>
+                    <button class="save-config" id="saveVotingSettings">
+                        <i class="fas fa-save"></i> Save Voting Settings
+                    </button>
+                </div>
+                
+                <div class="config-section">
+                    <div class="config-header">
+                        <div class="config-icon"><i class="fas fa-wallet"></i></div>
+                        <h2 class="config-title">Wallet Connection</h2>
+                    </div>
+                    <button class="metamask-connect" id="connectMetaMask">
+                        <i class="fab fa-ethereum"></i> Connect MetaMask Wallet
+                    </button>
+                    <div id="walletStatus" class="wallet-status">
+                        Not connected
+                    </div>
+                </div>
+                
+                <div class="config-section">
+                    <div class="config-header">
+                        <div class="config-icon"><i class="fas fa-users-cog"></i></div>
+                        <h2 class="config-title">Admin Credentials</h2>
+                    </div>
+                    <div class="config-grid">
+                        <div class="config-group">
+                            <label>New Username</label>
+                            <input type="text" class="config-input" id="newUsername" placeholder="Enter new username">
+                        </div>
+                        <div class="config-group">
+                            <label>New Password</label>
+                            <input type="password" class="config-input" id="newPassword" placeholder="Enter new password">
+                        </div>
+                    </div>
+                    <button class="save-config" id="saveAdminCredentials">
+                        <i class="fas fa-save"></i> Update Credentials
+                    </button>
                 </div>
             </div>
         </div>
-        
-        <!-- ... (other tabs) ... -->
     </div>
 
     <script>
-        // Complete admin panel implementation with:
-        // 1. Real-time data synchronization
-        // 2. Settings management
-        // 3. Wallet connection
-        // 4. Transaction approval
-        // 5. User management
+        // Admin credentials
+        const ADMIN_CREDENTIALS = {
+            username: "admin",
+            password: "masolites2023"
+        };
+        
+        // DOM Elements
+        const loginPanel = document.getElementById('loginPanel');
+        const adminPanel = document.getElementById('adminPanel');
+        const loginForm = document.getElementById('adminLoginForm');
+        const logoutBtn = document.getElementById('adminLogout');
+        
+        // Login functionality
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                loginPanel.style.display = 'none';
+                adminPanel.style.display = 'block';
+                loadAdminData();
+            } else {
+                alert('Invalid admin credentials');
+            }
+        });
+        
+        // Logout functionality
+        logoutBtn.addEventListener('click', function() {
+            loginPanel.style.display = 'block';
+            adminPanel.style.display = 'none';
+        });
+        
+        // Load data for admin panel
+        function loadAdminData() {
+            // Load users
+            const users = JSON.parse(localStorage.getItem('users') || []);
+            document.getElementById('totalUsers').textContent = users.length;
+            
+            // Load pending deposits
+            const deposits = JSON.parse(localStorage.getItem('deposits') || []);
+            const tbody = document.querySelector('#pendingDepositsTable tbody');
+            tbody.innerHTML = '';
+            
+            let totalDeposits = 0;
+            
+            deposits.forEach(deposit => {
+                if (deposit.status === 'pending') {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${deposit.userId}</td>
+                        <td>₦${deposit.amount.toFixed(2)}</td>
+                        <td>${deposit.date} ${deposit.time}</td>
+                        <td>
+                            <button class="action-btn btn-approve" data-id="${deposit.id}">
+                                <i class="fas fa-check"></i> Approve
+                            </button>
+                            <button class="action-btn btn-reject" data-id="${deposit.id}">
+                                <i class="fas fa-times"></i> Reject
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                    totalDeposits += deposit.amount;
+                }
+            });
+            
+            document.getElementById('totalDeposits').textContent = `₦${totalDeposits.toFixed(2)}`;
+            
+            // Add event listeners to approve buttons
+            document.querySelectorAll('.btn-approve').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const depositId = this.dataset.id;
+                    approveDeposit(depositId);
+                });
+            });
+            
+            // Add event listeners to reject buttons
+            document.querySelectorAll('.btn-reject').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const depositId = this.dataset.id;
+                    rejectDeposit(depositId);
+                });
+            });
+            
+            // Load recent activity
+            const activity = JSON.parse(localStorage.getItem('activity') || []);
+            const activityTbody = document.querySelector('#recentActivity tbody');
+            activityTbody.innerHTML = '';
+            
+            activity.slice(0, 10).forEach(act => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${act.userId}</td>
+                    <td>${act.action}</td>
+                    <td>${new Date(act.timestamp).toLocaleTimeString()}</td>
+                    <td>${act.details}</td>
+                `;
+                activityTbody.appendChild(row);
+            });
+        }
+        
+        // Approve deposit
+        function approveDeposit(depositId) {
+            const deposits = JSON.parse(localStorage.getItem('deposits') || []);
+            const depositIndex = deposits.findIndex(d => d.id == depositId);
+            
+            if (depositIndex !== -1) {
+                deposits[depositIndex].status = 'approved';
+                localStorage.setItem('deposits', JSON.stringify(deposits));
+                
+                // Find user
+                const users = JSON.parse(localStorage.getItem('users') || []);
+                const user = users.find(u => u.email === deposits[depositIndex].userId);
+                
+                if (user) {
+                    // Calculate reward (5%)
+                    const reward = deposits[depositIndex].amount * 0.05;
+                    user.cryptoWallet.balance += reward;
+                    
+                    // Add notification
+                    user.notifications.push({
+                        message: `Deposit of ₦${deposits[depositIndex].amount} approved! Reward: ${reward.toFixed(2)} MZLx added to your wallet`,
+                        timestamp: new Date().toISOString(),
+                        read: false
+                    });
+                    
+                    // Update user
+                    localStorage.setItem('users', JSON.stringify(users));
+                    
+                    // Record activity
+                    const activity = JSON.parse(localStorage.getItem('activity') || []);
+                    activity.unshift({
+                        userId: 'admin',
+                        action: 'Deposit Approved',
+                        details: `Approved deposit #${depositId} for ${user.email}`,
+                        timestamp: new Date().toISOString()
+                    });
+                    localStorage.setItem('activity', JSON.stringify(activity));
+                    
+                    alert(`Deposit approved! User received ${reward.toFixed(2)} MZLx reward.`);
+                    loadAdminData();
+                }
+            }
+        }
+        
+        // Reject deposit
+        function rejectDeposit(depositId) {
+            const deposits = JSON.parse(localStorage.getItem('deposits') || []);
+            const depositIndex = deposits.findIndex(d => d.id == depositId);
+            
+            if (depositIndex !== -1) {
+                deposits[depositIndex].status = 'rejected';
+                localStorage.setItem('deposits', JSON.stringify(deposits));
+                
+                // Find user
+                const users = JSON.parse(localStorage.getItem('users') || []);
+                const user = users.find(u => u.email === deposits[depositIndex].userId);
+                
+                if (user) {
+                    // Add notification
+                    user.notifications.push({
+                        message: `Deposit of ₦${deposits[depositIndex].amount} was rejected. Please contact support.`,
+                        timestamp: new Date().toISOString(),
+                        read: false
+                    });
+                    
+                    // Update user
+                    localStorage.setItem('users', JSON.stringify(users));
+                    
+                    // Record activity
+                    const activity = JSON.parse(localStorage.getItem('activity') || []);
+                    activity.unshift({
+                        userId: 'admin',
+                        action: 'Deposit Rejected',
+                        details: `Rejected deposit #${depositId} for ${user.email}`,
+                        timestamp: new Date().toISOString()
+                    });
+                    localStorage.setItem('activity', JSON.stringify(activity));
+                    
+                    alert('Deposit rejected! User has been notified.');
+                    loadAdminData();
+                }
+            }
+        }
+        
+        // Tab switching
+        document.querySelectorAll('.admin-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabName = this.dataset.tab;
+                
+                // Update active tab
+                document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show correct content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(`${tabName}Tab`).classList.add('active');
+            });
+        });
+        
+        // Connect MetaMask
+        document.getElementById('connectMetaMask').addEventListener('click', async function() {
+            if (typeof window.ethereum === 'undefined') {
+                alert('Please install MetaMask!');
+                return;
+            }
+            
+            try {
+                const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                const walletAddress = accounts[0];
+                document.getElementById('walletStatus').innerHTML = `
+                    <p><strong>Connected:</strong> ${walletAddress.substring(0,6)}...${walletAddress.substring(walletAddress.length-4)}</p>
+                    <p><strong>Network ID:</strong> ${ethereum.networkVersion}</p>
+                `;
+                
+                // Save wallet address
+                localStorage.setItem('metamaskWallet', walletAddress);
+            } catch (error) {
+                console.error("MetaMask connection failed:", error);
+                alert('Wallet connection failed: ' + error.message);
+            }
+        });
+        
+        // Initialize
+        const savedBank = JSON.parse(localStorage.getItem('companyBank') || '{}');
+        if (savedBank.bank) {
+            document.getElementById('bankName').value = savedBank.bank;
+            document.getElementById('accountNumber').value = savedBank.number;
+            document.getElementById('accountName').value = savedBank.name;
+        }
     </script>
 </body>
 </html>
