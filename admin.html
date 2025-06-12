@@ -42,7 +42,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 0;
-            margin-bottom: 30px;
+            margin-bottom: 30极
             border-bottom: 2px solid var(--admin-border);
         }
         
@@ -156,7 +156,7 @@
             border-radius: 15px;
             padding: 30px;
             margin-bottom: 30px;
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10极 15px rgba(0, 0, 0, 0.2);
             border: 1px solid var(--admin-border);
             max-height: 400px;
             overflow-y: auto;
@@ -491,7 +491,7 @@
                     <div class="config-header">
                         <div class="config-icon"><i class="fas fa-credit-card"></i></div>
                         <h2 class="config-title">Payment Settings</h2>
-                    </div>
+                    </极>
                     <div class="config-grid">
                         <div class="config-group">
                             <label>Flutterwave API Key</label>
@@ -657,11 +657,11 @@
         // Load data for admin panel
         function loadAdminData() {
             // Load users
-            const users = JSON.parse(localStorage.getItem('users') || []);
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
             document.getElementById('totalUsers').textContent = users.length;
             
-            // Load pending deposits
-            const deposits = JSON.parse(localStorage.getItem('deposits') || []);
+            // Load pending deposits - FIXED
+            const deposits = JSON.parse(localStorage.getItem('deposits') || '[]');
             const tbody = document.querySelector('#pendingDepositsTable tbody');
             tbody.innerHTML = '';
             
@@ -706,8 +706,8 @@
                 });
             });
             
-            // Load recent activity
-            const activity = JSON.parse(localStorage.getItem('activity') || []);
+            // Load recent activity - FIXED
+            const activity = JSON.parse(localStorage.getItem('activity') || '[]');
             const activityTbody = document.querySelector('#recentActivity tbody');
             activityTbody.innerHTML = '';
             
@@ -725,7 +725,7 @@
         
         // Approve deposit
         function approveDeposit(depositId) {
-            const deposits = JSON.parse(localStorage.getItem('deposits') || []);
+            const deposits = JSON.parse(localStorage.getItem('deposits') || '[]');
             const depositIndex = deposits.findIndex(d => d.id == depositId);
             
             if (depositIndex !== -1) {
@@ -733,7 +733,7 @@
                 localStorage.setItem('deposits', JSON.stringify(deposits));
                 
                 // Find user
-                const users = JSON.parse(localStorage.getItem('users') || []);
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
                 const user = users.find(u => u.email === deposits[depositIndex].userId);
                 
                 if (user) {
@@ -752,7 +752,7 @@
                     localStorage.setItem('users', JSON.stringify(users));
                     
                     // Record activity
-                    const activity = JSON.parse(localStorage.getItem('activity') || []);
+                    const activity = JSON.parse(localStorage.getItem('activity') || '[]');
                     activity.unshift({
                         userId: 'admin',
                         action: 'Deposit Approved',
@@ -769,7 +769,7 @@
         
         // Reject deposit
         function rejectDeposit(depositId) {
-            const deposits = JSON.parse(localStorage.getItem('deposits') || []);
+            const deposits = JSON.parse(localStorage.getItem('deposits') || '[]');
             const depositIndex = deposits.findIndex(d => d.id == depositId);
             
             if (depositIndex !== -1) {
@@ -777,7 +777,7 @@
                 localStorage.setItem('deposits', JSON.stringify(deposits));
                 
                 // Find user
-                const users = JSON.parse(localStorage.getItem('users') || []);
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
                 const user = users.find(u => u.email === deposits[depositIndex].userId);
                 
                 if (user) {
@@ -792,7 +792,7 @@
                     localStorage.setItem('users', JSON.stringify(users));
                     
                     // Record activity
-                    const activity = JSON.parse(localStorage.getItem('activity') || []);
+                    const activity = JSON.parse(localStorage.getItem('activity') || '[]');
                     activity.unshift({
                         userId: 'admin',
                         action: 'Deposit Rejected',
@@ -846,7 +846,7 @@
         
         // Admin actions
         document.getElementById('fundUsers').addEventListener('click', function() {
-            const users = JSON.parse(localStorage.getItem('users') || []);
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
             users.forEach(user => {
                 user.cryptoWallet.balance += 100;
             });
